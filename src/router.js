@@ -1,11 +1,11 @@
 import {createRouter, createWebHashHistory} from 'vue-router'
 import HelloWorld from './pages/HelloWorld.vue'
-import List from './pages/List.vue'
+import Windows from './pages/windows/Windows.vue'
 
 const routes = [
     { path: '/', component: HelloWorld },
     { path: '/helloworld', component: HelloWorld },
-    { path: '/list', component: List },
+    { path: '/Windows', component: Windows },
 ]
 
 const router = createRouter({
