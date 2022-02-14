@@ -1,4 +1,4 @@
-import Item from './Item.js.js'
+import Item from './Item.js'
 
 /**
  * 图片组件
