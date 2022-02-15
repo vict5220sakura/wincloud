@@ -1,11 +1,13 @@
 import {createRouter, createWebHashHistory} from 'vue-router'
-import HelloWorld from './pages/HelloWorld.vue'
+import Index from './pages/Index.vue'
 import Windows from './pages/windows/Windows.vue'
+import Windows2 from './pages/windows2/Windows2.vue'
 
 const routes = [
-    { path: '/', component: HelloWorld },
-    { path: '/helloworld', component: HelloWorld },
-    { path: '/Windows', component: Windows },
+    { path: '/', component: Index },
+    { path: '/index', component: Index },
+    { path: '/windows', component: Windows },
+    { path: '/windows2', component: Windows2 },
 ]
 
 const router = createRouter({
