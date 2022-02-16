@@ -51,34 +51,68 @@ export default {
             this.addLink()
           });
         },
+        /** 添加连接图标 */
         addLink(){
           this.$prompt('请输入连接地址', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消'
-          }).then(({ value }) => {
-            let urlBlock = new fabric.Rect({width: 50, height: 50, fill: '#eeeeee' });
-            urlBlock.hasControls = false; 
-            urlBlock.hasBorders = false;
-            urlBlock.url = value
-            this.urlBlockList.push(urlBlock);
-            this.canvas.add(urlBlock);
-            // 添加点击跳转事件
-            urlBlock.on("mouseup", (opts)=>{
-              console.log("连接点击", opts)
-              let now = new Date().getTime();
-              let oldTime = opts.target.time;
-              opts.target.time = now;
-              
-              if(oldTime){
-                if(now - oldTime < 500){
-                  let url = opts.target.url
-                  if(new RegExp("http.*").test(url)){
-                    window.open(url)
-                  }else{
-                    window.open("http://" + url)
+          }).then((urlInputData) => {
+            let urlInput = urlInputData.value;
+            this.$prompt('请输入标签名称', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消'
+            }).then((nameInputData) => {
+              let nameInput = nameInputData.value
+
+              let urlBlockText = new fabric.Textbox(nameInput, {
+                // stroke: "red",
+                // fill: "blue",
+                fontFamily: "Inconsolata",
+                width: 60,
+                top: 10,
+                left: 5,
+                fontSize: 15,
+                lineHeight: 1,
+                textAlign: "left", // 文字对齐
+                lockRotation: true, // 禁止旋转
+                lockScalingY: true, // 禁止Y轴伸缩
+                lockScalingFlip: true, // 禁止负值反转
+                splitByGrapheme: true, // 拆分中文，可以实现自动换行
+                objectCaching: false,
+              });
+  
+              let urlBlockbackground = new fabric.Rect({
+                width: 70, 
+                height: 70, 
+                fill: '#eeeeee' 
+              });
+              urlBlockbackground.hasControls = false; 
+              urlBlockbackground.hasBorders = false;
+
+              let urlBlock = new fabric.Group([urlBlockbackground, urlBlockText], {})
+              urlBlock.hasControls = false; 
+              urlBlock.hasBorders = false;
+              urlBlock.url = urlInput
+              this.urlBlockList.push(urlBlock);
+              this.canvas.add(urlBlock);
+              // 添加点击跳转事件
+              urlBlock.on("mouseup", (opts)=>{
+                console.log("连接点击", opts)
+                let now = new Date().getTime();
+                let oldTime = opts.target.time;
+                opts.target.time = now;
+                
+                if(oldTime){
+                  if(now - oldTime < 500){
+                    let url = opts.target.url
+                    if(new RegExp("http.*").test(url)){
+                      window.open(url)
+                    }else{
+                      window.open("http://" + url)
+                    }
                   }
                 }
-              }
+              })
             })
           }).catch(() => {});
         }
