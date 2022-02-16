@@ -8,7 +8,8 @@ export default {
         windowHeight: 768,
         canvas: null, // 画布对象
         menuBackground: null, // 右键菜单背景
-        menuAddLink: null // 添加连接
+        menuAddLink: null, // 添加连接
+        urlBlockList: [] // 连接列表
       } 
     },
     methods:{
@@ -53,18 +54,33 @@ export default {
         addLink(){
           this.$prompt('请输入连接地址', '提示', {
             confirmButtonText: '确定',
-            cancelButtonText: '取消',
+            cancelButtonText: '取消'
           }).then(({ value }) => {
-            this.$message({
-              type: 'success',
-              message: '你的连接地址是: ' + value
-            });
-          }).catch(() => {
-            this.$message({
-              type: 'info',
-              message: '取消输入'
-            });       
-          });
+            let urlBlock = new fabric.Rect({width: 50, height: 50, fill: '#eeeeee' });
+            urlBlock.hasControls = false; 
+            urlBlock.hasBorders = false;
+            urlBlock.url = value
+            this.urlBlockList.push(urlBlock);
+            this.canvas.add(urlBlock);
+            // 添加点击跳转事件
+            urlBlock.on("mouseup", (opts)=>{
+              console.log("连接点击", opts)
+              let now = new Date().getTime();
+              let oldTime = opts.target.time;
+              opts.target.time = now;
+              
+              if(oldTime){
+                if(now - oldTime < 500){
+                  let url = opts.target.url
+                  if(new RegExp("http.*").test(url)){
+                    window.open(url)
+                  }else{
+                    window.open("http://" + url)
+                  }
+                }
+              }
+            })
+          }).catch(() => {});
         }
     },
     created(){
@@ -79,6 +95,7 @@ export default {
       this.canvas.selection = false; // 禁止画布滑动选中
       this.canvas.hoverCursor = 'default' // 鼠标样式
       this.canvas.moveCursor = 'default' // 鼠标样式
+
       // 设置背景图片
       fabric.Image.fromURL('/img/img0_3840x2160.jpg', (oImg)=>{
         oImg.set({
@@ -86,20 +103,10 @@ export default {
           scaleY: this.windowHeight / oImg.height
         })
         this.canvas.setBackgroundImage(oImg);
+        this.canvas.renderAll();
       });
 
-      fabric.Image.fromURL('/img/green5050.png', (oImg)=>{
-        oImg.hasControls = false; // 禁止大小控制
-        oImg.hasBorders = false; // 禁止边框
-        this.canvas.add(oImg);
-      });
-
-      fabric.Image.fromURL('/img/red5050.png', (oImg)=>{
-        oImg.hasControls = false; // 禁止大小控制
-        oImg.hasBorders = false; // 禁止边框
-        this.canvas.add(oImg);
-      });
-
+      // 右键事件
       document.getElementsByClassName("upper-canvas")[0].oncontextmenu = (e)=>{
         console.log("鼠标右键e=", e)
 
@@ -116,7 +123,8 @@ export default {
 
       this.canvas.on('mouse:down', (options)=> {
         console.log('mouse:down', options);
-        // this.canvas.remove(this.menu);
+        this.canvas.remove(this.menuBackground);
+        this.canvas.remove(this.menuAddLink);
       });
     }
 }

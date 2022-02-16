@@ -24,4 +24,4 @@ npm run lint
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ### 添加elementui插件
-vue add element-plus
+vue add element-plus 脚手架可能会修改App.vue文件导致报错
