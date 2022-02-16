@@ -8,18 +8,95 @@ export default {
         windowHeight: 768,
         canvas: null, // 画布对象
         menuBackground: null, // 右键菜单背景
-        menuAddLink: null, // 添加连接
-        urlBlockList: [] // 连接列表
+
+        menuList: [], // 菜单列表
+
+        allBlock: [] // 图标列表
       } 
     },
     methods:{
         // 初始化鼠标右键菜单
         createdMenu(){
-          this.menuBackground = new fabric.Rect({width: 100, height: 25, fill: '#eeeeee' });
+          this.menuBackground = new fabric.Rect({width: 100, height: 75, fill: '#eeeeee' });
           this.menuBackground.hasControls = false; 
           this.menuBackground.hasBorders = false;
           this.menuBackground.selectable = false;
+          this.menuAddLink();
+          this.menuAddSave();
+          this.menuAddClear();
+        },
+        /** 添加清空菜单 */
+        menuAddClear(){
+          const text = new fabric.Text('清空', {
+            fontSize: 15,
+            fill: '#141414',
+            top: 5,
+            left: 5
+          })
+          const background = new fabric.Rect({width: 100, height: 25, fill: '#eeeeee'});
+          background.hasControls = false; 
+          background.hasBorders = false;
+          background.selectable = false;
 
+          let menuItem = new fabric.Group([background, text], {})
+
+          menuItem.hasControls = false; 
+          menuItem.hasBorders = false;
+          menuItem.selectable = false;
+          menuItem.on('mouseover', (opts)=> {
+            console.log('清空 悬停 opts=', opts);
+            background.set("fill", '#ffffff')
+            this.canvas.renderAll();
+          });
+          menuItem.on('mouseout', (opts)=> {
+            background.set("fill", '#eeeeee')
+            this.canvas.renderAll();
+          });
+
+          menuItem.on('mousedown', (opts)=> {
+            console.log('清空 点击 opts=', opts);
+            this.clear()
+          });
+
+          this.menuList.push(menuItem)
+        },
+        /** 添加保存菜单 */
+        menuAddSave(){
+          // 初始化新建连接菜单栏
+          const text = new fabric.Text('保存', {
+            fontSize: 15,
+            fill: '#141414',
+            top: 5,
+            left: 5
+          })
+          const background = new fabric.Rect({width: 100, height: 25, fill: '#eeeeee'});
+          background.hasControls = false; 
+          background.hasBorders = false;
+          background.selectable = false;
+
+          let menuItem = new fabric.Group([background, text], {})
+
+          menuItem.hasControls = false; 
+          menuItem.hasBorders = false;
+          menuItem.selectable = false;
+          menuItem.on('mouseover', (opts)=> {
+            console.log('保存 悬停 opts=', opts);
+            background.set("fill", '#ffffff')
+            this.canvas.renderAll();
+          });
+          menuItem.on('mouseout', (opts)=> {
+            background.set("fill", '#eeeeee')
+            this.canvas.renderAll();
+          });
+
+          menuItem.on('mousedown', (opts)=> {
+            console.log('保存 点击 opts=', opts);
+            this.save()
+          });
+
+          this.menuList.push(menuItem)
+        },
+        menuAddLink(){
           // 初始化新建连接菜单栏
           const addLinkText = new fabric.Text('新建连接', {
             fontSize: 15,
@@ -31,25 +108,28 @@ export default {
           addLinkBackground.hasControls = false; 
           addLinkBackground.hasBorders = false;
           addLinkBackground.selectable = false;
-          this.menuAddLink = new fabric.Group([addLinkBackground, addLinkText], {})
 
-          this.menuAddLink.hasControls = false; 
-          this.menuAddLink.hasBorders = false;
-          this.menuAddLink.selectable = false;
-          this.menuAddLink.on('mouseover', (opts)=> {
+          let menuAddLink = new fabric.Group([addLinkBackground, addLinkText], {})
+
+          menuAddLink.hasControls = false; 
+          menuAddLink.hasBorders = false;
+          menuAddLink.selectable = false;
+          menuAddLink.on('mouseover', (opts)=> {
             console.log('新建连接 悬停 opts=', opts);
             addLinkBackground.set("fill", '#ffffff')
             this.canvas.renderAll();
           });
-          this.menuAddLink.on('mouseout', (opts)=> {
+          menuAddLink.on('mouseout', (opts)=> {
             addLinkBackground.set("fill", '#eeeeee')
             this.canvas.renderAll();
           });
 
-          this.menuAddLink.on('mousedown', (opts)=> {
+          menuAddLink.on('mousedown', (opts)=> {
             console.log('新建连接 点击 opts=', opts);
             this.addLink()
           });
+
+          this.menuList.push(menuAddLink)
         },
         /** 添加连接图标 */
         addLink(){
@@ -93,7 +173,7 @@ export default {
               urlBlock.hasControls = false; 
               urlBlock.hasBorders = false;
               urlBlock.url = urlInput
-              this.urlBlockList.push(urlBlock);
+              this.allBlock.push(urlBlock);
               this.canvas.add(urlBlock);
               // 添加点击跳转事件
               urlBlock.on("mouseup", (opts)=>{
@@ -115,6 +195,19 @@ export default {
               })
             })
           }).catch(() => {});
+        },
+        save(){
+          let canvasJson = JSON.stringify(this.canvas);
+          console.log("保存json=", canvasJson)
+          localStorage.setItem("canvasJsonnnjnjnj", canvasJson)
+        },
+        load(){
+          let canvasJson = localStorage.getItem("canvasJsonnnjnjnj")
+          this.canvas.loadFromJSON(canvasJson)
+        },
+        clear(){
+          localStorage.removeItem("canvasJsonnnjnjnj")
+          location.reload();
         }
     },
     created(){
@@ -146,19 +239,29 @@ export default {
 
         this.menuBackground.top = e.offsetY
         this.menuBackground.left = e.offsetX
-
-        this.menuAddLink.top = e.offsetY
-        this.menuAddLink.left = e.offsetX
-
+        
         this.canvas.add(this.menuBackground);
-        this.canvas.add(this.menuAddLink);
+
+        let topIndex = 0
+        for(let menuItem of this.menuList){
+          menuItem.top = e.offsetY + (menuItem.height * topIndex)
+          menuItem.left = e.offsetX
+          this.canvas.add(menuItem);
+          topIndex++;
+        }  
+        
         e.preventDefault(); // 取消右键事件
       };
 
       this.canvas.on('mouse:down', (options)=> {
         console.log('mouse:down', options);
         this.canvas.remove(this.menuBackground);
-        this.canvas.remove(this.menuAddLink);
+        
+        for(let menuItem of this.menuList){
+          this.canvas.remove(menuItem);
+        }
       });
+
+      this.load();
     }
 }
