@@ -165,7 +165,7 @@ export default {
                 this.$prompt('请输入标签名称', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消'
-                }).then((nameInputData) => {
+                }).then(async (nameInputData) => {
                     let nameInput = nameInputData.value
 
                     let linkBlock = new LinkBlock();
@@ -173,10 +173,19 @@ export default {
                     linkBlock.name = nameInput;
 
                     this.addLinkBlock(linkBlock);
-
-
+                    await this.save();
+                    this.autoSaveNotify();
                 })
             }).catch(() => { });
+        },
+        autoSaveNotify(){
+            this.$notify({
+                message: '<i class="el-icon-success" style="color: green; margin-right: 6px"></i><span style="padding-botton: 4px">自动保存成功</span>',
+                dangerouslyUseHTMLString: true,
+                showClose: false,
+                duration: 1000,
+                customClass: "autoSaveNotifyClass"
+            });
         },
         async addLinkBlock(linkBlock) {
             let urlBlockText = new fabric.Textbox(linkBlock.name, {
@@ -232,7 +241,7 @@ export default {
             this.allBlock.push(urlBlock);
             this.canvas.add(urlBlock);
             // 添加点击跳转事件
-            urlBlock.on("mouseup", (opts) => {
+            urlBlock.on("mouseup", async (opts) => {
                 console.log("连接点击", opts)
                 let now = new Date().getTime();
                 let oldTime = opts.target.time;
@@ -249,14 +258,16 @@ export default {
                         }
                     } else {
                         // 单击
-                        this.save();
+                        await this.save();
+                        this.autoSaveNotify();
                     }
                 } else {
                     // 单击
-                    this.save();
+                    await this.save();
+                    this.autoSaveNotify();
                 }
             })
-            this.save();
+            
         },
         /** 保存 */
         async save() {
@@ -301,10 +312,11 @@ export default {
             }
             
         },
+        /** 清空 */
         clear() {
             this.fabricRemoveAllBlock()
 
-            localStorage.removeItem(saveKey)
+            // localStorage.removeItem(saveKey)
             // location.reload();
         },
         /** 选取一个对象 */
