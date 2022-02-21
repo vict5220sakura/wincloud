@@ -268,17 +268,22 @@ export default {
             this.canvas.renderAll();
         });
         updateItem.on('mousedown', (opts) => {
+            let y = this.linkBlockMenuBackground.top
+            let x = this.linkBlockMenuBackground.left
             let updateObj;
-            let objs = this.fabricChooseObjs(opts.pointer.x, opts.pointer.y)
+            let objs = this.fabricChooseObjs(x, y)
             for (let obj of objs) {
                 if (obj.block.blockType == BlockType.type_link) {
                     updateObj = obj
                     break
                 }
             }
+            console.log("opts", opts)
+            console.log("选中更新", updateObj)
+            console.log("全部图标", this.allBlock)
             let topTemp = updateObj.block.top
             let leftTemp = updateObj.block.left
-            console.log("选中更新", updateObj)
+            
             
             this.$prompt('请输入连接地址', '提示', {
                 confirmButtonText: '确定',
@@ -345,7 +350,9 @@ export default {
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(async () => {
-                let objs = this.fabricChooseObjs(opts.pointer.x, opts.pointer.y)
+                let y = this.linkBlockMenuBackground.top
+                let x = this.linkBlockMenuBackground.left
+                let objs = this.fabricChooseObjs(x, y)
                 for (let obj of objs) {
                     if (obj.block.blockType == BlockType.type_link) {
                         this.removOneBlock(obj)
