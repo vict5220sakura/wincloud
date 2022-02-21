@@ -1,7 +1,7 @@
 export default {
     /**
-     * 用户名校验
-     */
+         * 用户名校验
+         */
     checkUsername(){
         if(!this.username){
             return {b: false, msg: "请输入用户名"}
@@ -23,7 +23,7 @@ export default {
     /**
      * 密码校验
      */
-     checkPassword(){
+    checkPassword(){
         if(!this.password){
             return {b: false, msg: "请输入密码"}
         }
@@ -41,4 +41,5 @@ export default {
         }
         return {b: true}
     }
+    
 }

@@ -5,8 +5,9 @@ import LinkBlock from "./bean/LinkBlock.js"
 import XYUtil from '@/util/XYUtil.js'
 import UrlUtil from "@/util/UrlUtil.js"
 import WindowsData from './Windows2Data.js'
-import Windows2Methods from './Windows2Methods.js'
 import {saveKey} from '@/common/M.js'
+import Windows2Methods from './Windows2Methods.js'
+
 
 
 export default {
@@ -17,8 +18,8 @@ export default {
       this.windowHeight = window.innerHeight;
     },
     async mounted(){
-      this.createdMenu();
-      this.cheatedLinkBlockMenu();
+      this.tableRightMenuInit(); // 桌面右键菜单初始化
+      this.linkBlockMenuInit(); // 创建
 
       // 创建画布
       this.canvas = new fabric.Canvas("myCanvas")
@@ -37,33 +38,12 @@ export default {
       });
 
       // 右键事件
-      document.getElementsByClassName("upper-canvas")[0].oncontextmenu = (e)=>{
-        console.log("鼠标右键e=", e)
-        
-        let chooseObj = this.fabricChooseObj(e.offsetX, e.offsetY);
+      this.rightClickRegist();
 
-        if(chooseObj){
-          console.log("选中对象", chooseObj)
-          // 移除菜单
-          this.canvasRemoveMenu();
-          this.fabricRemoveBlockMenu();
-          // 展示对象菜单
-          this.fabricShowBlockMenu(chooseObj, e.offsetX, e.offsetY);
-        }else{
-          console.log("没有选中任何对象")
-          // 展示菜单
-          this.fabricShowMenu(e.offsetX, e.offsetY)
-        }
-        
-        e.preventDefault(); // 取消右键事件
-      };
-
-      this.canvas.on('mouse:down', (options)=> {
-        this.canvasRemoveMenu();
-        this.fabricRemoveBlockMenu();
-      });
-
+      // 左键事件注册
+      this.leftClickRegistn();
       
+      // 登录弹窗默认显示
       this.loginDialogFlag = true;
     }
 }
