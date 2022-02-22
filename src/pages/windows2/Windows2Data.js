@@ -3,6 +3,7 @@ export default {
         return {
             windowWidth: 1024,
             windowHeight: 768,
+            table: null,
             canvas: null, // 画布对象
             menuBackground: null, // 右键菜单背景
 

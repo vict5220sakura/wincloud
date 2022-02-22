@@ -167,15 +167,9 @@ export default {
             console.log('保存 点击 opts=', opts);
             try{
                 await this.save()
-                this.$message({
-                    type: 'success',
-                    message: "保存"+ (this.loginMode == login_mode.login_mode_local? "本地" : "远程" ) +"成功!"
-                });
+                this.notify("保存"+ (this.loginMode == login_mode.login_mode_local? "本地" : "远程" ) +"成功", "success")
             }catch(err){
-                this.$message({
-                    type: 'error',
-                    message: "保存失败! (请联系网站管理员arcueid5220@163.com)"
-                });
+                this.notify("保存失败! (请联系网站管理员arcueid5220@163.com)", "error")
             }
         });
 

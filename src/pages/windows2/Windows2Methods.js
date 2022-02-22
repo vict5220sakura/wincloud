@@ -10,6 +10,7 @@ import WinDataService from '@/service/WinDataService.js'
 import Windows2MethonsRules from './Windows2MethonsRules.js'
 import Windows2MethonsRightMenu from './Windows2MethodsRightMenu.js'
 import { login_mode } from '@/common/M.js'
+import Table from "./bean/Table";
 
 export default {
     methods:{
@@ -17,13 +18,27 @@ export default {
         ...Windows2MethonsRightMenu,
         /** 自动保存提示 */
         autoSaveNotify(){
-            this.$notify({
-                message: '<i class="el-icon-success" style="color: green; margin-right: 6px"></i><span style="padding-botton: 4px">自动保存成功</span>',
-                dangerouslyUseHTMLString: true,
-                showClose: false,
-                duration: 1000,
-                customClass: "autoSaveNotifyClass"
-            });
+            this.notify("自动保存成功", "success")
+        },
+        notify(str, type){
+            if(type == 'success'){
+                this.$notify({
+                    message: '<i class="el-icon-success" style="color: green; margin-right: 6px"></i><span style="padding-botton: 4px">' + str + '</span>',
+                    dangerouslyUseHTMLString: true,
+                    showClose: false,
+                    duration: 1000,
+                    customClass: "autoSaveNotifyClass"
+                });
+            }else if(type == 'error'){
+                this.$notify({
+                    message: '<i class="el-icon-error" style="color: red; margin-right: 6px"></i><span style="padding-botton: 4px">' + str + '</span>',
+                    dangerouslyUseHTMLString: true,
+                    showClose: false,
+                    duration: 1000,
+                    customClass: "autoSaveNotifyClass"
+                });
+            }
+
         },
         /** 添加一个链接图标 */
         async addLinkBlock(linkBlock) {
@@ -97,11 +112,13 @@ export default {
                         }
                     } else {
                         // 单击
+                        this.blockAutoArrange();
                         await this.save();
                         this.autoSaveNotify();
                     }
                 } else {
                     // 单击
+                    this.blockAutoArrange();
                     await this.save();
                     this.autoSaveNotify();
                 }
@@ -172,28 +189,23 @@ export default {
             }
         },
         /** 加载 */
-        load() {
-            
+        async load() {
             if(this.loginMode == login_mode.login_mode_local){ // 本地登录加载
                 let jsonarrStr = localStorage.getItem(saveKey);
-                // console.log("读取jsonarrStr=", jsonarrStr)
                 let jsonarr = jsonarrStr && JSON.parse(jsonarrStr) || []
-                // console.log("读取jsonarr=", jsonarr)
                 for (let block of jsonarr) {
                     if (block.blockType == BlockType.type_link) {
-                        this.addLinkBlock(block)
+                        await this.addLinkBlock(block)
                     }
                 }
             }else if(this.loginMode == login_mode.login_mode_serve){
-                console.log("远程载入", this.winDataStr)
                 let jsonarr = this.winDataStr && JSON.parse(this.winDataStr) || []
                 for (let block of jsonarr) {
                     if (block.blockType == BlockType.type_link) {
-                        this.addLinkBlock(block)
+                        await this.addLinkBlock(block)
                     }
                 }
             }
-            
         },
         /** 选取一个对象 */
         fabricChooseObj(x, y) {
@@ -301,15 +313,30 @@ export default {
                     message: "用户名或密码错误"
                 });
             }
-            console.log("远程登录", res)
         },
         /**
          * 本地登录按钮点击
          */
-        btnLocalLogin() {
+        async btnLocalLogin() {
             this.loginMode = login_mode.login_mode_local
             this.loginDialogFlag = false;
-            this.load();
+            await this.load();
+
+        },
+        /** 图标自动排列 */
+        blockAutoArrange(){
+            let table = new Table();
+            table.width = this.windowWidth;
+            table.height = this.windowHeight;
+            table.initAllPoint()
+            // 全部图标加入table
+            for(let block of this.allBlock){
+                table.addBlock(block)
+            }
+            // 全部图标批量对齐
+            table.activeBlock();
+            this.canvas.renderAll();
+            // this.canvas.discardActiveObject(); // 取消所有对象选中状态
         }
     }
     

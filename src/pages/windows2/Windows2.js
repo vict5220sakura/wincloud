@@ -7,7 +7,7 @@ import UrlUtil from "@/util/UrlUtil.js"
 import WindowsData from './Windows2Data.js'
 import {saveKey} from '@/common/M.js'
 import Windows2Methods from './Windows2Methods.js'
-
+import Table from './bean/Table.js'
 
 
 export default {
@@ -18,9 +18,6 @@ export default {
       this.windowHeight = window.innerHeight;
     },
     async mounted(){
-      this.tableRightMenuInit(); // 桌面右键菜单初始化
-      this.linkBlockMenuInit(); // 创建
-
       // 创建画布
       this.canvas = new fabric.Canvas("myCanvas")
       this.canvas.selection = false; // 禁止画布滑动选中
@@ -36,6 +33,9 @@ export default {
         this.canvas.setBackgroundImage(oImg);
         this.canvas.renderAll();
       });
+
+      this.tableRightMenuInit(); // 桌面右键菜单初始化
+      this.linkBlockMenuInit(); // 创建
 
       // 右键事件
       this.rightClickRegist();
