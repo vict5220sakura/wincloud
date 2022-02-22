@@ -76,13 +76,14 @@ export default {
 
     // 桌面右键菜单初始化
     tableRightMenuInit() {
-        this.menuBackground = new fabric.Rect({ width: 100, height: 75, fill: '#eeeeee' });
+        this.menuBackground = new fabric.Rect({ width: 100, height: 100, fill: '#eeeeee' });
         this.menuBackground.hasControls = false;
         this.menuBackground.hasBorders = false;
         this.menuBackground.selectable = false;
         this.tableRightMenuInitLink();
         this.tableRightMenuInitSave();
         this.tableRightMenuInitClear();
+        this.tableRightMenuInitAutopailie();
     },
     /** 添加清空菜单 */
     tableRightMenuInitClear() {
@@ -171,6 +172,41 @@ export default {
             }catch(err){
                 this.notify("保存失败! (请联系网站管理员arcueid5220@163.com)", "error")
             }
+        });
+
+        this.menuList.push(menuItem)
+    },
+    /** 添加自动排列菜单 */
+    tableRightMenuInitAutopailie() {
+        const text = new fabric.Text('刷新', {
+            fontSize: 15,
+            fill: '#141414',
+            top: 5,
+            left: 5
+        })
+        const background = new fabric.Rect({ width: 100, height: 25, fill: '#eeeeee' });
+        background.hasControls = false;
+        background.hasBorders = false;
+        background.selectable = false;
+
+        let menuItem = new fabric.Group([background, text], {})
+
+        menuItem.hasControls = false;
+        menuItem.hasBorders = false;
+        menuItem.selectable = false;
+        menuItem.on('mouseover', (opts) => {
+            background.set("fill", '#ffffff')
+            this.canvas.renderAll();
+        });
+        menuItem.on('mouseout', (opts) => {
+            background.set("fill", '#eeeeee')
+            this.canvas.renderAll();
+        });
+
+        menuItem.on('mousedown', async (opts) => {
+            this.blockAutoArrange();
+            await this.save();
+            this.autoSaveNotify();
         });
 
         this.menuList.push(menuItem)
