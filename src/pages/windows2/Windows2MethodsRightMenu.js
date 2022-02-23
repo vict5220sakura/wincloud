@@ -13,7 +13,7 @@ import { login_mode } from '@/common/M.js'
 
 export default {
     // 左键事件注册
-    leftClickRegistn(){
+    leftClickRegist(){
         this.canvas.on('mouse:down', (options)=> {
             this.closeTableRightMenu();
             this.closeBlockMenu();
@@ -178,7 +178,7 @@ export default {
     },
     /** 添加自动排列菜单 */
     tableRightMenuInitAutopailie() {
-        const text = new fabric.Text('刷新', {
+        const text = new fabric.Text('刷新排列', {
             fontSize: 15,
             fill: '#141414',
             top: 5,

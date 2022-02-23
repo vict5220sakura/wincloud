@@ -41,8 +41,8 @@ export default {
       this.rightClickRegist();
 
       // 左键事件注册
-      this.leftClickRegistn();
-      
+      this.leftClickRegist();
+
       // 登录弹窗默认显示
       this.loginDialogFlag = true;
     }
