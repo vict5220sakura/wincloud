@@ -6,6 +6,10 @@ wincloud是一个网站仿桌面收藏夹，核心使用fabric.js框架实现，
 # 演示地址
 http://vict5220.top
 
+# 操作方式 
+鼠标右键菜单
+鼠标左键拖动
+
 
 # 注意事项
 1, 添加elementui插件  
