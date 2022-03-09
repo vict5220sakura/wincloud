@@ -8,18 +8,20 @@ export default {
             menuBackground: null, // 右键菜单背景
 
             menuList: [], // 菜单列表
+            tablemenuItemBackgroundList: [], // 菜单项背景列表
 
             allBlock: [], // 图标列表
 
             linkBlockMenuBackground: null, // 链接菜单右键
             linkBlockMenuList: [], // 链接菜单
+            linkBlockMenuItembackgroundList: [], // 链接菜单项背景列表
 
             loginDialogFlag: false, // 注册登录弹框
             username: null, // 用户名
             password: null, // 密码
             loginMode: null, // 登录模式
             winDataStr: null,
-            
+
             rules: {
                 "username": [
                   {validator: (rule, value, callback) => {

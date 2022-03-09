@@ -8,14 +8,22 @@ import { saveKey } from '@/common/M.js'
 import LoginService from '@/service/LoginService.js'
 import WinDataService from '@/service/WinDataService.js'
 import Windows2MethonsRules from './Windows2MethonsRules.js'
-import Windows2MethonsRightMenu from './Windows2MethodsRightMenu.js'
+import TableRightMenuDownMethods from './TableRightMenuDownMethods.js'
+import RightInit from './RightInit.js'
+import LeftInit from './LeftInit.js'
+import TableRightMenu from './TableRightMenu.js'
+import LinkRightMenu from './LinkRightMenu.js'
 import { login_mode } from '@/common/M.js'
 import Table from "./bean/Table";
 
 export default {
     methods:{
+        ...LeftInit, // 左键初始化
+        ...RightInit, // 右键初始化
+        ...TableRightMenu, // 桌面右键菜单
+        ...LinkRightMenu, // 链接右键菜单
         ...Windows2MethonsRules,
-        ...Windows2MethonsRightMenu,
+        ...TableRightMenuDownMethods,
         /** 自动保存提示 */
         autoSaveNotify(){
             this.notify("自动保存成功", "success")
@@ -150,20 +158,19 @@ export default {
                     });
                     
                     let top = urlBlock.top
-                        let left = urlBlock.left
-                        urlBlock.remove(urlBlockText)
-                        urlBlock.remove(urlBlockbackground)
-    
-                        urlBlock.addWithUpdate(urlBlockbackgroundNew)
-                        urlBlock.addWithUpdate(urlBlockTextNew)
-                        urlBlock.set("left", left || 0)
-                        urlBlock.set("top", top || 0)
-                        urlBlock.set("block", linkBlock)
-                        urlBlock.addWithUpdate()
-                        urlBlock.set("block", linkBlock)
-    
-                        this.canvas.renderAll();
-                    
+                    let left = urlBlock.left
+                    urlBlock.remove(urlBlockText)
+                    urlBlock.remove(urlBlockbackground)
+
+                    urlBlock.addWithUpdate(urlBlockbackgroundNew)
+                    urlBlock.addWithUpdate(urlBlockTextNew)
+                    urlBlock.set("left", left || 0)
+                    urlBlock.set("top", top || 0)
+                    urlBlock.set("block", linkBlock)
+                    urlBlock.addWithUpdate()
+                    urlBlock.set("block", linkBlock)
+
+                    this.canvas.renderAll();
                 }
             });
         },
@@ -233,41 +240,16 @@ export default {
             return objs;
         },
         
-        
         /** 视图展示菜单 */
         fabricShowBlockMenu(chooseObj, x, y) {
             let block = chooseObj.block
-            if (block.blockType == BlockType.type_link) {
-                this.fabricShowLinkBlockMenu(chooseObj, block, x, y)
+            if(block){ // 存在实体
+                if (block.blockType == BlockType.type_link) {
+                    this.linkBlockShowMenu(chooseObj, block, x, y)
+                }
             }
         },
-        
-        /** 视图展示链接菜单 */
-        fabricShowLinkBlockMenu(chooseObj, block, x, y) {
-            this.linkBlockMenuBackground.top = y
-            this.linkBlockMenuBackground.left = x
-    
-            this.canvas.discardActiveObject(); // 取消所有对象选中状态
-            this.closeTableRightMenu(); // 取消菜单显示
-            this.closeBlockMenu(); // 关闭图标右键菜单
-    
-            this.canvas.add(this.linkBlockMenuBackground);
-            let topIndex = 0
-            for (let menuItem of this.linkBlockMenuList) {
-                menuItem.top = y + (menuItem.height * topIndex)
-                menuItem.left = x
-                this.canvas.add(menuItem);
-                topIndex++;
-            }
-        },
-        
-        /** 视图移除链接菜单 */
-        fabricRemoveLinkBlockMenu() {
-            this.canvas.remove(this.linkBlockMenuBackground);
-            for (let menuItem of this.linkBlockMenuList) {
-                this.canvas.remove(menuItem);
-            }
-        },
+
         /** 移除全部图标 */
         removeAllBlock(){
             for (let obj of this.allBlock) {

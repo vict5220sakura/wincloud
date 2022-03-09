@@ -37,7 +37,7 @@ export default {
       this.tableRightMenuInit(); // 桌面右键菜单初始化
       this.linkBlockMenuInit(); // 创建
 
-      // 右键事件
+      // 右键事件注册
       this.rightClickRegist();
 
       // 左键事件注册
