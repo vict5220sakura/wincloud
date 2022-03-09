@@ -16,7 +16,7 @@ export default {
     created(){
       this.windowWidth = window.innerWidth;
       this.windowHeight = window.innerHeight;
-    },
+    },//
     async mounted(){
       // 创建画布
       this.canvas = new fabric.Canvas("myCanvas")
