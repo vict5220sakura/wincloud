@@ -11,6 +11,7 @@ export default {
      */
     menuAddLinkMouseDown(opts){
         console.log('新建连接 点击 opts=', opts);
+
         this.$prompt('请输入连接地址', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消'
@@ -26,7 +27,10 @@ export default {
                 linkBlock.url = urlInput
                 linkBlock.name = nameInput;
 
-                this.addLinkBlock(linkBlock);
+                linkBlock.left = opts.pointer.x
+                linkBlock.top = opts.pointer.y
+                await this.addLinkBlock(linkBlock);
+                this.blockAutoArrange();
                 await this.save();
                 this.autoSaveNotify();
             })
