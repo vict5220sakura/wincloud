@@ -121,14 +121,14 @@ export default {
                     } else {
                         // 单击
                         this.blockAutoArrange();
-                        await this.save();
-                        this.autoSaveNotify();
+                        // await this.save();
+                        // this.autoSaveNotify();
                     }
                 } else {
                     // 单击
                     this.blockAutoArrange();
-                    await this.save();
-                    this.autoSaveNotify();
+                    // await this.save();
+                    // this.autoSaveNotify();
                 }
             })
             // 懒加载图标
