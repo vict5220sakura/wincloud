@@ -11,8 +11,7 @@ export default {
             if(chooseObj){
                 console.log("选中对象", chooseObj)
                 // 移除菜单
-                this.closeTableRightMenu();
-                this.linkBlockCloseMenu();
+                this.closeAllBlockMenu();
                 // 展示对象菜单
                 this.fabricShowBlockMenu(chooseObj, e.offsetX, e.offsetY);
             }else{

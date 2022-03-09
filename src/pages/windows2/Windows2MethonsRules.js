@@ -1,7 +1,7 @@
 export default {
     /**
-         * 用户名校验
-         */
+     * 用户名校验
+     */
     checkUsername(){
         if(!this.username){
             return {b: false, msg: "请输入用户名"}

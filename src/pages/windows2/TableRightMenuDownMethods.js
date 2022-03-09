@@ -1,5 +1,5 @@
 import LinkBlock from "./bean/LinkBlock";
-import { login_mode } from '@/common/M.js'
+import { login_mode, createOrUpdate } from '@/common/M.js'
 import Table from "./bean/Table.js"
 
 /**
@@ -34,7 +34,7 @@ export default {
                 await this.save();
                 this.autoSaveNotify();
             })
-        }).catch(() => { });
+        }).catch((e) => {console.log(e)});
     },
     async menuSaveMouseDown(opts){
         console.log('保存 点击 opts=', opts);
@@ -58,8 +58,8 @@ export default {
                 type: 'success',
                 message: '清空桌面数据成功!'
             });
-        }).catch(() => {
-
+        }).catch((e) => {
+            console.log(e)
         });
     },
     async menuAutopailieMouseDown(opts){
@@ -68,6 +68,9 @@ export default {
         this.autoSaveNotify();
     },
     menuAddNodepadMouseDown(opts){
+        let left = opts.pointer.x - (Table.blockWidth / 2 + Table.marginLeft)
+        let top = opts.pointer.y - (Table.blockHeight / 2 + Table.marginTop)
+        this.showNodepadCreate(left, top, null, null, createOrUpdate.create)
     }
 
 }

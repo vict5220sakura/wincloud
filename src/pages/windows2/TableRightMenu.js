@@ -17,8 +17,7 @@ export default{
     /** 展示桌面右键菜单 */
     showTableRightMenu(x, y) {
         this.canvas.discardActiveObject(); // 取消所有对象选中状态
-        this.closeTableRightMenu();
-        this.linkBlockCloseMenu();
+        this.closeAllBlockMenu();
         this.menuBackground.top = y
         this.menuBackground.left = x
 

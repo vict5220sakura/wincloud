@@ -13,8 +13,12 @@ import RightInit from './RightInit.js'
 import LeftInit from './LeftInit.js'
 import TableRightMenu from './TableRightMenu.js'
 import LinkRightMenu from './LinkRightMenu.js'
-import { login_mode } from '@/common/M.js'
+import { login_mode, doubleClickTimeMillsseconds } from '@/common/M.js'
 import Table from "./bean/Table";
+import Nodepad from './Nodepad.js'
+import NodepadMenu from "./NodepadMenu.js"
+
+
 
 export default {
     methods:{
@@ -24,6 +28,8 @@ export default {
         ...LinkRightMenu, // 链接右键菜单
         ...Windows2MethonsRules,
         ...TableRightMenuDownMethods,
+        ...Nodepad,
+        ...NodepadMenu,
         /** 自动保存提示 */
         autoSaveNotify(){
             this.notify("自动保存成功", "success")
@@ -110,7 +116,7 @@ export default {
                 opts.target.time = now;
     
                 if (oldTime) {
-                    if (now - oldTime < 250) {
+                    if (now - oldTime < doubleClickTimeMillsseconds) {
                         // 双击
                         let url = opts.target.block.url
                         if (new RegExp("http.*").test(url)) {
@@ -203,6 +209,8 @@ export default {
                 for (let block of jsonarr) {
                     if (block.blockType == BlockType.type_link) {
                         await this.addLinkBlock(block)
+                    }else if(block.blockType == BlockType.type_nodepad){
+                        await this.addNodepadBlock(block)
                     }
                 }
             }else if(this.loginMode == login_mode.login_mode_serve){
@@ -210,6 +218,8 @@ export default {
                 for (let block of jsonarr) {
                     if (block.blockType == BlockType.type_link) {
                         await this.addLinkBlock(block)
+                    }else if(block.blockType == BlockType.type_nodepad){
+                        await this.addNodepadBlock(block)
                     }
                 }
             }
@@ -246,6 +256,8 @@ export default {
             if(block){ // 存在实体
                 if (block.blockType == BlockType.type_link) {
                     this.linkBlockShowMenu(chooseObj, block, x, y)
+                }else if(block.blockType == BlockType.type_nodepad){
+                    this.nodepadBlockShowMenu(chooseObj, block, x, y)
                 }
             }
         },
@@ -319,7 +331,13 @@ export default {
             table.activeBlock();
             this.canvas.renderAll();
             // this.canvas.discardActiveObject(); // 取消所有对象选中状态
+        },
+        closeAllBlockMenu(){
+            this.closeTableRightMenu(); // 关闭右键菜单
+            this.linkBlockCloseMenu(); // 关闭图标视图菜单
+            this.nodepadBlockCloseMenu();
         }
     }
+
     
 }

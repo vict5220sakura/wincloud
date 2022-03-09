@@ -22,6 +22,17 @@ export default {
             loginMode: null, // 登录模式
             winDataStr: null,
 
+            nodepadFlag: false, // 记事本弹窗标记
+            nodepadLeft: null,
+            nodepadTop: null,
+            nodepadTitle: null,
+            nodepadBody: null,
+            nodepadCreateOrUpdate: null, // 记事本弹窗更新或创建
+            nodepadUpdateObj: null, // 记事本更新对象
+            nodepadBlockMenuBackground: null,
+            nodepadBlockMenuList: [], // 记事本菜单
+            nodepadBlockMenuItembackgroundList: [], // 记事本菜单项背景列表
+
             rules: {
                 "username": [
                   {validator: (rule, value, callback) => {

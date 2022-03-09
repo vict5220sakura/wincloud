@@ -35,7 +35,8 @@ export default {
       });
 
       this.tableRightMenuInit(); // 桌面右键菜单初始化
-      this.linkBlockMenuInit(); // 创建
+      this.linkBlockMenuInit(); // 链接菜单初始化
+      this.nodepadBlockMenuInit(); // 记事本菜单初始化
 
       // 右键事件注册
       this.rightClickRegist();

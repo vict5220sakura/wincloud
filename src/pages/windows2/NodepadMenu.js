@@ -1,24 +1,20 @@
 import {fabric} from "fabric";
 import BlockType from "./bean/BlockType";
-import LinkBlock from "./bean/LinkBlock";
 
-/**
- * 图标右键菜单
- */
+/** 记事本右键菜单 */
 export default{
     /** 链接图标右键菜单初始化 */
-    linkBlockMenuInit() {
+    nodepadBlockMenuInit() {
         // 菜单背景初始化
-        this.linkBlockMenuBackground = new fabric.Rect({ width: 100, height: 50, fill: '#eeeeee' });
-        this.linkBlockMenuBackground.hasControls = false;
-        this.linkBlockMenuBackground.hasBorders = false;
-        this.linkBlockMenuBackground.selectable = false;
+        this.nodepadBlockMenuBackground = new fabric.Rect({ width: 100, height: 50, fill: '#eeeeee' });
+        this.nodepadBlockMenuBackground.hasControls = false;
+        this.nodepadBlockMenuBackground.hasBorders = false;
+        this.nodepadBlockMenuBackground.selectable = false;
 
-        this.linkBlockMenuXiugaiInit();
-        this.linkBlockMenuDeleteInit();
+        this.nodepadBlockMenuXiugaiInit();
+        this.nodepadBlockMenuDeleteInit();
     },
-    /** 修改按钮初始化 */
-    linkBlockMenuXiugaiInit(){
+    nodepadBlockMenuXiugaiInit(){
         // 添加修改按钮
         let updateItemText = new fabric.Text('修改', {
             fontSize: 15,
@@ -28,7 +24,7 @@ export default{
         })
 
         let updateItemBackground = new fabric.Rect({ width: 100, height: 25, fill: '#eeeeee' });
-        this.linkBlockMenuItembackgroundList.push(updateItemBackground);
+        this.nodepadBlockMenuItembackgroundList.push(updateItemBackground);
         updateItemBackground.hasControls = false;
         updateItemBackground.hasBorders = false;
         updateItemBackground.selectable = false;
@@ -46,57 +42,23 @@ export default{
             this.canvas.renderAll();
         });
         updateItem.on('mousedown', (opts) => {
-            let y = this.linkBlockMenuBackground.top
-            let x = this.linkBlockMenuBackground.left
+            let x = this.nodepadBlockMenuBackground.left
+            let y = this.nodepadBlockMenuBackground.top
+
             let updateObj;
             let objs = this.fabricChooseObjs(x, y)
             for (let obj of objs) {
-                if (obj.block.blockType == BlockType.type_link) {
+                if (obj.block.blockType == BlockType.type_nodepad) {
                     updateObj = obj
                     break
                 }
             }
-            console.log("opts", opts)
-            console.log("选中更新", updateObj)
-            console.log("全部图标", this.allBlock)
-            let topTemp = updateObj.block.top
-            let leftTemp = updateObj.block.left
-
-
-            this.$prompt('请输入连接地址', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                inputValue: updateObj.block.url
-            }).then((urlInputData) => {
-                let urlInput = urlInputData.value;
-                this.$prompt('请输入标签名称', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    inputValue: updateObj.block.name
-                }).then(async (nameInputData) => {
-                    let nameInput = nameInputData.value
-
-                    // 先删除 在新建
-                    this.removOneBlock(updateObj)
-
-                    let linkBlock = new LinkBlock();
-                    linkBlock.url = urlInput
-                    linkBlock.name = nameInput;
-                    linkBlock.top = topTemp
-                    linkBlock.left = leftTemp
-
-                    await this.addLinkBlock(linkBlock);
-                    await this.save();
-                    this.autoSaveNotify();
-
-                })
-            }).catch((e) => {console.log(e)});
+            this.showNodepadUpdate(x, y , updateObj.block.title, updateObj.block.body)
         });
 
-        this.linkBlockMenuList.push(updateItem)
+        this.nodepadBlockMenuList.push(updateItem)
     },
-    /** 添加删除按钮 */
-    linkBlockMenuDeleteInit(){
+    nodepadBlockMenuDeleteInit(){
         // 添加删除按钮
         let itemText = new fabric.Text('删除', {
             fontSize: 15,
@@ -106,7 +68,7 @@ export default{
         })
 
         let itemBackground = new fabric.Rect({ width: 100, height: 25, fill: '#eeeeee' });
-        this.linkBlockMenuItembackgroundList.push(itemBackground);
+        this.nodepadBlockMenuItembackgroundList.push(itemBackground);
         itemBackground.hasControls = false;
         itemBackground.hasBorders = false;
         itemBackground.selectable = false;
@@ -130,11 +92,11 @@ export default{
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(async () => {
-                let y = this.linkBlockMenuBackground.top
-                let x = this.linkBlockMenuBackground.left
+                let y = this.nodepadBlockMenuBackground.top
+                let x = this.nodepadBlockMenuBackground.left
                 let objs = this.fabricChooseObjs(x, y)
                 for (let obj of objs) {
-                    if (obj.block.blockType == BlockType.type_link) {
+                    if (obj.block.blockType == BlockType.type_nodepad) {
                         this.removOneBlock(obj)
                         break
                     }
@@ -147,19 +109,19 @@ export default{
 
         });
 
-        this.linkBlockMenuList.push(item)
+        this.nodepadBlockMenuList.push(item)
     },
     /** 展示菜单 */
-    linkBlockShowMenu(chooseObj, block, x, y) {
-        this.linkBlockMenuBackground.top = y
-        this.linkBlockMenuBackground.left = x
+    nodepadBlockShowMenu(chooseObj, block, x, y) {
+        this.nodepadBlockMenuBackground.top = y
+        this.nodepadBlockMenuBackground.left = x
 
         this.canvas.discardActiveObject(); // 取消所有对象选中状态
         this.closeAllBlockMenu();
 
-        this.canvas.add(this.linkBlockMenuBackground);
+        this.canvas.add(this.nodepadBlockMenuBackground);
         let topIndex = 0
-        for (let menuItem of this.linkBlockMenuList) {
+        for (let menuItem of this.nodepadBlockMenuList) {
             menuItem.top = y + (menuItem.height * topIndex)
             menuItem.left = x
             this.canvas.add(menuItem);
@@ -167,12 +129,12 @@ export default{
         }
     },
     /** 关闭菜单 */
-    linkBlockCloseMenu() {
-        this.canvas.remove(this.linkBlockMenuBackground);
-        for (let menuItem of this.linkBlockMenuList) {
+    nodepadBlockCloseMenu() {
+        this.canvas.remove(this.nodepadBlockMenuBackground);
+        for (let menuItem of this.nodepadBlockMenuList) {
             this.canvas.remove(menuItem);
         }
-        for(let item of this.linkBlockMenuItembackgroundList){
+        for(let item of this.nodepadBlockMenuItembackgroundList){
             item.set("fill", '#eeeeee')
         }
         this.canvas.renderAll();

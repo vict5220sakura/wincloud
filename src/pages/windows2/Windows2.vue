@@ -18,6 +18,35 @@
       </div>
     </el-dialog>
 
+    <el-dialog width="80%" height="80%" v-model="nodepadFlag" :close-on-click-modal="false" :show-close="true" @close="nodepadCancelClick">
+      <template #title>
+        <div style="margin: 20px 20px 0px 20px">
+          <el-input v-model="nodepadTitle" placeholder="请输入标题"></el-input>
+        </div>
+      </template>
+      <div style="margin: 0px 20px 0px 20px">
+        <el-input :rows="15" v-model="nodepadBody" type="textarea"></el-input>
+      </div>
+      <template #footer>
+        <div style="margin: 0px 20px 0px 20px">
+          <el-button @click="nodepadCancelClick">取消</el-button>
+          <el-button type="primary" @click="nodepadSaveClick">保存</el-button>
+        </div>
+      </template>
+<!--      <el-form ref="loginForm" :rules="rules">-->
+<!--        <el-form-item label="用户名" label-width="70px" prop="username">-->
+<!--          <el-input v-model="username" style="width: 230px"></el-input>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="密码" label-width="70px" prop="password">-->
+<!--          <el-input v-model="password" type="password" style="width: 230px"></el-input>-->
+<!--        </el-form-item>-->
+<!--      </el-form>-->
+<!--      <div class="row main-center">-->
+<!--        <div style="margin-right: 50px"><el-button style="width:117px" @click="btnLocalLogin">本地使用</el-button></div>-->
+<!--        <div><el-button type="primary" style="width:117px" @click="btnLogin">注 册 / 登 录</el-button></div>-->
+<!--      </div>-->
+    </el-dialog>
+
   </div>
 </template>
 
