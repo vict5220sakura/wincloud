@@ -4,12 +4,12 @@ import TablePoint from './TablePoint.js'
 export default class Table{
     width = 1024; // 宽
     height = 768; // 高
-    blockWidth = 70; // 图标宽
-    blockHeight = 70; // 图标高
-    marginLeft = 10; // 左边距
-    marginTop = 20; // 上边距
-    marginRight = 10; // 左边距
-    marginBottom = 20; // 上边距
+    static blockWidth = 70; // 图标宽
+    static blockHeight = 70; // 图标高
+    static marginLeft = 10; // 左边距
+    static marginTop = 20; // 上边距
+    static marginRight = 10; // 左边距
+    static marginBottom = 20; // 上边距
     allTablePoint = []; // 全部图标点
     allTablePointXYArr = {};
     activeAllTablePoint = [];
@@ -22,15 +22,15 @@ export default class Table{
     /** 初始化全部坐标点 */
     initAllPoint(){
         // 计算横向纵向数量
-        this.widthNum = Math.floor((this.width) / (this.blockWidth + this.marginLeft + this.marginRight)) 
-        this.heightNum = Math.floor((this.height) / (this.blockWidth + this.marginTop + this.marginBottom))
+        this.widthNum = Math.floor((this.width) / (Table.blockWidth + Table.marginLeft + Table.marginRight))
+        this.heightNum = Math.floor((this.height) / (Table.blockWidth + Table.marginTop + Table.marginBottom))
 
         // 初始化全部点
         for(let yIndex = 0; yIndex < this.heightNum; yIndex++){
-            let y = yIndex * (this.blockHeight + this.marginTop + this. marginBottom)
+            let y = yIndex * (Table.blockHeight + Table.marginTop + Table.marginBottom)
             this.yArr.push(y)
             for(let xIndex = 0; xIndex < this.widthNum; xIndex++){
-                let x = xIndex * (this.blockWidth + this.marginLeft + this. marginRight)
+                let x = xIndex * (Table.blockWidth + Table.marginLeft + Table.marginRight)
                 this.xArr.push(x)
                 let tablePoint = new TablePoint(new Point(x, y))
                 this.allTablePoint.push(tablePoint)

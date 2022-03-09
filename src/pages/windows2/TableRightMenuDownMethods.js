@@ -1,5 +1,6 @@
 import LinkBlock from "./bean/LinkBlock";
 import { login_mode } from '@/common/M.js'
+import Table from "./bean/Table.js"
 
 /**
  * 菜单按下方法
@@ -10,8 +11,7 @@ export default {
      * @param opts
      */
     menuAddLinkMouseDown(opts){
-        console.log('新建连接 点击 opts=', opts);
-
+        // console.log('新建连接 点击 opts=', opts);
         this.$prompt('请输入连接地址', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消'
@@ -27,8 +27,8 @@ export default {
                 linkBlock.url = urlInput
                 linkBlock.name = nameInput;
 
-                linkBlock.left = opts.pointer.x
-                linkBlock.top = opts.pointer.y
+                linkBlock.left = opts.pointer.x - (Table.blockWidth / 2 + Table.marginLeft)
+                linkBlock.top = opts.pointer.y - (Table.blockHeight / 2 + Table.marginTop)
                 await this.addLinkBlock(linkBlock);
                 this.blockAutoArrange();
                 await this.save();
