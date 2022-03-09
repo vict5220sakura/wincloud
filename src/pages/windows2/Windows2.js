@@ -30,6 +30,7 @@ export default {
           scaleX: this.windowWidth / oImg.width,
           scaleY: this.windowHeight / oImg.height
         })
+        //
         this.canvas.setBackgroundImage(oImg);
         this.canvas.renderAll();
       });
