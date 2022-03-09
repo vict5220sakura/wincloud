@@ -53,7 +53,7 @@ export default{
             title = "记事本";
         }
 
-        if(this.nodepadCreateOrUpdate = createOrUpdate.update){ // 如果是更新 先删除原先的
+        if(this.nodepadCreateOrUpdate == createOrUpdate.update){ // 如果是更新 先删除原先的
             console.log("更新this.nodepadUpdateObj", this.nodepadUpdateObj)
             left = this.nodepadUpdateObj.left
             top = this.nodepadUpdateObj.top
