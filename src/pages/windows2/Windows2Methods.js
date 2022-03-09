@@ -110,7 +110,7 @@ export default {
                 opts.target.time = now;
     
                 if (oldTime) {
-                    if (now - oldTime < 500) {
+                    if (now - oldTime < 250) {
                         // 双击
                         let url = opts.target.block.url
                         if (new RegExp("http.*").test(url)) {
