@@ -18,7 +18,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog width="80%" height="80%" v-model="nodepadFlag" :close-on-click-modal="false" :show-close="true" @close="nodepadCancelClick">
+    <el-dialog width="80%" height="80%" v-model="nodepadFlag" :close-on-click-modal="false" :show-close="false" @close="nodepadCancelClick">
       <template #title>
         <div style="margin: 20px 20px 0px 20px">
           <el-input v-model="nodepadTitle" placeholder="请输入标题"></el-input>
@@ -28,7 +28,7 @@
         <el-input :rows="15" v-model="nodepadBody" type="textarea"></el-input>
       </div>
       <template #footer>
-        <div style="margin: 0px 20px 0px 20px">
+        <div style="margin: 0px 20px 0px 20px" class="row main-start">
           <el-button @click="nodepadCancelClick">取消</el-button>
           <el-button type="primary" @click="nodepadSaveClick">保存</el-button>
         </div>
@@ -91,6 +91,9 @@
   }
   .main-around{
     justify-content:space-around;
+  }
+  .main-start{
+    justify-content:start;
   }
   .second-center{
     align-items:center
