@@ -1,9 +1,18 @@
 /**
  * 全部
  */
-export default class AllTableIdList{
+export default class AllTable{
+    static AllTableLocalStorageKey = "djkashdijyqhihuakujhhdhkajhkjashdjkashd";
+
+    /**@type String*/
+    defaultKey = null;
     /**
      * @type String
      */
-    ids = [];
+    childrenKeys = [];
+
+    static localStorageGetInstance(){
+        let str = localStorage.getItem(AllTable.AllTableLocalStorageKey);
+        let allTable = str && (JSON.parse(str) || {})
+    }
 }

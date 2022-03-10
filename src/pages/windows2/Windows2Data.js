@@ -1,3 +1,4 @@
+import TableData from "../../bean/TableData.js"
 export default {
     data(){
         return {
@@ -35,6 +36,8 @@ export default {
             nodepadBlockMenuBackground: null,
             nodepadBlockMenuList: [], // 记事本菜单
             nodepadBlockMenuItembackgroundList: [], // 记事本菜单项背景列表
+
+            nowTable: null,/**@type TableData*/ // 当前窗口
 
             rules: {
                 "username": [

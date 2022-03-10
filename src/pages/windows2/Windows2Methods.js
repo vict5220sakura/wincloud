@@ -204,11 +204,11 @@ export default {
             }
         },
         /** 加载 */
-        async load() {
+        async load(tableData/**TableData*/) {
             if(this.loginMode == login_mode.login_mode_local){ // 本地登录加载
-                let jsonarrStr = localStorage.getItem(saveKey);
-                let jsonarr = jsonarrStr && JSON.parse(jsonarrStr) || []
-                for (let block of jsonarr) {
+                // let jsonarrStr = localStorage.getItem(saveKey);
+                // let jsonarr = jsonarrStr && JSON.parse(jsonarrStr) || []
+                for (let block of tableData.allBlock) {
                     if (block.blockType == BlockType.type_link) {
                         await this.addLinkBlock(block)
                     }else if(block.blockType == BlockType.type_nodepad){
@@ -216,8 +216,8 @@ export default {
                     }
                 }
             }else if(this.loginMode == login_mode.login_mode_serve){
-                let jsonarr = this.winDataStr && JSON.parse(this.winDataStr) || []
-                for (let block of jsonarr) {
+                // let jsonarr = this.winDataStr && JSON.parse(this.winDataStr) || []
+                for (let block of tableData.allBlock) {
                     if (block.blockType == BlockType.type_link) {
                         await this.addLinkBlock(block)
                     }else if(block.blockType == BlockType.type_nodepad){
