@@ -49,11 +49,11 @@ export default {
         console.log('清空 点击 opts=', opts);
 
 
-        this.$prompt('此操作将清空桌面数据, 输入"删除"继续', '清空', {
+        this.$prompt('此操作将清空桌面数据, 输入"清空"继续', '清空', {
             confirmButtonText: '确定',
             cancelButtonText: '取消'
         }).then((input) => {
-            if('删除' == input.value){
+            if('清空' == input.value){
                 this.removeAllBlock()
                 this.$message({
                     type: 'success',
