@@ -57,9 +57,10 @@ export default{
         nodepadBlock.body = body
         await this.addNodepadBlock(nodepadBlock)
         // 保存
+        this.blockAutoArrange();
         await this.save();
         this.autoSaveNotify();
-        this.blockAutoArrange();
+
 
         // 关闭
         this.nodepadFlag = false
