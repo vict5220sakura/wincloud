@@ -42,8 +42,8 @@ export default{
             this.canvas.renderAll();
         });
         updateItem.on('mousedown', (opts) => {
-            let x = this.nodepadBlockMenuBackground.left
-            let y = this.nodepadBlockMenuBackground.top
+            let x = this.rightMouseXTemp
+            let y = this.rightMouseYTemp
 
             let updateObj;
             let objs = this.fabricChooseObjs(x, y)
@@ -53,7 +53,7 @@ export default{
                     break
                 }
             }
-            this.showNodepadUpdate(x, y , updateObj.block.title, updateObj.block.body)
+            this.showNodepadUpdate(updateObj)
         });
 
         this.nodepadBlockMenuList.push(updateItem)

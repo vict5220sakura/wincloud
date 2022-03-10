@@ -4,31 +4,24 @@ import { login_mode, doubleClickTimeMillsseconds, createOrUpdate} from '@/common
 import BlockType from "./bean/BlockType";
 
 export default{
-    /** 展示记事本 创建 */
+    /**
+     * 展示记事本 创建
+     * left 创建图标左边坐标
+     * top 创建图标上边坐标
+     */
     showNodepadCreate(left, top){
-        this.nodepadFlag = true
         this.nodepadLeft = left
         this.nodepadTop = top
         this.nodepadCreateOrUpdate = createOrUpdate.create
+        this.nodepadFlag = true
     },
     /** 展示记事本 更新 */
-    showNodepadUpdate(x, y , title, body){
+    showNodepadUpdate(updateObj){
         this.nodepadCreateOrUpdate = createOrUpdate.update
-        // let y = this.linkBlockMenuBackground.top
-        // let x = this.linkBlockMenuBackground.left
-        let updateObj;
-        let objs = this.fabricChooseObjs(x, y)
-        for (let obj of objs) {
-            if (obj.block.blockType == BlockType.type_nodepad) {
-                updateObj = obj
-                break
-            }
-        }
-
-        this.nodepadFlag = true
-        this.nodepadTitle = title
-        this.nodepadBody = body
+        this.nodepadTitle = updateObj.block.title
+        this.nodepadBody = updateObj.block.body
         this.nodepadUpdateObj = updateObj;
+        this.nodepadFlag = true
     },
     /** 取消点击 */
     nodepadCancelClick(){
@@ -44,10 +37,7 @@ export default{
         let body = this.nodepadBody;
         let left = this.nodepadLeft;
         let top = this.nodepadTop;
-        this.nodepadTitle = null;
-        this.nodepadBody = null;
-        this.nodepadLeft = null;
-        this.nodepadTop = null;
+
 
         if(!title || title.trim() == ""){
             title = "记事本";
@@ -69,9 +59,14 @@ export default{
         // 保存
         await this.save();
         this.autoSaveNotify();
+        this.blockAutoArrange();
 
         // 关闭
         this.nodepadFlag = false
+        this.nodepadTitle = null;
+        this.nodepadBody = null;
+        this.nodepadLeft = null;
+        this.nodepadTop = null;
     },
 
     /** 添加一个记事本图标 */
@@ -138,7 +133,18 @@ export default{
             if (oldTime) {
                 if (now - oldTime < doubleClickTimeMillsseconds) {
                     // 双击打开
-                    this.showNodepadUpdate(opts.pointer.x, opts.pointer.y, nodepadBlock.title, nodepadBlock.body)
+                    let x = opts.pointer.x
+                    let y = opts.pointer.y
+
+                    let updateObj;
+                    let objs = this.fabricChooseObjs(x, y)
+                    for (let obj of objs) {
+                        if (obj.block.blockType == BlockType.type_nodepad) {
+                            updateObj = obj
+                            break
+                        }
+                    }
+                    this.showNodepadUpdate(updateObj)
                 } else {
                     // 单击
                     this.blockAutoArrange();

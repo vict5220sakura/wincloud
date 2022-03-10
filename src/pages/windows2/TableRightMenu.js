@@ -183,7 +183,7 @@ export default{
         });
 
         menuItem.on('mousedown', async (opts) => {
-            this.menuAddNodepadMouseDown(opts)
+            this.menuAddNodepadMouseDown(this.rightMouseXTemp, this.rightMouseYTemp)
         });
 
         this.menuList.push(menuItem)

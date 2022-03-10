@@ -7,6 +7,9 @@ export default {
             canvas: null, // 画布对象
             menuBackground: null, // 右键菜单背景
 
+            rightMouseXTemp: null, // 鼠标右键点击位置
+            rightMouseYTemp: null, // 鼠标右键点击位置
+
             menuList: [], // 菜单列表
             tablemenuItemBackgroundList: [], // 菜单项背景列表
 

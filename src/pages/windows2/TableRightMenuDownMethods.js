@@ -67,10 +67,10 @@ export default {
         await this.save();
         this.autoSaveNotify();
     },
-    menuAddNodepadMouseDown(opts){
-        let left = opts.pointer.x - (Table.blockWidth / 2 + Table.marginLeft)
-        let top = opts.pointer.y - (Table.blockHeight / 2 + Table.marginTop)
-        this.showNodepadCreate(left, top, null, null, createOrUpdate.create)
+    menuAddNodepadMouseDown(x, y){
+        let left = x - (Table.blockWidth / 2 + Table.marginLeft)
+        let top = y - (Table.blockHeight / 2 + Table.marginTop)
+        this.showNodepadCreate(left, top)
     }
 
 }

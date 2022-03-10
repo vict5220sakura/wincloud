@@ -6,6 +6,10 @@ export default {
         document.getElementsByClassName("upper-canvas")[0].oncontextmenu = (e)=>{
             console.log("鼠标右键e=", e)
 
+            // 记录右键临时位置
+            this.rightMouseXTemp = e.offsetX;
+            this.rightMouseYTemp = e.offsetY;
+
             let chooseObj = this.fabricChooseObj(e.offsetX, e.offsetY);
 
             if(chooseObj){
