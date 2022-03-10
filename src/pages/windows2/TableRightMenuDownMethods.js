@@ -71,6 +71,15 @@ export default {
         let left = x - (Table.blockWidth / 2 + Table.marginLeft)
         let top = y - (Table.blockHeight / 2 + Table.marginTop)
         this.showNodepadCreate(left, top)
+    },
+    /**新建桌面*/
+    menuAddTableMouseDown(){
+        this.$prompt('请输入桌面名称', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消'
+        }).then((data) => {
+            let name = data.value;
+            this.createTable(name);
+        }).catch((e) => {console.log(e)});
     }
-
 }

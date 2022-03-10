@@ -17,6 +17,7 @@ import { login_mode, doubleClickTimeMillsseconds } from '@/common/M.js'
 import Table from "./bean/Table";
 import Nodepad from './Nodepad.js'
 import NodepadMenu from "./NodepadMenu.js"
+import BlockTable from './BlockTable.js'
 
 
 
@@ -30,6 +31,7 @@ export default {
         ...TableRightMenuDownMethods,
         ...Nodepad,
         ...NodepadMenu,
+        ...BlockTable,
         /** 自动保存提示 */
         autoSaveNotify(){
             this.notify("自动保存成功", "success")

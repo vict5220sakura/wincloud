@@ -3,7 +3,7 @@ import {fabric} from "fabric";
 export default{
     /** 桌面右键菜单初始化 */
     tableRightMenuInit() {
-        this.menuBackground = new fabric.Rect({ width: 100, height: 125, fill: '#eeeeee' });
+        this.menuBackground = new fabric.Rect({ width: 100, height: 150, fill: '#eeeeee' });
         this.menuBackground.hasControls = false;
         this.menuBackground.hasBorders = false;
         this.menuBackground.selectable = false;
@@ -12,6 +12,7 @@ export default{
         this.tableRightMenuInitClear();
         this.tableRightMenuInitAutopailie();
         this.tableRightMenuInitAddNodepad();
+        this.tableRightMenuInitAddTable();
     },
 
     /** 展示桌面右键菜单 */
@@ -224,4 +225,39 @@ export default{
 
         this.menuList.push(menuAddLink)
     },
+    /**新建桌面*/
+    tableRightMenuInitAddTable(){
+        // 初始化新建连接菜单栏
+        const addLinkText = new fabric.Text('新建桌面', {
+            fontSize: 15,
+            fill: '#141414',
+            top: 5,
+            left: 5
+        })
+        const background = new fabric.Rect({ width: 100, height: 25, fill: '#eeeeee' });
+        this.tablemenuItemBackgroundList.push(background)
+        background.hasControls = false;
+        background.hasBorders = false;
+        background.selectable = false;
+
+        let menuAddLink = new fabric.Group([background, addLinkText], {})
+
+        menuAddLink.hasControls = false;
+        menuAddLink.hasBorders = false;
+        menuAddLink.selectable = false;
+        menuAddLink.on('mouseover', (opts) => {
+            background.set("fill", '#ffffff')
+            this.canvas.renderAll();
+        });
+        menuAddLink.on('mouseout', (opts) => {
+            background.set("fill", '#eeeeee')
+            this.canvas.renderAll();
+        });
+
+        menuAddLink.on('mousedown', (opts) => {
+            this.menuAddTableMouseDown();
+        });
+
+        this.menuList.push(menuAddLink)
+    }
 }
