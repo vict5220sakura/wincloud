@@ -48,19 +48,19 @@ export default {
     menuClearMouseDown(opts){
         console.log('清空 点击 opts=', opts);
 
-        this.$confirm('此操作将清空桌面数据, 是否继续?', '提示', {
+
+        this.$prompt('此操作将清空桌面数据, 输入"删除"继续', '清空', {
             confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-        }).then(() => {
-            this.removeAllBlock()
-            this.$message({
-                type: 'success',
-                message: '清空桌面数据成功!'
-            });
-        }).catch((e) => {
-            console.log(e)
-        });
+            cancelButtonText: '取消'
+        }).then((input) => {
+            if('删除' == input.value){
+                this.removeAllBlock()
+                this.$message({
+                    type: 'success',
+                    message: '清空桌面数据成功!'
+                });
+            }
+        }).catch((e) => {console.log(e)});
     },
     async menuAutopailieMouseDown(opts){
         this.blockAutoArrange();
