@@ -18,6 +18,8 @@ import Table from "./bean/Table";
 import Nodepad from './Nodepad.js'
 import NodepadMenu from "./NodepadMenu.js"
 import BlockTable from './BlockTable.js'
+import TableData from '../../bean/TableData.js'
+import BlockTableBack from './BlockTableBack.js'
 
 
 
@@ -32,6 +34,7 @@ export default {
         ...Nodepad,
         ...NodepadMenu,
         ...BlockTable,
+        ...BlockTableBack,
         /** 自动保存提示 */
         autoSaveNotify(){
             this.notify("自动保存成功", "success")
@@ -191,48 +194,44 @@ export default {
                 block.left = item.left
                 allBlock.push(block)
             }
-    
-            let jsonarrStr = JSON.stringify(allBlock);
-    
-            if(this.loginMode == login_mode.login_mode_local){
-                localStorage.setItem(saveKey, jsonarrStr)
-            }else if(this.loginMode == login_mode.login_mode_serve){
-                let res = await WinDataService.saveWinData(this.username, this.password, jsonarrStr)
-                if(!res || res.code != "00000"){
-                    throw "未知异常"
-                }
-            }
+            this.nowTable.allBlock = allBlock
+
+            TableData.saveInstance(this.nowTable, this.loginMode, this.username, this.password)
+
+            // if(this.loginMode == login_mode.login_mode_local){
+            //     TableData.localStorageSaveInstance(this.nowTable)
+            // }else if(this.loginMode == login_mode.login_mode_serve){
+            //     let res = await WinDataService.saveWinData(this.username, this.password, jsonarrStr)
+            //     if(!res || res.code != "00000"){
+            //         throw "未知异常"
+            //     }
+            // }
         },
         /** 加载 */
         async load(tableData/**TableData*/) {
-            if(this.loginMode == login_mode.login_mode_local){ // 本地登录加载
-                // let jsonarrStr = localStorage.getItem(saveKey);
-                // let jsonarr = jsonarrStr && JSON.parse(jsonarrStr) || []
-                for (let block of tableData.allBlock) {
-                    if (block.blockType == BlockType.type_link) {
-                        await this.addLinkBlock(block)
-                    }else if(block.blockType == BlockType.type_nodepad){
-                        await this.addNodepadBlock(block)
-                    }
-                }
-            }else if(this.loginMode == login_mode.login_mode_serve){
-                // let jsonarr = this.winDataStr && JSON.parse(this.winDataStr) || []
-                for (let block of tableData.allBlock) {
-                    if (block.blockType == BlockType.type_link) {
-                        await this.addLinkBlock(block)
-                    }else if(block.blockType == BlockType.type_nodepad){
-                        await this.addNodepadBlock(block)
-                    }
+            // if(this.loginMode == login_mode.login_mode_local){ // 本地登录加载
+            //
+            // }else if(this.loginMode == login_mode.login_mode_serve){
+            //
+            // }
+            for (let block of tableData.allBlock) {
+                if (block.blockType == BlockType.type_link) {
+                    await this.addLinkBlock(block)
+                }else if(block.blockType == BlockType.type_nodepad){
+                    await this.addNodepadBlock(block)
+                }else if(block.blockType == BlockType.type_tableBlock){
+                    await this.addTableBlock(block)
+                }else if(block.blockType == BlockType.type_tableBlock_back){
+                    await this.addTableBackBlock(block)
                 }
             }
+
+            this.nowTable = tableData
         },
         /** 选取一个对象 */
         fabricChooseObj(x, y) {
             let chooseObj = null;
             for (let obj of this.canvas.getObjects()) {
-                // console.log("选中了一个对象", obj)
-                // let x = e.offsetX
-                // let y = e.offsetY
                 if (XYUtil.checkPointIn(x, y, obj.left, obj.top, obj.width, obj.height)) {
                     chooseObj = obj
                     continue;
@@ -240,7 +239,9 @@ export default {
             }
             return chooseObj;
         },
-        /** 选取多个对象 */
+        /** 选取多个对象
+         * @return canvasObj
+         */
         fabricChooseObjs(x, y) {
             let objs = []
     
@@ -260,6 +261,8 @@ export default {
                     this.linkBlockShowMenu(chooseObj, block, x, y)
                 }else if(block.blockType == BlockType.type_nodepad){
                     this.nodepadBlockShowMenu(chooseObj, block, x, y)
+                }else if(block.blockType == BlockType.type_tableBlock){
+                    this.tableBlockShowMenu(chooseObj, block, x, y);
                 }
             }
         },
@@ -299,10 +302,13 @@ export default {
                     type: 'success',
                     message: (res.data.registLoginMode == "regist" ? "注册" : "登录") + '成功!'
                 });
-                this.winDataStr = res.data.winData
+                // this.winDataStr = res.data.winData
+                let tableData = new TableData();
+                tableData.allBlock = (res.data.winData && JSON.parse(res.data.winData)) || []
+
                 this.loginMode = login_mode.login_mode_serve
                 this.loginDialogFlag = false;
-                this.load();
+                this.load(tableData);
             }else{
                 this.$message({
                     type: 'error',
@@ -316,7 +322,8 @@ export default {
         async btnLocalLogin() {
             this.loginMode = login_mode.login_mode_local
             this.loginDialogFlag = false;
-            await this.load();
+            let tableData/**@type TableData*/ = TableData.loadInstance(null, this.loginMode)
+            await this.load(tableData);
 
         },
         /** 图标自动排列 */
@@ -338,6 +345,17 @@ export default {
             this.closeTableRightMenu(); // 关闭右键菜单
             this.linkBlockCloseMenu(); // 关闭图标视图菜单
             this.nodepadBlockCloseMenu();
+            this.tableBlockCloseMenu();
+        },
+        async openTableKey(key/**@type String*/){
+            let tableData /**@type TableData*/ = await TableData.loadInstance(key, this.loginMode, this.username, this.password)
+            await this.openTableData(tableData);
+            this.nowTable = tableData
+        },
+        /** 打开新窗口*/
+        async openTableData(tableData /**@type TableData*/){
+            this.removeAllBlock();
+            await this.load(tableData);
         }
     }
 

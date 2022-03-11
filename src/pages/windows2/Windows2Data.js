@@ -24,7 +24,6 @@ export default {
             username: null, // 用户名
             password: null, // 密码
             loginMode: null, // 登录模式
-            winDataStr: null,
 
             nodepadFlag: false, // 记事本弹窗标记
             nodepadLeft: null,
@@ -36,6 +35,14 @@ export default {
             nodepadBlockMenuBackground: null,
             nodepadBlockMenuList: [], // 记事本菜单
             nodepadBlockMenuItembackgroundList: [], // 记事本菜单项背景列表
+
+            tableBlockEditFlag: false, // 桌面编辑弹窗
+            tableBlockMenuLeft: null,
+            tableBlockMenuRight: null,
+            tableBlockMenuName: null,
+            tableBlockMenuBackground: null,
+            tableBlockMenuList: [], // 桌面图标菜单
+            tableBlockMenuItembackgroundList: [], // 桌面图标菜单项背景列表
 
             nowTable: null,/**@type TableData*/ // 当前窗口
 

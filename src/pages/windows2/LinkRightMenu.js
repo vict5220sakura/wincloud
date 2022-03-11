@@ -1,6 +1,7 @@
 import {fabric} from "fabric";
 import BlockType from "./bean/BlockType";
 import LinkBlock from "./bean/LinkBlock";
+import Table from "./bean/Table";
 
 /**
  * 图标右键菜单
@@ -59,9 +60,11 @@ export default{
             console.log("opts", opts)
             console.log("选中更新", updateObj)
             console.log("全部图标", this.allBlock)
-            let topTemp = updateObj.block.top
-            let leftTemp = updateObj.block.left
+            let topTemp = updateObj.top;//this.rightMouseYTemp - (Table.blockHeight / 2 + Table.marginTop)
+            let leftTemp = updateObj.left;//this.rightMouseXTemp - (Table.blockWidth / 2 + Table.marginLeft)
 
+            // let left = this.rightMouseXTemp - (Table.blockWidth / 2 + Table.marginLeft)
+            // let top = this.rightMouseYTemp - (Table.blockHeight / 2 + Table.marginTop)
 
             this.$prompt('请输入连接地址', '提示', {
                 confirmButtonText: '确定',
@@ -88,7 +91,7 @@ export default{
                     await this.addLinkBlock(linkBlock);
                     await this.save();
                     this.autoSaveNotify();
-
+                    // this.blockAutoArrange();
                 })
             }).catch((e) => {console.log(e)});
         });

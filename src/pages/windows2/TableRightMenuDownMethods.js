@@ -51,7 +51,8 @@ export default {
 
         this.$prompt('此操作将清空桌面数据, 输入"清空"继续', '清空', {
             confirmButtonText: '确定',
-            cancelButtonText: '取消'
+            cancelButtonText: '取消',
+            type: 'warning'
         }).then((input) => {
             if('清空' == input.value){
                 this.removeAllBlock()
@@ -79,7 +80,10 @@ export default {
             cancelButtonText: '取消'
         }).then((data) => {
             let name = data.value;
-            this.createTable(name);
+            if(!name || name.trim() == ''){
+                name = "桌面"
+            }
+            this.createTable(name, this.nowTable);
         }).catch((e) => {console.log(e)});
     }
 }
