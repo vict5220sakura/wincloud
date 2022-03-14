@@ -82,7 +82,7 @@ export default{
                     // 先删除 在新建
                     this.removOneBlock(updateObj)
 
-                    let linkBlock = new LinkBlock();
+                    let linkBlock = new LinkBlock(this);
                     linkBlock.url = urlInput
                     linkBlock.name = nameInput;
                     linkBlock.top = topTemp

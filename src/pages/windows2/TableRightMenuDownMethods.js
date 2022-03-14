@@ -23,12 +23,13 @@ export default {
             }).then(async (nameInputData) => {
                 let nameInput = nameInputData.value
 
-                let linkBlock = new LinkBlock();
+                let linkBlock = new LinkBlock(this);
                 linkBlock.url = urlInput
                 linkBlock.name = nameInput;
 
                 linkBlock.left = opts.pointer.x - (Table.blockWidth / 2 + Table.marginLeft)
                 linkBlock.top = opts.pointer.y - (Table.blockHeight / 2 + Table.marginTop)
+                console.log("打印linkBlock", linkBlock)
                 await this.addLinkBlock(linkBlock);
                 this.blockAutoArrange();
                 await this.save();
@@ -42,6 +43,7 @@ export default {
             await this.save()
             this.notify("保存"+ (this.loginMode == login_mode.login_mode_local? "本地" : "远程" ) +"成功", "success")
         }catch(err){
+            console.log(err)
             this.notify("保存失败! (请联系网站管理员arcueid5220@163.com)", "error")
         }
     },

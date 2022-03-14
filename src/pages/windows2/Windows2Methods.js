@@ -195,25 +195,10 @@ export default {
                 allBlock.push(block)
             }
             this.nowTable.allBlock = allBlock
-
             TableData.saveInstance(this.nowTable, this.loginMode, this.username, this.password)
-
-            // if(this.loginMode == login_mode.login_mode_local){
-            //     TableData.localStorageSaveInstance(this.nowTable)
-            // }else if(this.loginMode == login_mode.login_mode_serve){
-            //     let res = await WinDataService.saveWinData(this.username, this.password, jsonarrStr)
-            //     if(!res || res.code != "00000"){
-            //         throw "未知异常"
-            //     }
-            // }
         },
         /** 加载 */
         async load(tableData/**TableData*/) {
-            // if(this.loginMode == login_mode.login_mode_local){ // 本地登录加载
-            //
-            // }else if(this.loginMode == login_mode.login_mode_serve){
-            //
-            // }
             for (let block of tableData.allBlock) {
                 if (block.blockType == BlockType.type_link) {
                     await this.addLinkBlock(block)
@@ -322,7 +307,7 @@ export default {
         async btnLocalLogin() {
             this.loginMode = login_mode.login_mode_local
             this.loginDialogFlag = false;
-            let tableData/**@type TableData*/ = TableData.loadInstance(null, this.loginMode)
+            let tableData/**@type TableData*/ = await TableData.loadInstance(null, this.loginMode)
             await this.load(tableData);
 
         },

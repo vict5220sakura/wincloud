@@ -2,8 +2,11 @@ import TableData from "../../bean/TableData.js"
 export default {
     data(){
         return {
-            windowWidth: 1024,
-            windowHeight: 768,
+            /**@type MyCanvasService */
+            myCanvasService: null,
+
+            windowWidth: 1024, // 窗口宽
+            windowHeight: 768, // 窗口高
             table: null,
             canvas: null, // 画布对象
             menuBackground: null, // 右键菜单背景
@@ -43,7 +46,6 @@ export default {
             tableBlockMenuBackground: null,
             tableBlockMenuList: [], // 桌面图标菜单
             tableBlockMenuItembackgroundList: [], // 桌面图标菜单项背景列表
-
             nowTable: null,/**@type TableData*/ // 当前窗口
 
             rules: {

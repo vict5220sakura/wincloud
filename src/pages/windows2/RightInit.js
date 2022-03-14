@@ -4,7 +4,6 @@ export default {
     /** 右键事件注册 */
     rightClickRegist(){
         document.getElementsByClassName("upper-canvas")[0].oncontextmenu = (e)=>{
-            console.log("鼠标右键e=", e)
 
             // 记录右键临时位置
             this.rightMouseXTemp = e.offsetX;
