@@ -1,5 +1,5 @@
-import {saveKey, login_mode} from '../common/M.js'
-import WinDataService from "../service/WinDataService.js"
+import {saveKey, login_mode} from '../../../../common/M.js'
+import WinDataService from "../../../../service/WinDataService.js"
 
 /**
  * 桌面数据

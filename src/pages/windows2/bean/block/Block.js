@@ -1,31 +1,50 @@
 import {fabric} from "fabric";
-import {doubleClickTimeMillsseconds} from "../../../common/M.js"
+import {doubleClickTimeMillsseconds} from "../../../../common/M.js"
+import RightMenu from "../RightMenu/RightMenu";
+import RightMenuItem from "../RightMenu/RightMenuItem";
+import UrlUtil from '../../../../util/UrlUtil.js'
 
 export default class Block{
     vm;
     top;
     left;
-    blockType;
-    text="-";
+    blockType; // 图标类型
+
+    /**@type BlockPoint 坐标点*/
+    blockPoint;
 
     fabricObj; // fabric原生obj
-    textFabricObj;
-    backgroundFabricObj;
+    textFabricObj; // fabric原生obj
+    backgroundFabricObj; // fabric原生obj
+
+    /**@type RightMenu*/
+    rightMenu;
+
+    /** @abstract 文本*/
+    getText(){
+        return "-";
+    }
     
-    /** 图标单击事件*/
-    mouseupFunc(){
+    /** @abstract 图标单击事件*/
+    getMouseupFunc(){
         return undefined
     }
-    /** 图标双击事件*/
-    mouseDoubleupFunc(){
+    /** @abstract 图标双击事件*/
+    getMouseDoubleupFunc(){
         return undefined
     }
-    /** 默认图标 */
+    /** @abstract 默认图标地址 */
     getDefaultBackgroundImg(){
         return undefined;
     }
-    /** 懒加载图标 */
+    /** @abstract 懒加载图标 */
     getLazyBackgroundImg(){
+        return undefined;
+    }
+    /** @abstract 菜单列表
+     * @return RightMenuItem[]
+     * */
+    getRightMenuItemList(){
         return undefined;
     }
 
@@ -33,7 +52,7 @@ export default class Block{
         this.vm = vm
     }
     async init(){
-        this.fabricObj = new fabric.Textbox(this.text, {
+        this.textFabricObj = new fabric.Textbox(this.getText(), {
             fontFamily: "Inconsolata",
             width: 60,
             top: 70 + 10,
@@ -53,7 +72,7 @@ export default class Block{
             fill: '#eeeeee'
         });
         if(this.getDefaultBackgroundImg()){
-            new Promise((r)=>{
+            await new Promise((r)=>{
                 fabric.Image.fromURL(this.getDefaultBackgroundImg(), (oImg) => {
                     this.backgroundFabricObj = oImg
                     r()
@@ -83,19 +102,19 @@ export default class Block{
             if (oldTime) {
                 if (now - oldTime < doubleClickTimeMillsseconds) {
                     // 双击
-                    if(this.mouseDoubleupFunc()){
-                        this.mouseDoubleupFunc()()
+                    if(this.getMouseDoubleupFunc()){
+                        this.getMouseDoubleupFunc()()
                     }
                 } else {
                     // 单击
-                    if(this.mouseupFunc()){
-                        this.mouseupFunc()()
+                    if(this.getMouseupFunc()){
+                        this.getMouseupFunc()()
                     }
                 }
             } else {
                 // 单击
-                if(this.mouseupFunc()){
-                    this.mouseupFunc()()
+                if(this.getMouseupFunc()){
+                    this.getMouseupFunc()()
                 }
             }
         })
@@ -117,7 +136,7 @@ export default class Block{
                     this.backgroundFabricObj.hasControls = false;
                     this.backgroundFabricObj.hasBorders = false;
 
-                    this.textFabricObj = new fabric.Textbox(this.text, {
+                    this.textFabricObj = new fabric.Textbox(this.getText(), {
                         fontFamily: "Inconsolata",
                         width: 60,
                         top: 70 + 10,
@@ -144,8 +163,16 @@ export default class Block{
             });
         }
 
-        
+        this.initRightMenu()
         return this;
+    }
+
+    initRightMenu(){
+        this.rightMenu = new RightMenu(this.vm);
+
+        for(let rightMenuItem of this.getRightMenuItemList()){
+            this.rightMenu.addItem(rightMenuItem)
+        }
     }
 
     setTop(top){
@@ -160,11 +187,17 @@ export default class Block{
         this.addWithUpdate()
     }
 
+    getTop(){
+        return this.fabricObj.top
+    }
+
+    getLeft(){
+        return this.fabricObj.left
+    }
+
     addWithUpdate(){
         try{
             this.fabricObj.addWithUpdate()
         }catch(err){}
     }
-
-
 }

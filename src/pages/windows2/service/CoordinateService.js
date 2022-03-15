@@ -1,51 +1,63 @@
-import Point from './Point.js'
-import TablePoint from './TablePoint.js'
+import BlockPoint from "../bean/coordinate/BlockPoint.js";
+import Point from "../bean/coordinate/Point.js";
 
-export default class Table{
+export default class CoordinateService{
+    vm;
     width = 1024; // 宽
     height = 768; // 高
+
     static blockWidth = 70; // 图标宽
     static blockHeight = 70; // 图标高
     static marginLeft = 10; // 左边距
     static marginTop = 20; // 上边距
     static marginRight = 10; // 左边距
     static marginBottom = 20; // 上边距
-    allTablePoint = []; // 全部图标点
-    allTablePointXYArr = {};
-    activeAllTablePoint = [];
+
+    /**@type BlockPoint[]*/
+    allBlockPoint = []; // 全部图标点
+    /**@type BlockPoint{x:{y: BlockPoint}}*/
+    allBlockPointXYArr = {}; // 坐标点对应BlockPoint
+    /**@type Block[]*/
+    activeallBlockPoint = []; // 全部激活BlockPoint
+
     xArr = [];
     yArr = [];
 
     widthNum; // 横向数量
     heightNum; // 纵向数量
 
+    constructor(vm) {
+        this.vm = vm
+        this.width = this.vm.windowWidth;
+        this.height = this.vm.windowHeight;
+        this.initAllPoint();
+    }
+
     /** 初始化全部坐标点 */
     initAllPoint(){
         // 计算横向纵向数量
-        this.widthNum = Math.floor((this.width) / (Table.blockWidth + Table.marginLeft + Table.marginRight))
-        this.heightNum = Math.floor((this.height) / (Table.blockWidth + Table.marginTop + Table.marginBottom))
+        this.widthNum = Math.floor((this.width) / (CoordinateService.blockWidth + CoordinateService.marginLeft + CoordinateService.marginRight))
+        this.heightNum = Math.floor((this.height) / (CoordinateService.blockWidth + CoordinateService.marginTop + CoordinateService.marginBottom))
 
         // 初始化全部点
         for(let yIndex = 0; yIndex < this.heightNum; yIndex++){
-            let y = yIndex * (Table.blockHeight + Table.marginTop + Table.marginBottom)
+            let y = yIndex * (CoordinateService.blockHeight + CoordinateService.marginTop + CoordinateService.marginBottom)
             this.yArr.push(y)
             for(let xIndex = 0; xIndex < this.widthNum; xIndex++){
-                let x = xIndex * (Table.blockWidth + Table.marginLeft + Table.marginRight)
+                let x = xIndex * (CoordinateService.blockWidth + CoordinateService.marginLeft + CoordinateService.marginRight)
                 this.xArr.push(x)
-                let tablePoint = new TablePoint(new Point(x, y))
-                this.allTablePoint.push(tablePoint)
+                let blockPoint = new BlockPoint(new Point(x, y))
+                this.allBlockPoint.push(blockPoint)
                 this.initXYArr(x, y)
-                this.allTablePointXYArr[x][y] = tablePoint
+                this.allBlockPointXYArr[x][y] = blockPoint
             }
         }
     }
     /** allPointXYArr 初始化一个点 */
     initXYArr(x, y){
-        if(!this.allTablePointXYArr[x]){
-            this.allTablePointXYArr[x] = {}
-            
+        if(!this.allBlockPointXYArr[x]){
+            this.allBlockPointXYArr[x] = {}
         }
-
     }
 
     /** 获取一个最近的 tablePoint*/
@@ -98,7 +110,7 @@ export default class Table{
             finaly = secondPointY
         }
 
-        return this.allTablePointXYArr[finalx][finaly]
+        return this.allBlockPointXYArr[finalx][finaly]
     }
 
     getLength(x1, y1, x2, y2){
@@ -106,35 +118,46 @@ export default class Table{
     }
 
     /** 下一个point */
-    nextTablePoint(thisTablePoint){
-        return this.allTablePoint[this.allTablePoint.indexOf(thisTablePoint) + 1]
+    nextTablePoint(thisBlockPoint){
+        return this.allBlockPoint[this.allBlockPoint.indexOf(thisBlockPoint) + 1]
     }
 
     addBlock(block){
         let y = block.top
         let x = block.left
-        let nearTablepoint = this.getNearTablepoint(x, y);
-        this.addBlockMain(block, nearTablepoint)
+        let nearBlockpoint = this.getNearTablepoint(x, y);
+        this.addBlockMain(block, nearBlockpoint)
+    }
+    removeBlock(block){
+        let index = this.activeallBlockPoint.indexOf(block);
+        if(index > -1){
+            this.activeallBlockPoint.splice(index, 1)
+            let blockPoint = block.blockPoint;
+            block.blockPoint = null;
+            blockPoint.block = null;
+        }
     }
 
-    addBlockMain(block, tablepoint){
-        if(!tablepoint.block){
-            tablepoint.block = block
-            this.activeAllTablePoint.push(tablepoint)
+    addBlockMain(block, blockpoint){
+        if(!blockpoint.block){
+            blockpoint.block = block
+            block.blockPoint = blockpoint
+            this.activeallBlockPoint.push(blockpoint)
             return true;
         }else{
-            return this.addBlockMain(block, this.nextTablePoint(tablepoint))
+            return this.addBlockMain(block, this.nextTablePoint(blockpoint))
         }
     }
 
     activeBlock(){
-        for(let tablePoint of this.activeAllTablePoint){
-            tablePoint.block.top = tablePoint.point.y
-            tablePoint.block.left = tablePoint.point.x
+        for(let blockPoint of this.activeallBlockPoint){
+            blockPoint.block.top = blockPoint.point.y
+            blockPoint.block.left = blockPoint.point.x
 
-            tablePoint.block.set("left", tablePoint.point.x || 0)
-            tablePoint.block.set("top", tablePoint.point.y || 0)
-            tablePoint.block.addWithUpdate()
+            blockPoint.block.setLeft(blockPoint.point.x || 0)
+            blockPoint.block.setTop(blockPoint.point.y || 0)
+            blockPoint.block.addWithUpdate()
         }
+        this.vm.myCanvasService.renderAll();
     }
 }

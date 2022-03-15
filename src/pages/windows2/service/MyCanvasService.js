@@ -1,10 +1,11 @@
 import XYUtil from "../../../util/XYUtil";
-import Block from "../bean/Block.js"
+import Block from "../bean/block/Block.js"
 
 /**
  * canvas服务类
  */
 export default class MyCanvasService{
+    vm;
     canvas;
 
     /**@type Block *[] */
@@ -12,6 +13,7 @@ export default class MyCanvasService{
 
     constructor(vm) {
         this.canvas = vm.canvas
+        this.vm = vm
     }
 
     /** 选取一个对象 */
@@ -31,20 +33,30 @@ export default class MyCanvasService{
     }
     /** 添加一个图标 */
     addBlock(block /**@type Block*/){
-        this.addFabric(block.fabricObj);
+        this.addFabricObj(block.fabricObj);
         this.blockList.push(block);
+        this.renderAll();
+        this.vm.coordinateService.addBlock(block);
+    }
+    removeBlock(block){
+        this.removeFabricObj(block.fabricObj);
+        let index = this.blockList.indexOf(block);
+        if(index > -1){
+            this.blockList.splice(index, 1)
+        }
+        this.vm.coordinateService.removeBlock(block);
         this.renderAll();
     }
     /**
      * 添加一个对象
      */
-    addFabric(fabric){
-        this.canvas.add(fabric);
+    addFabricObj(fabricObj){
+        this.canvas.add(fabricObj);
     }
     /**
      * 移除一个对象
      */
-    removeFabric(fabric){
+    removeFabricObj(fabric){
         this.canvas.remove(fabric);
     }
     /** 刷新全部对象*/

@@ -4,15 +4,27 @@ export default {
         return {
             /**@type MyCanvasService */
             myCanvasService: null,
+            /**@type RightMenuService */
+            rightMenuService: null,
+            /**@type NodepadService */
+            nodepadService: null,
+            /**@type TableBlockService*/
+            tableBlockService: null,
+            /**@type CoordinateService*/
+            coordinateService: null,
 
             windowWidth: 1024, // 窗口宽
             windowHeight: 768, // 窗口高
-            table: null,
-            canvas: null, // 画布对象
-            menuBackground: null, // 右键菜单背景
 
             rightMouseXTemp: null, // 鼠标右键点击位置
             rightMouseYTemp: null, // 鼠标右键点击位置
+
+            /**@type RightMenu*/
+            tableRightMenu: null,
+
+            table: null,
+            canvas: null, // 画布对象
+            menuBackground: null, // 右键菜单背景
 
             menuList: [], // 菜单列表
             tablemenuItemBackgroundList: [], // 菜单项背景列表
@@ -29,10 +41,11 @@ export default {
             loginMode: null, // 登录模式
 
             nodepadFlag: false, // 记事本弹窗标记
-            nodepadLeft: null,
-            nodepadTop: null,
             nodepadTitle: null,
             nodepadBody: null,
+
+            nodepadLeft: null,
+            nodepadTop: null,
             nodepadCreateOrUpdate: null, // 记事本弹窗更新或创建
             nodepadUpdateObj: null, // 记事本更新对象
             nodepadBlockMenuBackground: null,

@@ -1,49 +1,16 @@
 import idUtil from '@/util/IdUtil'
 import TableData from '../../bean/TableData.js'
 import {fabric} from "fabric";
-import BlockType from "./bean/BlockType";
+import BlockType from "./bean/block/BlockType";
 import {saveKey, doubleClickTimeMillsseconds} from "../../common/M.js";
 import Table from "./bean/Table";
-import TableBlock from './bean/TableBlock.js'
-import TableBackBlock from './bean/TableBackBlock.js'
+import TableBlock from './bean/block/TableBlock.js'
+import TableBackBlock from './bean/block/TableBackBlock.js'
 
 /**
  * 桌面工具
  */
 export default{
-    // /**
-    //  * 创建一个桌面
-    //  */
-    // async createTable(name, nowTable /**@type TableData*/){
-    //     let tableData = new TableData();
-    //     tableData.key = saveKey + "_" + idUtil();
-    //     tableData.type = TableData.type_children
-    //     tableData.name = name
-    //     tableData.parentsKey = nowTable.key
-    //
-    //     let tableBackBlock = new TableBackBlock();
-    //     tableBackBlock.left = 0;
-    //     tableBackBlock.top = 0
-    //     tableData.allBlock.push(tableBackBlock)
-    //
-    //     let tableBlock = new TableBlock();
-    //     tableBlock.key = tableData.key;
-    //     tableBlock.name = tableData.name
-    //     tableBlock.parentsKey = tableData.parentsKey
-    //
-    //     tableBlock.left = this.rightMouseXTemp - (Table.blockWidth / 2 + Table.marginLeft)
-    //     tableBlock.top = this.rightMouseYTemp - (Table.blockHeight / 2 + Table.marginTop)
-    //
-    //     await TableData.saveInstance(tableData, this.loginMode)
-    //
-    //     // 当前位置创建一个图标
-    //     await this.addTableBlock(tableBlock);
-    //
-    //     // 保存
-    //     this.blockAutoArrange();
-    //     await this.save();
-    //     this.autoSaveNotify();
-    // },
 
     /** 添加一个桌面图标 */
     async addTableBackBlock(tablebackBlock/**@type TableBackBlock*/) {

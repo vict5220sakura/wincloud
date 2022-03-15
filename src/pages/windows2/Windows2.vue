@@ -29,8 +29,8 @@
       </div>
       <template #footer>
         <div style="margin: 0px 20px 0px 20px" class="row main-start">
-          <el-button @click="nodepadCancelClick">取消</el-button>
-          <el-button type="primary" @click="nodepadSaveClick">保存</el-button>
+          <el-button @click="()=>{nodepadService.nodepadCancelClick()}">取消</el-button>
+          <el-button type="primary" @click="()=>{nodepadService.nodepadSaveClick()}">保存</el-button>
         </div>
       </template>
 <!--      <el-form ref="loginForm" :rules="rules">-->

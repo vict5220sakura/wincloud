@@ -4,23 +4,25 @@ export default {
     /** 右键事件注册 */
     rightClickRegist(){
         document.getElementsByClassName("upper-canvas")[0].oncontextmenu = (e)=>{
-
             // 记录右键临时位置
             this.rightMouseXTemp = e.offsetX;
             this.rightMouseYTemp = e.offsetY;
 
-            let chooseObj = this.fabricChooseObj(e.offsetX, e.offsetY);
+            this.rightMenuService.closeAll();
 
-            if(chooseObj){
-                console.log("选中对象", chooseObj)
-                // 移除菜单
-                this.closeAllBlockMenu();
+            let block = this.myCanvasService.chooseOneBlock(this.rightMouseXTemp, this.rightMouseYTemp)
+
+            // let chooseObj = this.fabricChooseObj(e.offsetX, e.offsetY);
+
+            if(block && block.rightMenu){
                 // 展示对象菜单
-                this.fabricShowBlockMenu(chooseObj, e.offsetX, e.offsetY);
+                block.rightMenu.show()
+                // this.fabricShowBlockMenu(chooseObj, e.offsetX, e.offsetY);
             }else{
-                console.log("没有选中任何对象")
+                // console.log("没有选中任何对象")
                 // 展示桌面右键菜单
-                this.showTableRightMenu(e.offsetX, e.offsetY)
+                this.tableRightMenu.show();
+                // this.showTableRightMenu(e.offsetX, e.offsetY)
             }
 
             e.preventDefault(); // 取消右键事件

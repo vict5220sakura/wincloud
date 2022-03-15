@@ -1,4 +1,5 @@
 import {fabric} from "fabric";
+import RightMenuItem from "./RightMenuItem";
 
 /** 右键菜单 */
 export default class RightMenu{
@@ -6,19 +7,38 @@ export default class RightMenu{
     left;
     top;
     fabricObj;
+
+    /**@type RightMenuItem[]*/
+    itemList=[]
+
     constructor(vm) {
         this.vm = vm
         this.fabricObj = new fabric.Rect({ width: 100, height: 25, fill: '#eeeeee' });
         this.fabricObj.hasControls = false;
         this.fabricObj.hasBorders = false;
         this.fabricObj.selectable = false;
+        this.regist()
     }
-    /**@type RightMenuItem[]*/
-    itemList=[]
+
+    /** 注册组件*/
+    regist(){
+        this.vm.rightMenuService.add(this)
+    }
+    /** 销毁组件*/
+    destroy(){
+        this.vm.rightMenuService.remove(this)
+    }
 
     setHeight(height){
         this.fabricObj.set("height", height)
         this.fabricObj.addWithUpdate()
+    }
+    addRightMenuItem(text, mousedownFunc){
+        let rightMenuItem = new RightMenuItem(this.vm);
+        rightMenuItem.text = text
+        rightMenuItem.mousedownFunc = mousedownFunc
+        rightMenuItem.init();
+        this.addItem(rightMenuItem);
     }
     addItem(rightMenuItem /**@type RightMenuItem*/){
         this.itemList.push(rightMenuItem)
@@ -47,32 +67,36 @@ export default class RightMenu{
      * @param y 坐标
      */
     show(x, y) {
+        if(!x){
+            x = this.vm.rightMouseXTemp
+        }
+        if(!y){
+            y = this.vm.rightMouseYTemp
+        }
         this.vm.myCanvasService.discardActiveObject(); // 取消所有对象选中状态
         this.setLeft(x)
         this.setTop(y)
         this.setHeight(this.itemList.length * 25)
         // this.closeAllBlockMenu();
 
-        this.vm.myCanvasService.addFabric(this.fabric);
+        this.vm.myCanvasService.addFabricObj(this.fabricObj);
         this.addWithUpdate()
         let topIndex = 0
         for (let menuItem of this.itemList) {
             menuItem.setLeft(x)
             menuItem.setTop(y + (menuItem.height * topIndex))
-            this.vm.myCanvasService.addFabric(menuItem.fabric);
+            this.vm.myCanvasService.addFabricObj(menuItem.fabricObj);
             menuItem.addWithUpdate()
             topIndex++;
         }
     }
     /** 关闭菜单 */
     close() {
-        this.vm.myCanvasService.removeFabric(this.fabricObj);
+        this.vm.myCanvasService.removeFabricObj(this.fabricObj);
         for (let menuItem of this.itemList) {
-            this.vm.myCanvasService.removeFabric(menuItem.fabric);
+            menuItem.mouseout()
+            this.vm.myCanvasService.removeFabricObj(menuItem.fabricObj);
         }
-        // for(let item of this.tableBlockMenuItembackgroundList){
-        //     item.set("fill", '#eeeeee')
-        // }
         this.vm.myCanvasService.renderAll();
     }
 }

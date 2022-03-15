@@ -1,25 +1,21 @@
 import { fabric } from 'fabric'
 import { ajaxPrefilter } from 'jquery';
-import BlockType from './bean/BlockType.js'
-import LinkBlock from "./bean/LinkBlock.js"
+import BlockType from './bean/block/BlockType.js'
 import XYUtil from '@/util/XYUtil.js'
 import UrlUtil from "@/util/UrlUtil.js"
 import { saveKey } from '@/common/M.js'
 import LoginService from '@/service/LoginService.js'
 import WinDataService from '@/service/WinDataService.js'
 import Windows2MethonsRules from './Windows2MethonsRules.js'
-import TableRightMenuDownMethods from './TableRightMenuDownMethods.js'
 import RightInit from './RightInit.js'
 import LeftInit from './LeftInit.js'
-import TableRightMenu from './TableRightMenu.js'
-import LinkRightMenu from './LinkRightMenu.js'
-import { login_mode, doubleClickTimeMillsseconds } from '@/common/M.js'
-import Table from "./bean/Table";
-import Nodepad from './Nodepad.js'
-import NodepadMenu from "./NodepadMenu.js"
+import { login_mode, doubleClickTimeMillsseconds, createOrUpdate } from '@/common/M.js'
 import BlockTable from './BlockTable.js'
 import TableData from '../../bean/TableData.js'
 import BlockTableBack from './BlockTableBack.js'
+import LinkBlock from "./bean/block/LinkBlock";
+import Table from "./bean/Table.js"
+import NodepadBlock from "./bean/block/NodepadBlock";
 
 
 
@@ -27,12 +23,7 @@ export default {
     methods:{
         ...LeftInit, // 左键初始化
         ...RightInit, // 右键初始化
-        ...TableRightMenu, // 桌面右键菜单
-        ...LinkRightMenu, // 链接右键菜单
         ...Windows2MethonsRules,
-        ...TableRightMenuDownMethods,
-        ...Nodepad,
-        ...NodepadMenu,
         ...BlockTable,
         ...BlockTableBack,
         /** 自动保存提示 */
@@ -59,6 +50,66 @@ export default {
             }
 
         },
+        /**
+         * 右键新建连接菜单按下
+         * @param opts
+         */
+        menuAddLinkMouseDown(opts){
+            this.$prompt('请输入连接地址', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消'
+            }).then((urlInputData) => {
+                let urlInput = urlInputData.value;
+                this.$prompt('请输入标签名称', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消'
+                }).then(async (nameInputData) => {
+                    let nameInput = nameInputData.value
+
+                    let linkBlock = await LinkBlock.newInstance(this, nameInput, urlInput)
+                    linkBlock.setLeft(this.rightMouseXTemp - (Table.blockWidth / 2 + Table.marginLeft))
+                    linkBlock.setTop(this.rightMouseYTemp - (Table.blockHeight / 2 + Table.marginTop))
+                    this.myCanvasService.addBlock(linkBlock)
+                    // this.blockAutoArrange();
+                    // await this.save();
+                    // this.autoSaveNotify();
+                })
+            }).catch((e) => {console.log(e)});
+        },
+        async menuSaveMouseDown(opts){
+            console.log('保存 点击 opts=', opts);
+            try{
+                await this.save()
+                this.notify("保存"+ (this.loginMode == login_mode.login_mode_local? "本地" : "远程" ) +"成功", "success")
+            }catch(err){
+                console.log(err)
+                this.notify("保存失败! (请联系网站管理员arcueid5220@163.com)", "error")
+            }
+        },
+        menuClearMouseDown(opts){
+            console.log('清空 点击 opts=', opts);
+
+
+            this.$prompt('此操作将清空桌面数据, 输入"清空"继续', '清空', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then((input) => {
+                if('清空' == input.value){
+                    this.removeAllBlock()
+                    this.$message({
+                        type: 'success',
+                        message: '清空桌面数据成功!'
+                    });
+                }
+            }).catch((e) => {console.log(e)});
+        },
+        async menuAutopailieMouseDown(opts){
+            this.blockAutoArrange();
+            await this.save();
+            this.autoSaveNotify();
+        },
+
         /** 添加一个链接图标 */
         async addLinkBlock(linkBlock) {
             // 先添加一个默认背景的图标
@@ -313,24 +364,14 @@ export default {
         },
         /** 图标自动排列 */
         blockAutoArrange(){
-            let table = new Table();
-            table.width = this.windowWidth;
-            table.height = this.windowHeight;
-            table.initAllPoint()
+
             // 全部图标加入table
             for(let block of this.allBlock){
-                table.addBlock(block)
+                // table.addBlock(block)
             }
             // 全部图标批量对齐
-            table.activeBlock();
-            this.canvas.renderAll();
-            // this.canvas.discardActiveObject(); // 取消所有对象选中状态
-        },
-        closeAllBlockMenu(){
-            this.closeTableRightMenu(); // 关闭右键菜单
-            this.linkBlockCloseMenu(); // 关闭图标视图菜单
-            this.nodepadBlockCloseMenu();
-            this.tableBlockCloseMenu();
+            // table.activeBlock();
+
         },
         async openTableKey(key/**@type String*/){
             let tableData /**@type TableData*/ = await TableData.loadInstance(key, this.loginMode, this.username, this.password)
