@@ -124,8 +124,8 @@ export default class CoordinateService{
     }
 
     addBlock(block){
-        let y = block.top || 0
-        let x = block.left || 0
+        let y = block.getTop() || 0
+        let x = block.getLeft() || 0
         let nearBlockpoint = this.getNearTablepoint(x, y);
         this.addBlockMain(block, nearBlockpoint)
     }
@@ -150,10 +150,11 @@ export default class CoordinateService{
         }
     }
 
+    // TODO 1111
     activeBlock(){
         for(let blockPoint of this.activeallBlockPoint){
-            blockPoint.block.top = blockPoint.point.y
-            blockPoint.block.left = blockPoint.point.x
+            // blockPoint.block.top = blockPoint.point.y
+            // blockPoint.block.left = blockPoint.point.x
 
             blockPoint.block.setLeft(blockPoint.point.x || 0)
             blockPoint.block.setTop(blockPoint.point.y || 0)

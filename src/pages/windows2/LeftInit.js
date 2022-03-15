@@ -6,12 +6,10 @@ import TableBackBlock from "./bean/block/TableBackBlock";
 export default{
     /** 左键事件注册 */
     async leftClickRegist(){
-        this.canvas.on('mouse:down', async (options)=> {
+        this.myCanvasService.canvas.on('mouse:down', async (options)=> {
             let x = options.pointer.x
             let y = options.pointer.y
             this.rightMenuService.closeAll()
-
-            this.myCanvasService.addBlock(await TableBackBlock.newInstance(this))
         });
     },
 }

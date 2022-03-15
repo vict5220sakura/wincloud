@@ -13,6 +13,9 @@ export default class TableBlockService{
     constructor(vm) {
         this.vm = vm
     }
+    /**@type TableData*/
+    nowTableData; // 当前窗口
+
     /**新建桌面*/
     menuAddTableMouseDown(){
         this.vm.$prompt('请输入桌面名称', '提示', {
@@ -34,7 +37,7 @@ export default class TableBlockService{
         tableData.key = saveKey + "_" + idUtil();
         tableData.type = TableData.type_children
         tableData.name = name
-        tableData.parentsKey = this.vm.nowTableData.key
+        tableData.parentsKey = this.nowTableData.key
 
         let tableBackBlock = new TableBackBlock();
         tableBackBlock.left = 0;

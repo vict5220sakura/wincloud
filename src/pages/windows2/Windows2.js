@@ -17,33 +17,11 @@ import CoordinateService from "./service/CoordinateService.js";
 
 export default {
     mixins: [WindowsData, Windows2Methods],
-    
     created(){
         this.windowWidth = window.innerWidth;
         this.windowHeight = window.innerHeight;
     },//
     async mounted(){
-        // 创建画布
-        this.canvas = new fabric.Canvas("myCanvas")
-        this.canvas.selection = false; // 禁止画布滑动选中
-        this.canvas.hoverCursor = 'default' // 鼠标样式
-        this.canvas.moveCursor = 'default' // 鼠标样式
-
-        // 设置背景图片
-        fabric.Image.fromURL('/img/img0_3840x2160.jpg', (oImg)=>{
-            oImg.set({
-              scaleX: this.windowWidth / oImg.width,
-              scaleY: this.windowHeight / oImg.height
-            })
-            this.canvas.setBackgroundImage(oImg);
-            this.canvas.renderAll();
-        });
-
-        // this.tableRightMenuInit(); // 桌面右键菜单初始化
-        // this.linkBlockMenuInit(); // 链接菜单初始化
-        // this.nodepadBlockMenuInit(); // 记事本菜单初始化
-        // this.tableBlockMenuInit(); // 桌面菜单初始化
-
         this.myCanvasService = new MyCanvasService(this);
         this.rightMenuService = new RightMenuService(this);
         this.nodepadService = new NodepadService(this);

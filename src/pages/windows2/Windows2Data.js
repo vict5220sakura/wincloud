@@ -13,9 +13,6 @@ export default {
             /**@type CoordinateService*/
             coordinateService: null,
 
-            /**@type TableData*/
-            nowTableData: null, // 当前窗口
-
             windowWidth: 1024, // 窗口宽
             windowHeight: 768, // 窗口高
 
@@ -25,18 +22,14 @@ export default {
             /**@type RightMenu*/
             tableRightMenu: null,
 
-            table: null,
-            canvas: null, // 画布对象
-            menuBackground: null, // 右键菜单背景
+            // menuList: [], // 菜单列表
+            // tablemenuItemBackgroundList: [], // 菜单项背景列表
 
-            menuList: [], // 菜单列表
-            tablemenuItemBackgroundList: [], // 菜单项背景列表
+            // allBlock: [], // 图标列表
 
-            allBlock: [], // 图标列表
-
-            linkBlockMenuBackground: null, // 链接菜单右键
-            linkBlockMenuList: [], // 链接菜单
-            linkBlockMenuItembackgroundList: [], // 链接菜单项背景列表
+            // linkBlockMenuBackground: null, // 链接菜单右键
+            // linkBlockMenuList: [], // 链接菜单
+            // linkBlockMenuItembackgroundList: [], // 链接菜单项背景列表
 
             loginDialogFlag: false, // 注册登录弹框
             username: null, // 用户名
@@ -47,21 +40,21 @@ export default {
             nodepadTitle: null,
             nodepadBody: null,
 
-            nodepadLeft: null,
-            nodepadTop: null,
-            nodepadCreateOrUpdate: null, // 记事本弹窗更新或创建
-            nodepadUpdateObj: null, // 记事本更新对象
-            nodepadBlockMenuBackground: null,
-            nodepadBlockMenuList: [], // 记事本菜单
-            nodepadBlockMenuItembackgroundList: [], // 记事本菜单项背景列表
+            // nodepadLeft: null,
+            // nodepadTop: null,
+            // nodepadCreateOrUpdate: null, // 记事本弹窗更新或创建
+            // nodepadUpdateObj: null, // 记事本更新对象
+            // nodepadBlockMenuBackground: null,
+            // nodepadBlockMenuList: [], // 记事本菜单
+            // nodepadBlockMenuItembackgroundList: [], // 记事本菜单项背景列表
 
             tableBlockEditFlag: false, // 桌面编辑弹窗
-            tableBlockMenuLeft: null,
-            tableBlockMenuRight: null,
-            tableBlockMenuName: null,
-            tableBlockMenuBackground: null,
-            tableBlockMenuList: [], // 桌面图标菜单
-            tableBlockMenuItembackgroundList: [], // 桌面图标菜单项背景列表
+            // tableBlockMenuLeft: null,
+            // tableBlockMenuRight: null,
+            // tableBlockMenuName: null,
+            // tableBlockMenuBackground: null,
+            // tableBlockMenuList: [], // 桌面图标菜单
+            // tableBlockMenuItembackgroundList: [], // 桌面图标菜单项背景列表
 
 
             rules: {

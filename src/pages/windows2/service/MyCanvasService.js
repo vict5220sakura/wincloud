@@ -1,3 +1,4 @@
+import {fabric} from "fabric";
 import XYUtil from "../../../util/XYUtil";
 import Block from "../bean/block/Block.js"
 
@@ -12,8 +13,22 @@ export default class MyCanvasService{
     blockList=[];
 
     constructor(vm) {
-        this.canvas = vm.canvas
         this.vm = vm
+        // 创建画布
+        this.canvas = new fabric.Canvas("myCanvas")
+        this.canvas.selection = false; // 禁止画布滑动选中
+        this.canvas.hoverCursor = 'default' // 鼠标样式
+        this.canvas.moveCursor = 'default' // 鼠标样式
+
+        // 设置背景图片
+        fabric.Image.fromURL('/img/img0_3840x2160.jpg', (oImg)=>{
+            oImg.set({
+                scaleX: this.vm.windowWidth / oImg.width,
+                scaleY: this.vm.windowHeight / oImg.height
+            })
+            this.canvas.setBackgroundImage(oImg);
+            this.canvas.renderAll();
+        });
     }
 
     /** 选取一个对象 */

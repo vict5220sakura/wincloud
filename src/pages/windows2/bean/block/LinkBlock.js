@@ -72,6 +72,10 @@ export default class LinkBlock extends Block{
             }
         };
     }
+    /** @abstract 图标单击事件*/
+    getMouseupFunc(){
+        this.vm.coordinateService.activeBlock()
+    }
 
     static async newInstance(vm, name, url){
         let block = new this(vm);
