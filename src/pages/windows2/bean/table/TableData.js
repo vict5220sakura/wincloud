@@ -1,5 +1,6 @@
 import {saveKey, login_mode} from '../../../../common/M.js'
-import WinDataService from "../../../../service/WinDataService.js"
+import Api from "../../../../util/Api";
+import LoginService from "../../../../service/LoginService";
 
 /**
  * 桌面数据
@@ -17,7 +18,7 @@ export default class TableData{
         if(loginMode == login_mode.login_mode_local){
             return await TableData.localStorageLoadInstance(key)
         }else if(loginMode == login_mode.login_mode_serve){
-            return await WinDataService.tableDataLoad(username, password, key);
+            return await TableData.serviceLoadInstance(username, password, key);
         }
     }
 
@@ -25,7 +26,7 @@ export default class TableData{
         if(loginMode == login_mode.login_mode_local){
             TableData.localStorageSaveInstance(tableData)
         }else if(loginMode == login_mode.login_mode_serve){
-            WinDataService.tableDataSave(username, password, tableData)
+            TableData.serviceSaveInstance(username, password, tableData)
         }
     }
 
@@ -49,5 +50,51 @@ export default class TableData{
         }else{
             localStorage.setItem(saveKey, jsonStr);
         }
+    }
+
+    /**
+     *
+     * @param username 用户名
+     * @param password 密码
+     * @param tableData
+     * @returns {Promise<*>}
+     */
+    static async serviceSaveInstance(username, password, tableData /**@type TableData*/){
+        if(tableData.type == TableData.type_defaule){
+            let winDataStr = JSON.stringify(tableData.allBlock);
+            let res = await Api.post("saveWinData", {username, password, winDataStr})
+            if(!res || res.code != "00000"){
+                throw "api未知异常"
+            }
+            return;
+        }else if(tableData.type == TableData.type_children){
+            let tableDataStr = JSON.stringify(tableData);
+            let res = await Api.post("saveWinDataChildren",
+                {username, password, key: tableData.key, tableDataStr})
+            if(!res || res.code != "00000"){
+                throw "api未知异常"
+            }
+            return;
+        }
+
+    }
+
+    static async serviceLoadInstance(username, password, key){
+        let tableData; /**@type TableData*/
+        if(key){
+            let res = await Api.post("getWinDataChildren", {username, password, key})
+            console.log("加载tableData res", res)
+            if(!res || res.code != "00000"){
+                throw "api未知异常"
+            }
+            tableData = JSON.parse(res.data.tableDataStr);
+        }else{
+            let res = await LoginService.registLogin(username, password);
+            if(res.code == '00000'){
+                tableData = new TableData();
+                tableData.allBlock = (res.data.winData && JSON.parse(res.data.winData)) || []
+            }
+        }
+        return tableData;
     }
 }

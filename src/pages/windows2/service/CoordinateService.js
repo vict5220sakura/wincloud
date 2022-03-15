@@ -62,6 +62,7 @@ export default class CoordinateService{
 
     /** 获取一个最近的 tablePoint*/
     getNearTablepoint(xIn, yIn){
+
         let firstPointXIndex = 0;
         let secondPointXIndex = 1;
         for(let xIndex in this.xArr){
@@ -123,8 +124,8 @@ export default class CoordinateService{
     }
 
     addBlock(block){
-        let y = block.top
-        let x = block.left
+        let y = block.top || 0
+        let x = block.left || 0
         let nearBlockpoint = this.getNearTablepoint(x, y);
         this.addBlockMain(block, nearBlockpoint)
     }

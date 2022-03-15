@@ -1,9 +1,9 @@
 import idUtil from '@/util/IdUtil'
-import TableData from '../../bean/TableData.js'
+import TableData from './bean/table/TableData.js'
 import {fabric} from "fabric";
 import BlockType from "./bean/block/BlockType";
 import {saveKey, doubleClickTimeMillsseconds} from "../../common/M.js";
-import Table from "./bean/Table";
+import CoordinateService from "./service/CoordinateService.js";
 import TableBlock from './bean/block/TableBlock.js'
 import TableBackBlock from './bean/block/TableBackBlock.js'
 

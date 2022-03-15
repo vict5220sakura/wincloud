@@ -7,7 +7,6 @@ import UrlUtil from "@/util/UrlUtil.js"
 import WindowsData from './Windows2Data.js'
 import {saveKey} from '@/common/M.js'
 import Windows2Methods from './Windows2Methods.js'
-import Table from './bean/Table.js'
 import MyCanvasService from "./service/MyCanvasService.js"
 import RightMenuService from "./service/RightMenuService.js";
 import RightMenu from "./bean/RightMenu/RightMenu.js";

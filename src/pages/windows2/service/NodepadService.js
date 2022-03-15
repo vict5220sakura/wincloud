@@ -1,5 +1,5 @@
 import NodepadBlock from "../bean/block/NodepadBlock";
-import Table from "../bean/Table";
+import CoordinateService from "./CoordinateService.js";
 
 /**
  * 记事本服务类
@@ -47,8 +47,8 @@ export default class NodepadService{
             left = this.nodepadBlock.getLeft()
             this.vm.myCanvasService.removeBlock(this.nodepadBlock)
         }else{
-            top = this.vm.rightMouseYTemp - (Table.blockHeight / 2 + Table.marginTop)
-            left = this.vm.rightMouseXTemp - (Table.blockWidth / 2 + Table.marginLeft)
+            top = this.vm.rightMouseYTemp - (CoordinateService.blockHeight / 2 + CoordinateService.marginTop)
+            left = this.vm.rightMouseXTemp - (CoordinateService.blockWidth / 2 + CoordinateService.marginLeft)
         }
         this.nodepadBlock = await NodepadBlock.newInstance(this.vm, title, body);
         this.nodepadBlock.setTop(top)

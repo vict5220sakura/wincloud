@@ -1,13 +1,14 @@
-import TableData from "../../../bean/TableData";
-import {saveKey} from "../../../common/M";
-import TableBackBlock from "../bean/block/TableBackBlock";
-import TableBlock from "../bean/block/TableBlock";
-import Table from "../bean/Table";
+import TableData from "../bean/table/TableData.js";
+import {saveKey} from "../../../common/M.js";
+import TableBackBlock from "../bean/block/TableBackBlock.js";
+import TableBlock from "../bean/block/TableBlock.js";
+import idUtil from "../../../util/IdUtil.js"
 
 /**
  * 桌面图标服务类
  */
 export default class TableBlockService{
+
     vm;
     constructor(vm) {
         this.vm = vm
@@ -22,18 +23,18 @@ export default class TableBlockService{
             if(!name || name.trim() == ''){
                 name = "桌面"
             }
-            await this.createTable(name, this.nowTable);
+            await this.createTable(name);
         }).catch((e) => {console.log(e)});
     }
     /**
      * 创建一个桌面
      */
-    async createTable(name, nowTable /**@type TableData*/){
+    async createTable(name){
         let tableData = new TableData();
         tableData.key = saveKey + "_" + idUtil();
         tableData.type = TableData.type_children
         tableData.name = name
-        tableData.parentsKey = nowTable.key
+        tableData.parentsKey = this.vm.nowTableData.key
 
         let tableBackBlock = new TableBackBlock();
         tableBackBlock.left = 0;

@@ -1,4 +1,4 @@
-import TableData from "../../bean/TableData.js"
+import TableData from "./bean/table/TableData.js"
 export default {
     data(){
         return {
@@ -12,6 +12,9 @@ export default {
             tableBlockService: null,
             /**@type CoordinateService*/
             coordinateService: null,
+
+            /**@type TableData*/
+            nowTableData: null, // 当前窗口
 
             windowWidth: 1024, // 窗口宽
             windowHeight: 768, // 窗口高
@@ -59,7 +62,7 @@ export default {
             tableBlockMenuBackground: null,
             tableBlockMenuList: [], // 桌面图标菜单
             tableBlockMenuItembackgroundList: [], // 桌面图标菜单项背景列表
-            nowTable: null,/**@type TableData*/ // 当前窗口
+
 
             rules: {
                 "username": [

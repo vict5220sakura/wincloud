@@ -1,7 +1,7 @@
 import Block from "./Block.js"
 import BlockType from "./BlockType.js"
 import RightMenuItem from "../RightMenu/RightMenuItem";
-import Table from "../Table";
+import CoordinateService from "../../service/CoordinateService.js";
 
 export default class LinkBlock extends Block{
     url;

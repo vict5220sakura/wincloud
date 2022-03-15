@@ -170,8 +170,10 @@ export default class Block{
     initRightMenu(){
         this.rightMenu = new RightMenu(this.vm);
 
-        for(let rightMenuItem of this.getRightMenuItemList()){
-            this.rightMenu.addItem(rightMenuItem)
+        if(this.getRightMenuItemList()){
+            for(let rightMenuItem of this.getRightMenuItemList()){
+                this.rightMenu.addItem(rightMenuItem)
+            }
         }
     }
 

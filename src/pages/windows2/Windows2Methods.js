@@ -1,20 +1,18 @@
 import { fabric } from 'fabric'
 import { ajaxPrefilter } from 'jquery';
 import BlockType from './bean/block/BlockType.js'
-import XYUtil from '@/util/XYUtil.js'
-import UrlUtil from "@/util/UrlUtil.js"
-import { saveKey } from '@/common/M.js'
-import LoginService from '@/service/LoginService.js'
-import WinDataService from '@/service/WinDataService.js'
+import XYUtil from '../../util/XYUtil.js'
+import UrlUtil from "../../util/UrlUtil.js"
+import { saveKey } from '../../common/M.js'
+import LoginService from '../../service/LoginService.js'
 import Windows2MethonsRules from './Windows2MethonsRules.js'
 import RightInit from './RightInit.js'
 import LeftInit from './LeftInit.js'
-import { login_mode, doubleClickTimeMillsseconds, createOrUpdate } from '@/common/M.js'
+import { login_mode, doubleClickTimeMillsseconds, createOrUpdate } from '../../common/M.js'
 import BlockTable from './BlockTable.js'
-import TableData from '../../bean/TableData.js'
-import BlockTableBack from './BlockTableBack.js'
+import TableData from './bean/table/TableData.js'
 import LinkBlock from "./bean/block/LinkBlock";
-import Table from "./bean/Table.js"
+import CoordinateService from "./service/CoordinateService.js"
 import NodepadBlock from "./bean/block/NodepadBlock";
 
 
@@ -25,7 +23,6 @@ export default {
         ...RightInit, // 右键初始化
         ...Windows2MethonsRules,
         ...BlockTable,
-        ...BlockTableBack,
         /** 自动保存提示 */
         autoSaveNotify(){
             this.notify("自动保存成功", "success")
@@ -67,8 +64,8 @@ export default {
                     let nameInput = nameInputData.value
 
                     let linkBlock = await LinkBlock.newInstance(this, nameInput, urlInput)
-                    linkBlock.setLeft(this.rightMouseXTemp - (Table.blockWidth / 2 + Table.marginLeft))
-                    linkBlock.setTop(this.rightMouseYTemp - (Table.blockHeight / 2 + Table.marginTop))
+                    linkBlock.setLeft(this.rightMouseXTemp - (CoordinateService.blockWidth / 2 + CoordinateService.marginLeft))
+                    linkBlock.setTop(this.rightMouseYTemp - (CoordinateService.blockHeight / 2 + CoordinateService.marginTop))
                     this.myCanvasService.addBlock(linkBlock)
                     // this.blockAutoArrange();
                     // await this.save();
@@ -258,7 +255,7 @@ export default {
                 }else if(block.blockType == BlockType.type_tableBlock){
                     await this.addTableBlock(block)
                 }else if(block.blockType == BlockType.type_tableBlock_back){
-                    await this.addTableBackBlock(block)
+                    // await this.addTableBackBlock(block)
                 }
             }
 
