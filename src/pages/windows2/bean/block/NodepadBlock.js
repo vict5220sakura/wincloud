@@ -42,7 +42,6 @@ export default class NodepadBlock extends Block{
         }
     }
 
-
     static async newInstance(vm, title, body){
         let block = new this(vm);
         block.title = title

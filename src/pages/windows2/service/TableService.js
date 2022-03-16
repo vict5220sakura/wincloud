@@ -38,6 +38,16 @@ export default class TableService{
         this.vm.myCanvasService.renderAll();
     }
 
+    removeAllBlock(){
+        let arr = []
+        for(let block of this.nowTable.allBlock){
+            arr.push(block);
+        }
+        for(let block of arr){
+            this.removeBlock(block)
+        }
+    }
+
     /** 加载 */
     async load(nowTable/**NowTable*/) {
         this.nowTable = new NowTable()

@@ -23,11 +23,13 @@ export default class TableBackBlock extends Block{
     getDefaultBackgroundImg(){
         return "/img/back1.png";
     }
+
     static async newInstance(vm){
         let block = new this(vm);
         await block.init();
         return block;
     }
+
     static async newInstanceJson(vm, json){
         return await TableBackBlock.newInstance(vm);
     }

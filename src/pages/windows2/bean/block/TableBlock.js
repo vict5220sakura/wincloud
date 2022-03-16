@@ -62,12 +62,11 @@ export default class TableBlock extends Block{
             }).then(async () => {
                 this.vm.tableService.removeBlock(this)
             }).catch((e) => {
-                console.log(e)
+                throw e;
             });
         }))
         return list;
     }
-
 
     static async newInstance(vm, name){
         let block = new this(vm);
@@ -75,6 +74,7 @@ export default class TableBlock extends Block{
         await block.init();
         return block;
     }
+
     static async newInstanceJson(vm, json){
         return await TableBlock.newInstance(vm, json["name"]);
     }

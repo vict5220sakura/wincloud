@@ -325,7 +325,7 @@ export default {
         },
         /** 打开新窗口*/
         async openTableData(tableData /**@type TableData*/){
-            this.removeAllBlock();
+            this.tableService.removeAllBlock();
             await this.tableService.load(tableData);
         }
     }
