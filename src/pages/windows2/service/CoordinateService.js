@@ -60,7 +60,9 @@ export default class CoordinateService{
         }
     }
 
-    /** 获取一个最近的 tablePoint*/
+    /** 获取一个最近的 BlockPoint
+     * @return BlockPoint
+     * */
     getNearTablepoint(xIn, yIn){
 
         let firstPointXIndex = 0;
@@ -122,7 +124,16 @@ export default class CoordinateService{
     nextTablePoint(thisBlockPoint){
         return this.allBlockPoint[this.allBlockPoint.indexOf(thisBlockPoint) + 1]
     }
-
+    addBlockMain(block, blockpoint){
+        if(!blockpoint.block){
+            blockpoint.block = block
+            block.blockPoint = blockpoint
+            this.activeallBlockPoint.push(blockpoint)
+            return true;
+        }else{
+            return this.addBlockMain(block, this.nextTablePoint(blockpoint))
+        }
+    }
     addBlock(block){
         let y = block.getTop() || 0
         let x = block.getLeft() || 0
@@ -139,23 +150,21 @@ export default class CoordinateService{
         }
     }
 
-    addBlockMain(block, blockpoint){
-        if(!blockpoint.block){
-            blockpoint.block = block
-            block.blockPoint = blockpoint
-            this.activeallBlockPoint.push(blockpoint)
-            return true;
-        }else{
-            return this.addBlockMain(block, this.nextTablePoint(blockpoint))
-        }
-    }
-
-    // TODO 1111
     activeBlock(){
-        for(let blockPoint of this.activeallBlockPoint){
-            // blockPoint.block.top = blockPoint.point.y
-            // blockPoint.block.left = blockPoint.point.x
+        let allBlock /**@type Block*/ = []
 
+        for(let blockPoint of this.activeallBlockPoint){
+            let block = blockPoint.block;
+            block.blockPoint = null;
+            blockPoint.block = null;
+            allBlock.push(block)
+        }
+        this.activeallBlockPoint = [];
+        for(let block of allBlock){
+            this.addBlock(block)
+        }
+
+        for(let blockPoint of this.activeallBlockPoint){
             blockPoint.block.setLeft(blockPoint.point.x || 0)
             blockPoint.block.setTop(blockPoint.point.y || 0)
             blockPoint.block.addWithUpdate()
