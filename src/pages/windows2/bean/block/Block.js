@@ -3,6 +3,11 @@ import {doubleClickTimeMillsseconds} from "../../../../common/M.js"
 import RightMenu from "../RightMenu/RightMenu";
 import RightMenuItem from "../RightMenu/RightMenuItem";
 import UrlUtil from '../../../../util/UrlUtil.js'
+import BlockType from "./BlockType";
+import LinkBlock from "./LinkBlock";
+import NodepadBlock from "./NodepadBlock";
+import TableBlock from "./TableBlock";
+import TableBackBlock from "./TableBackBlock";
 
 export default class Block{
     vm;
@@ -43,6 +48,21 @@ export default class Block{
             }
         }
         return json;
+    }
+
+    /**
+     * @return Block
+     */
+    static async parse(vm, json){
+        if (json.blockType == BlockType.type_link) {
+            return await LinkBlock.newInstanceJson(vm, json)
+        }else if(json.blockType == BlockType.type_nodepad){
+            return await NodepadBlock.newInstanceJson(vm, json)
+        }else if(json.blockType == BlockType.type_tableBlock){
+            return await TableBlock.newInstanceJson(vm, json)
+        }else if(json.blockType == BlockType.type_tableBlock_back){
+            return await TableBackBlock.newInstanceJson(vm, json)
+        }
     }
 
     async init(){

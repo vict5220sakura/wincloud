@@ -331,13 +331,13 @@ export default {
         async btnLocalLogin() {
             this.loginMode = login_mode.login_mode_local
             this.loginDialogFlag = false;
-            let nowTable/**@type NowTable*/ = await NowTable.loadInstance(null, this.loginMode)
+            let nowTable/**@type NowTable*/ = await NowTable.loadInstance(this, null, this.loginMode)
 
             await this.tableService.load(nowTable);
 
         },
         async openTableKey(key/**@type String*/){
-            let nowTable /**@type NowTable*/ = await NowTable.loadInstance(key, this.loginMode, this.username, this.password)
+            let nowTable /**@type NowTable*/ = await NowTable.loadInstance(this, key, this.loginMode, this.username, this.password)
             await this.openTableData(tableData);
             this.nowTable = tableData
         },

@@ -28,5 +28,8 @@ export default class TableBackBlock extends Block{
         await block.init();
         return block;
     }
+    static async newInstanceJson(vm, json){
+        return await TableBackBlock.newInstance(vm);
+    }
 
 }

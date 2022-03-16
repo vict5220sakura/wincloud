@@ -60,7 +60,6 @@ export default class LinkBlock extends Block{
                 console.log(e)
             });
         }))
-
         return list;
     }
 
@@ -81,5 +80,9 @@ export default class LinkBlock extends Block{
         block.url = url;
         await block.init();
         return block;
+    }
+
+    static async newInstanceJson(vm, json){
+        return await LinkBlock.newInstance(vm, json["name"], json["url"])
     }
 }

@@ -44,4 +44,7 @@ export default class NodepadBlock extends Block{
         await block.init();
         return block;
     }
+    static async newInstanceJson(vm, json){
+        return await NodepadBlock.newInstance(vm, json["title"], json["body"])
+    }
 }

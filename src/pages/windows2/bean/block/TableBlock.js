@@ -73,4 +73,7 @@ export default class TableBlock extends Block{
         await block.init();
         return block;
     }
+    static async newInstanceJson(vm, json){
+        return await TableBlock.newInstance(vm, json["name"]);
+    }
 }
