@@ -15,6 +15,7 @@ import NodepadBlock from "./bean/block/NodepadBlock.js";
 import TableBlock from "./bean/block/TableBlock.js"
 import NowTable from "./bean/NowTable.js"
 import TableSaveDao from "./dao/TableSaveDao.js"
+import TableSaveData from "./entity/TableSaveData";
 
 
 export default {
@@ -104,25 +105,26 @@ export default {
          * 注册登录按钮点击
          */
         async btnLogin() {
+            this.loginMode = login_mode.login_mode_serve
             this.$refs["loginForm"].validateField("username")
             this.$refs["loginForm"].validateField("password")
             if(!this.checkUsername().b || !this.checkPassword().b){
                 return false;
             }
-            
+
             let res = await LoginService.registLogin(this.username, this.password);
             if(res.code == '00000'){
                 this.$message({
                     type: 'success',
                     message: (res.data.registLoginMode == "regist" ? "注册" : "登录") + '成功!'
-                });
-                // this.winDataStr = res.data.winData
-                let nowTable = new NowTable();
-                nowTable.allBlock = (res.data.winData && JSON.parse(res.data.winData)) || []
+                })
+                let tableSaveData = new TableSaveData();
+                tableSaveData.allBlock = (res.data.winData && JSON.parse(res.data.winData)) || []
 
-                this.loginMode = login_mode.login_mode_serve
+                let nowTable = await tableSaveData.toNowTable(this);
+
                 this.loginDialogFlag = false;
-                this.tableService.load(nowTable);
+                await this.tableService.load(nowTable);
             }else{
                 this.$message({
                     type: 'error',
