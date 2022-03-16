@@ -87,7 +87,7 @@ export default {
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                this.tableService.removeAllBlock()
+                this.tableService.removeAllBlock(false)
                 this.$message({
                     type: 'success',
                     message: '清空桌面数据成功!'
@@ -143,7 +143,7 @@ export default {
 
         async openTableKey(key/**@type String*/){
             let nowTable /**@type NowTable*/ = await TableSaveDao.loadInstance(this, key, this.loginMode, this.username, this.password)
-            this.tableService.removeAllBlock();
+            this.tableService.removeAllBlock(true);
             await this.tableService.load(nowTable);
         }
     }

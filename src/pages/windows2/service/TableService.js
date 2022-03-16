@@ -38,12 +38,18 @@ export default class TableService{
         this.vm.myCanvasService.renderAll();
     }
 
-    removeAllBlock(){
+    removeAllBlock(isDelBackBlock){
         let arr = []
         for(let block of this.nowTable.allBlock){
             arr.push(block);
         }
         for(let block of arr){
+            if(!isDelBackBlock){
+                if(block.blockType == BlockType.type_tableBlock_back){
+                    continue
+                }
+            }
+
             this.removeBlock(block)
         }
     }
