@@ -1,5 +1,4 @@
 import idUtil from '@/util/IdUtil'
-import TableData from './bean/table/TableData.js'
 import {fabric} from "fabric";
 import BlockType from "./bean/block/BlockType";
 import {saveKey, doubleClickTimeMillsseconds} from "../../common/M.js";
@@ -62,7 +61,7 @@ export default{
         block.set("top", tableBlock.top || 0)
         block.set("block", tableBlock)
 
-        await this.allBlock.push(block);
+        // await this.allBlock.push(block);
         await this.canvas.add(block);
 
         this.canvas.renderAll();

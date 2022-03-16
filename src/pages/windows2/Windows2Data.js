@@ -1,4 +1,3 @@
-import TableData from "./bean/table/TableData.js"
 export default {
     data(){
         return {
@@ -8,8 +7,8 @@ export default {
             rightMenuService: null,
             /**@type NodepadService */
             nodepadService: null,
-            /**@type TableBlockService*/
-            tableBlockService: null,
+            /**@type TableService*/
+            tableService: null,
             /**@type CoordinateService*/
             coordinateService: null,
 

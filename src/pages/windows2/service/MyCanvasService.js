@@ -9,9 +9,6 @@ export default class MyCanvasService{
     vm;
     canvas;
 
-    /**@type Block *[] */
-    blockList=[];
-
     constructor(vm) {
         this.vm = vm
         // 创建画布
@@ -49,17 +46,14 @@ export default class MyCanvasService{
     /** 添加一个图标 */
     addBlock(block /**@type Block*/){
         this.addFabricObj(block.fabricObj);
-        this.blockList.push(block);
-        this.renderAll();
+        this.vm.tableBlockService.addBlock(block)
         this.vm.coordinateService.addBlock(block);
         this.vm.coordinateService.reset();
+        this.renderAll();
     }
-    removeBlock(block){
+    removeBlock(block /**@type Block*/){
         this.removeFabricObj(block.fabricObj);
-        let index = this.blockList.indexOf(block);
-        if(index > -1){
-            this.blockList.splice(index, 1)
-        }
+        this.vm.tableBlockService.removeBlock(block)
         this.vm.coordinateService.removeBlock(block);
         this.renderAll();
     }

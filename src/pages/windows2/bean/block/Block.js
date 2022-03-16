@@ -6,6 +6,7 @@ import UrlUtil from '../../../../util/UrlUtil.js'
 
 export default class Block{
     vm;
+
     top;
     left;
     blockType; // 图标类型
@@ -20,43 +21,19 @@ export default class Block{
     /**@type RightMenu*/
     rightMenu;
 
-    /** @abstract 文本*/
-    getText(){
-        return "-";
-    }
-    
-    /** @abstract 图标单击事件*/
-    getMouseupFunc(){
-        return undefined
-    }
-    defaultMouseup(){
-        this.vm.coordinateService.reset()
-    }
-    /** @abstract 图标双击事件*/
-    getMouseDoubleupFunc(){
-        return undefined
-    }
-    defaultMouseDoubleup(){
-
-    }
-    /** @abstract 默认图标地址 */
-    getDefaultBackgroundImg(){
-        return undefined;
-    }
-    /** @abstract 懒加载图标 */
-    getLazyBackgroundImg(){
-        return undefined;
-    }
-    /** @abstract 菜单列表
-     * @return RightMenuItem[]
-     * */
-    getRightMenuItemList(){
-        return undefined;
-    }
-
     constructor(vm) {
         this.vm = vm
     }
+
+    /** @abstract 文本*/
+    toJson(){
+        let json = {};
+        json.top = this.top;
+        json.left = this.left;
+        json.blockType = this.blockType; // 图标类型
+        return json;
+    }
+
     async init(){
         this.textFabricObj = new fabric.Textbox(this.getText(), {
             fontFamily: "Inconsolata",
@@ -184,6 +161,40 @@ export default class Block{
                 this.rightMenu.addItem(rightMenuItem)
             }
         }
+    }
+
+    /** @abstract 文本*/
+    getText(){
+        return "-";
+    }
+    
+    /** @abstract 图标单击事件*/
+    getMouseupFunc(){
+        return undefined
+    }
+    defaultMouseup(){
+        this.vm.coordinateService.reset()
+    }
+    /** @abstract 图标双击事件*/
+    getMouseDoubleupFunc(){
+        return undefined
+    }
+    defaultMouseDoubleup(){
+
+    }
+    /** @abstract 默认图标地址 */
+    getDefaultBackgroundImg(){
+        return undefined;
+    }
+    /** @abstract 懒加载图标 */
+    getLazyBackgroundImg(){
+        return undefined;
+    }
+    /** @abstract 菜单列表
+     * @return RightMenuItem[]
+     * */
+    getRightMenuItemList(){
+        return undefined;
     }
 
     setTop(top){

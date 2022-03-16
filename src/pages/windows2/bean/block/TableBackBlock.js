@@ -14,8 +14,8 @@ export default class TableBackBlock extends Block{
     /** @abstract 图标双击事件*/
     getMouseDoubleupFunc(){
         return async ()=>{
-            if(this.vm.nowTableData && this.vm.nowTableData.parentsKey){
-                await this.vm.openTableKey(this.vm.nowTableData.parentsKey)
+            if(this.vm.tableBlockService.nowTableBlock && this.vm.tableBlockService.nowTableBlock.parentsKey){
+                await this.vm.openTableKey(this.vm.tableBlockService.nowTableBlock.parentsKey)
             }
         }
     }

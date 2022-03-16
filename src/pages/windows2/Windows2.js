@@ -11,7 +11,7 @@ import MyCanvasService from "./service/MyCanvasService.js"
 import RightMenuService from "./service/RightMenuService.js";
 import RightMenu from "./bean/RightMenu/RightMenu.js";
 import NodepadService from "./service/NodepadService.js";
-import TableBlockService from "./service/TableBlockService.js";
+import TableService from "./service/TableService.js";
 import CoordinateService from "./service/CoordinateService.js";
 
 
@@ -20,12 +20,12 @@ export default {
     created(){
         this.windowWidth = window.innerWidth;
         this.windowHeight = window.innerHeight;
-    },//
+    },
     async mounted(){
         this.myCanvasService = new MyCanvasService(this);
         this.rightMenuService = new RightMenuService(this);
         this.nodepadService = new NodepadService(this);
-        this.tableBlockService = new TableBlockService(this);
+        this.tableService = new TableService(this);
         this.coordinateService = new CoordinateService(this);
 
         this.tableRightMenu = new RightMenu(this);
@@ -45,7 +45,7 @@ export default {
             await this.nodepadService.showNodepad()
         })
         this.tableRightMenu.addRightMenuItem("新建桌面", (opts)=>{
-            this.tableBlockService.menuAddTableMouseDown();
+            this.tableService.menuAddTableMouseDown();
         })
 
         // 右键事件注册
@@ -55,7 +55,5 @@ export default {
 
         // 登录弹窗默认显示
         this.loginDialogFlag = true;
-
-
     }
 }

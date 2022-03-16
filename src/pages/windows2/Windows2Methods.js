@@ -10,11 +10,11 @@ import RightInit from './RightInit.js'
 import LeftInit from './LeftInit.js'
 import { login_mode, doubleClickTimeMillsseconds, createOrUpdate } from '../../common/M.js'
 import BlockTable from './BlockTable.js'
-import TableData from './bean/table/TableData.js'
 import LinkBlock from "./bean/block/LinkBlock";
 import CoordinateService from "./service/CoordinateService.js"
-import NodepadBlock from "./bean/block/NodepadBlock";
-
+import NodepadBlock from "./bean/block/NodepadBlock.js";
+import TableBlock from "./bean/block/TableBlock.js"
+import NowTable from "./bean/NowTable.js"
 
 
 export default {
@@ -27,13 +27,13 @@ export default {
         autoSaveNotify(){
             this.notify("自动保存成功", "success")
         },
-        notify(str, type){
+        notify(str, type, millseconds){
             if(type == 'success'){
                 this.$notify({
                     message: '<i class="el-icon-success" style="color: green; margin-right: 6px"></i><span style="padding-botton: 4px">' + str + '</span>',
                     dangerouslyUseHTMLString: true,
                     showClose: false,
-                    duration: 1000,
+                    duration: millseconds || 1000,
                     customClass: "autoSaveNotifyClass"
                 });
             }else if(type == 'error'){
@@ -41,7 +41,7 @@ export default {
                     message: '<i class="el-icon-error" style="color: red; margin-right: 6px"></i><span style="padding-botton: 4px">' + str + '</span>',
                     dangerouslyUseHTMLString: true,
                     showClose: false,
-                    duration: 1000,
+                    duration: millseconds || 1000,
                     customClass: "autoSaveNotifyClass"
                 });
             }
@@ -74,13 +74,12 @@ export default {
             }).catch((e) => {console.log(e)});
         },
         async menuSaveMouseDown(opts){
-            console.log('保存 点击 opts=', opts);
             try{
                 await this.save()
                 this.notify("保存"+ (this.loginMode == login_mode.login_mode_local? "本地" : "远程" ) +"成功", "success")
             }catch(err){
-                console.log(err)
-                this.notify("保存失败! (请联系网站管理员arcueid5220@163.com)", "error")
+                this.notify("保存失败! (请联系网站管理员arcueid5220@163.com)", "error", 3000)
+                throw err;
             }
         },
         menuClearMouseDown(opts){
@@ -235,32 +234,9 @@ export default {
         },
         /** 保存 */
         async save() {
-            let allBlock = [];
-            for (let item of this.allBlock) {
-                let block = item.block
-                block.top = item.top
-                block.left = item.left
-                allBlock.push(block)
-            }
-            this.nowTable.allBlock = allBlock
-            TableData.saveInstance(this.nowTable, this.loginMode, this.username, this.password)
+            await TableBlock.saveInstance(this.tableService.nowTable, this.loginMode, this.username, this.password)
         },
-        /** 加载 */
-        async load(tableData/**TableData*/) {
-            for (let block of tableData.allBlock) {
-                if (block.blockType == BlockType.type_link) {
-                    await this.addLinkBlock(block)
-                }else if(block.blockType == BlockType.type_nodepad){
-                    await this.addNodepadBlock(block)
-                }else if(block.blockType == BlockType.type_tableBlock){
-                    await this.addTableBlock(block)
-                }else if(block.blockType == BlockType.type_tableBlock_back){
-                    // await this.addTableBackBlock(block)
-                }
-            }
 
-            this.nowTable = tableData
-        },
         /** 选取一个对象 */
         fabricChooseObj(x, y) {
             let chooseObj = null;
@@ -300,13 +276,13 @@ export default {
             }
         },
 
-        /** 移除全部图标 */
-        removeAllBlock(){
-            for (let obj of this.allBlock) {
-                this.canvas.remove(obj)
-            }
-            this.allBlock = []
-        },
+        // /** 移除全部图标 */
+        // removeAllBlock(){
+        //     for (let obj of this.allBlock) {
+        //         this.canvas.remove(obj)
+        //     }
+        //     this.allBlock = []
+        // },
         /** 移除一个图标 */
         removOneBlock(canvasObj) {
             this.canvas.remove(canvasObj)
@@ -341,7 +317,7 @@ export default {
 
                 this.loginMode = login_mode.login_mode_serve
                 this.loginDialogFlag = false;
-                this.load(tableData);
+                this.tableService.load(tableData);
             }else{
                 this.$message({
                     type: 'error',
@@ -355,8 +331,9 @@ export default {
         async btnLocalLogin() {
             this.loginMode = login_mode.login_mode_local
             this.loginDialogFlag = false;
-            let tableData/**@type TableData*/ = await TableData.loadInstance(null, this.loginMode)
-            await this.load(tableData);
+            let nowTable/**@type NowTable*/ = await NowTable.loadInstance(null, this.loginMode)
+
+            await this.tableService.load(nowTable);
 
         },
         /** 图标自动排列 */
@@ -371,14 +348,14 @@ export default {
 
         },
         async openTableKey(key/**@type String*/){
-            let tableData /**@type TableData*/ = await TableData.loadInstance(key, this.loginMode, this.username, this.password)
+            let nowTable /**@type NowTable*/ = await NowTable.loadInstance(key, this.loginMode, this.username, this.password)
             await this.openTableData(tableData);
             this.nowTable = tableData
         },
         /** 打开新窗口*/
         async openTableData(tableData /**@type TableData*/){
             this.removeAllBlock();
-            await this.load(tableData);
+            await this.tableService.load(tableData);
         }
     }
 
