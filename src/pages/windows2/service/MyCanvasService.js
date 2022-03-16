@@ -43,20 +43,7 @@ export default class MyCanvasService{
         }
         return block;
     }
-    /** 添加一个图标 */
-    addBlock(block /**@type Block*/){
-        this.addFabricObj(block.fabricObj);
-        this.vm.tableService.addBlock(block)
-        this.vm.coordinateService.addBlock(block);
-        this.vm.coordinateService.reset();
-        this.renderAll();
-    }
-    removeBlock(block /**@type Block*/){
-        this.removeFabricObj(block.fabricObj);
-        this.vm.tableService.removeBlock(block)
-        this.vm.coordinateService.removeBlock(block);
-        this.renderAll();
-    }
+
     /**
      * 添加一个对象
      */

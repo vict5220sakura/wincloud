@@ -45,7 +45,7 @@ export default class NodepadService{
         if(this.nodepadBlock){ // 如果是更新 先删除原先的
             top = this.nodepadBlock.getTop()
             left = this.nodepadBlock.getLeft()
-            this.vm.myCanvasService.removeBlock(this.nodepadBlock)
+            this.vm.tableService.removeBlock(this.nodepadBlock)
         }else{
             top = this.vm.rightMouseYTemp - (CoordinateService.blockHeight / 2 + CoordinateService.marginTop)
             left = this.vm.rightMouseXTemp - (CoordinateService.blockWidth / 2 + CoordinateService.marginLeft)
@@ -53,7 +53,7 @@ export default class NodepadService{
         this.nodepadBlock = await NodepadBlock.newInstance(this.vm, title, body);
         this.nodepadBlock.setTop(top)
         this.nodepadBlock.setLeft(left)
-        this.vm.myCanvasService.addBlock(this.nodepadBlock)
+        this.vm.tableService.addBlock(this.nodepadBlock)
 
         // 保存
         // this.blockAutoArrange();

@@ -27,7 +27,7 @@ export default class NodepadBlock extends Block{
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(async () => {
-                this.vm.myCanvasService.removeBlock(this)
+                this.vm.tableService.removeBlock(this)
                 // await this.save();
                 // this.autoSaveNotify();
             }).catch((e) => {

@@ -15,6 +15,7 @@ import CoordinateService from "./service/CoordinateService.js"
 import NodepadBlock from "./bean/block/NodepadBlock.js";
 import TableBlock from "./bean/block/TableBlock.js"
 import NowTable from "./bean/NowTable.js"
+import TableSaveDao from "./dao/TableSaveDao.js"
 
 
 export default {
@@ -66,7 +67,7 @@ export default {
                     let linkBlock = await LinkBlock.newInstance(this, nameInput, urlInput)
                     linkBlock.setLeft(this.rightMouseXTemp - (CoordinateService.blockWidth / 2 + CoordinateService.marginLeft))
                     linkBlock.setTop(this.rightMouseYTemp - (CoordinateService.blockHeight / 2 + CoordinateService.marginTop))
-                    this.myCanvasService.addBlock(linkBlock)
+                    this.tableService.addBlock(linkBlock)
                     // this.blockAutoArrange();
                     // await this.save();
                     // this.autoSaveNotify();
@@ -234,20 +235,9 @@ export default {
         },
         /** 保存 */
         async save() {
-            await TableBlock.saveInstance(this.tableService.nowTable, this.loginMode, this.username, this.password)
+            await TableSaveDao.saveInstance(this.tableService.nowTable, this.loginMode, this.username, this.password)
         },
 
-        /** 选取一个对象 */
-        fabricChooseObj(x, y) {
-            let chooseObj = null;
-            for (let obj of this.canvas.getObjects()) {
-                if (XYUtil.checkPointIn(x, y, obj.left, obj.top, obj.width, obj.height)) {
-                    chooseObj = obj
-                    continue;
-                }
-            }
-            return chooseObj;
-        },
         /** 选取多个对象
          * @return canvasObj
          */
@@ -276,13 +266,6 @@ export default {
             }
         },
 
-        // /** 移除全部图标 */
-        // removeAllBlock(){
-        //     for (let obj of this.allBlock) {
-        //         this.canvas.remove(obj)
-        //     }
-        //     this.allBlock = []
-        // },
         /** 移除一个图标 */
         removOneBlock(canvasObj) {
             this.canvas.remove(canvasObj)
@@ -331,13 +314,12 @@ export default {
         async btnLocalLogin() {
             this.loginMode = login_mode.login_mode_local
             this.loginDialogFlag = false;
-            let nowTable/**@type NowTable*/ = await NowTable.loadInstance(this, null, this.loginMode)
-
+            let nowTable/**@type NowTable*/ = await TableSaveDao.loadInstance(this, null, this.loginMode)
             await this.tableService.load(nowTable);
 
         },
         async openTableKey(key/**@type String*/){
-            let nowTable /**@type NowTable*/ = await NowTable.loadInstance(this, key, this.loginMode, this.username, this.password)
+            let nowTable /**@type NowTable*/ = await TableSaveDao.loadInstance(this, key, this.loginMode, this.username, this.password)
             await this.openTableData(tableData);
             this.nowTable = tableData
         },

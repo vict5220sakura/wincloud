@@ -36,11 +36,11 @@ export default class LinkBlock extends Block{
                     let nameInput = nameInputData.value
 
                     // 先删除 在新建
-                    this.vm.myCanvasService.removeBlock(this)
+                    this.vm.tableService.removeBlock(this)
                     let linkBlock = await LinkBlock.newInstance(this.vm, nameInput, urlInput)
                     linkBlock.setLeft(this.getLeft())
                     linkBlock.setTop(this.getTop())
-                    this.vm.myCanvasService.addBlock(linkBlock)
+                    this.vm.tableService.addBlock(linkBlock)
 
                     // await this.save();
                     // this.autoSaveNotify();
@@ -53,7 +53,7 @@ export default class LinkBlock extends Block{
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(async () => {
-                this.vm.myCanvasService.removeBlock(this)
+                this.vm.tableService.removeBlock(this)
                 // await this.save();
                 // this.autoSaveNotify();
             }).catch((e) => {

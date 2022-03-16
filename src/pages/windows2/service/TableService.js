@@ -17,20 +17,34 @@ export default class TableService{
     /**@type NowTable*/
     nowTable; // 当前窗口
 
-    addBlock(block/**@type Block*/){
+    /** 添加一个图标 */
+    addBlock(block /**@type Block*/){
         this.nowTable.allBlock.push(block)
+
+        this.vm.myCanvasService.addFabricObj(block.fabricObj);
+        this.vm.coordinateService.addBlock(block);
+        this.vm.coordinateService.reset();
+        this.vm.myCanvasService.renderAll();
     }
-    removeBlock(block/**@type Block*/){
+    removeBlock(block /**@type Block*/){
         let index = this.nowTable.allBlock.indexOf(block);
         if(index > -1){
             this.nowTable.allBlock.splice(index, 1)
         }
+
+        this.vm.myCanvasService.removeFabricObj(block.fabricObj);
+        this.vm.coordinateService.removeBlock(block);
+        this.vm.myCanvasService.renderAll();
     }
 
     /** 加载 */
     async load(nowTable/**NowTable*/) {
-        this.nowTable = nowTable
-        for(let block of this.nowTable.allBlock){
+        this.nowTable = new NowTable()
+        this.nowTable.name = nowTable.name
+        this.nowTable.key = nowTable.key
+        this.nowTable.parentsKey = nowTable.parentsKey
+        this.nowTable.type = nowTable.type
+        for(let block of nowTable.allBlock){
             this.addBlock(block)
         }
     }
@@ -77,6 +91,6 @@ export default class TableService{
         tableBlock.setLeft(this.vm.rightMouseXTemp - (CoordinateService.blockWidth / 2 + CoordinateService.marginLeft))
         tableBlock.setTop(this.vm.rightMouseYTemp - (CoordinateService.blockHeight / 2 + CoordinateService.marginTop))
         // 当前位置创建一个图标
-        this.vm.myCanvasService.addBlock(tableBlock)
+        this.addBlock(tableBlock)
     }
 }

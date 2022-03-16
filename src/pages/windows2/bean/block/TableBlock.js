@@ -58,7 +58,7 @@ export default class TableBlock extends Block{
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(async () => {
-                this.vm.myCanvasService.removeBlock(this)
+                this.vm.tableService.removeBlock(this)
             }).catch((e) => {
                 console.log(e)
             });
