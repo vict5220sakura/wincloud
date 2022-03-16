@@ -101,11 +101,11 @@ export default {
                 }
             }).catch((e) => {console.log(e)});
         },
-        async menuAutopailieMouseDown(opts){
-            this.blockAutoArrange();
-            await this.save();
-            this.autoSaveNotify();
-        },
+        // async menuAutopailieMouseDown(opts){
+        //     this.blockAutoArrange();
+        //     await this.save();
+        //     this.autoSaveNotify();
+        // },
 
         /** 添加一个链接图标 */
         async addLinkBlock(linkBlock) {

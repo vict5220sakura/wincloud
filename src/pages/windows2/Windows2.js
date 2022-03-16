@@ -39,7 +39,7 @@ export default {
             this.menuClearMouseDown(opts);
         })
         this.tableRightMenu.addRightMenuItem("刷新排列", (opts)=>{
-            this.menuAutopailieMouseDown(opts)
+            this.coordinateService.reset()
         })
         this.tableRightMenu.addRightMenuItem("新建记事本", async (opts)=>{
             await this.nodepadService.showNodepad()

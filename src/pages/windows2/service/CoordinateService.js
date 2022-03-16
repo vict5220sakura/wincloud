@@ -150,7 +150,10 @@ export default class CoordinateService{
         }
     }
 
-    activeBlock(){
+    /**
+     * 图标重排
+     */
+    reset(){
         let allBlock /**@type Block*/ = []
 
         for(let blockPoint of this.activeallBlockPoint){

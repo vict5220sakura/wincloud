@@ -52,6 +52,7 @@ export default class MyCanvasService{
         this.blockList.push(block);
         this.renderAll();
         this.vm.coordinateService.addBlock(block);
+        this.vm.coordinateService.reset();
     }
     removeBlock(block){
         this.removeFabricObj(block.fabricObj);
