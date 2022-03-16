@@ -76,6 +76,10 @@ export default class TableService{
             // 创建桌面图标并保存
             await this.createTableBlock(nowTableNew);
 
+            // 保存
+            await this.vm.save();
+            this.vm.autoSaveNotify();
+
         }).catch((e) => {throw e});
     }
 

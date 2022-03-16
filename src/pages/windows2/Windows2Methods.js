@@ -67,9 +67,8 @@ export default {
                     linkBlock.setLeft(this.rightMouseXTemp - (CoordinateService.blockWidth / 2 + CoordinateService.marginLeft))
                     linkBlock.setTop(this.rightMouseYTemp - (CoordinateService.blockHeight / 2 + CoordinateService.marginTop))
                     this.tableService.addBlock(linkBlock)
-                    // this.blockAutoArrange();
-                    // await this.save();
-                    // this.autoSaveNotify();
+                    await this.save();
+                    this.autoSaveNotify();
                 })
             }).catch((e) => {console.log(e)});
         },
@@ -83,7 +82,7 @@ export default {
             }
         },
         menuClearMouseDown(opts){
-            this.$confirm('此操作将清空桌面数据, 输入"清空"继续', '清空', {
+            this.$confirm('此操作将清空桌面数据', '清空', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'

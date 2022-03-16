@@ -52,6 +52,8 @@ export default class TableBlock extends Block{
                 newTableBlock.setLeft(left)
                 newTableBlock.setTop(top)
                 this.vm.tableService.addBlock(newTableBlock)
+                this.vm.save()
+                this.vm.autoSaveNotify();
             })
         }))
         list.push(RightMenuItem.newInstance(this.vm, "删除", (opts)=>{

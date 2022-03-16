@@ -56,9 +56,9 @@ export default class NodepadService{
         this.vm.tableService.addBlock(this.nodepadBlock)
 
         // 保存
-        // this.blockAutoArrange();
-        // await this.save();
-        // this.autoSaveNotify();
+        await this.vm.save();
+        this.vm.autoSaveNotify();
+
 
         // 关闭
         this.vm.nodepadFlag = false

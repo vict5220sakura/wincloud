@@ -42,8 +42,8 @@ export default class LinkBlock extends Block{
                     linkBlock.setTop(this.getTop())
                     this.vm.tableService.addBlock(linkBlock)
 
-                    // await this.save();
-                    // this.autoSaveNotify();
+                    await this.vm.save();
+                    this.vm.autoSaveNotify();
                 })
             }).catch((e) => {console.log(e)});
         }))
