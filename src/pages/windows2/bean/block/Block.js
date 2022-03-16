@@ -25,12 +25,23 @@ export default class Block{
         this.vm = vm
     }
 
+    /**
+     * 保存忽略字段名
+     * @returns {string[]}
+     */
+    getIgnoreFieldName(){
+        return ["vm", "blockPoint", "fabricObj", "textFabricObj", "backgroundFabricObj", "rightMenu"];
+    }
     /** @abstract 文本*/
     toJson(){
         let json = {};
-        json.top = this.top;
-        json.left = this.left;
-        json.blockType = this.blockType; // 图标类型
+        for(let fieldName in this){
+            if(this.getIgnoreFieldName().indexOf(fieldName) > -1){
+                continue;
+            }else{
+                json[fieldName] = this[fieldName]
+            }
+        }
         return json;
     }
 

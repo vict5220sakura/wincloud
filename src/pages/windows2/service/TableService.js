@@ -28,20 +28,20 @@ export default class TableService{
     }
 
     /** 加载 */
-    async load(tableBlock/**TableBlock*/) {
-        console.log("本地登录tableBlock", tableBlock)
-        this.nowTable = tableBlock
-        // for (let block of tableData.allBlock) {
-        //     if (block.blockType == BlockType.type_link) {
-        //         await this.addLinkBlock(block)
-        //     }else if(block.blockType == BlockType.type_nodepad){
-        //         await this.addNodepadBlock(block)
-        //     }else if(block.blockType == BlockType.type_tableBlock){
-        //         await this.addTableBlock(block)
-        //     }else if(block.blockType == BlockType.type_tableBlock_back){
-        //         // await this.addTableBackBlock(block)
-        //     }
-        // }
+    async load(nowTable/**NowTable*/) {
+        console.log("本地登录nowTable", nowTable)
+        this.nowTable = nowTable
+        for (let block of this.nowTable.allBlock) {
+            if (block.blockType == BlockType.type_link) {
+                await this.addLinkBlock(block)
+            }else if(block.blockType == BlockType.type_nodepad){
+                await this.addNodepadBlock(block)
+            }else if(block.blockType == BlockType.type_tableBlock){
+                await this.addTableBlock(block)
+            }else if(block.blockType == BlockType.type_tableBlock_back){
+                // await this.addTableBackBlock(block)
+            }
+        }
     }
 
     /**新建桌面*/

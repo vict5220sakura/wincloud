@@ -336,17 +336,6 @@ export default {
             await this.tableService.load(nowTable);
 
         },
-        /** 图标自动排列 */
-        blockAutoArrange(){
-
-            // 全部图标加入table
-            for(let block of this.allBlock){
-                // table.addBlock(block)
-            }
-            // 全部图标批量对齐
-            // table.activeBlock();
-
-        },
         async openTableKey(key/**@type String*/){
             let nowTable /**@type NowTable*/ = await NowTable.loadInstance(key, this.loginMode, this.username, this.password)
             await this.openTableData(tableData);

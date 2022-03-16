@@ -73,8 +73,4 @@ export default class TableBlock extends Block{
         await block.init();
         return block;
     }
-    toJson(){
-        let json = super.toJson();
-        return json;
-    }
 }

@@ -46,14 +46,14 @@ export default class MyCanvasService{
     /** 添加一个图标 */
     addBlock(block /**@type Block*/){
         this.addFabricObj(block.fabricObj);
-        this.vm.tableBlockService.addBlock(block)
+        this.vm.tableService.addBlock(block)
         this.vm.coordinateService.addBlock(block);
         this.vm.coordinateService.reset();
         this.renderAll();
     }
     removeBlock(block /**@type Block*/){
         this.removeFabricObj(block.fabricObj);
-        this.vm.tableBlockService.removeBlock(block)
+        this.vm.tableService.removeBlock(block)
         this.vm.coordinateService.removeBlock(block);
         this.renderAll();
     }

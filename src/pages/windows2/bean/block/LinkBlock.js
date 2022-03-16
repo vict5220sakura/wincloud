@@ -60,8 +60,10 @@ export default class LinkBlock extends Block{
                 console.log(e)
             });
         }))
+
         return list;
     }
+
     getMouseDoubleupFunc() {
         return ()=>{
             let url = this.url
