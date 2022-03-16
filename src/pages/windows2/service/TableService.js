@@ -71,10 +71,10 @@ export default class TableService{
                 name = "桌面"
             }
             // 创建错面数据并保存
-            await this.createNowTable(this.nowTable, name);
+            let nowTableNew = await this.createNowTable(this.nowTable, name);
 
             // 创建桌面图标并保存
-            await this.createTableBlock(name);
+            await this.createTableBlock(nowTableNew);
 
         }).catch((e) => {throw e});
     }
@@ -95,13 +95,15 @@ export default class TableService{
         nowTableNew.allBlock.push(tableBackBlock)
 
         await TableSaveDao.saveInstance(nowTableNew, this.vm.loginMode, this.vm.username, this.vm.password)
+        return nowTableNew;
     }
 
-    async createTableBlock(name){
-        let tableBlock = await TableBlock.newInstance(this.vm, name);
+    async createTableBlock(nowTableNew){
+        let tableBlock = await TableBlock.newInstance(this.vm, nowTableNew.name, nowTableNew.key);
         tableBlock.setLeft(this.vm.rightMouseXTemp - (CoordinateService.blockWidth / 2 + CoordinateService.marginLeft))
         tableBlock.setTop(this.vm.rightMouseYTemp - (CoordinateService.blockHeight / 2 + CoordinateService.marginTop))
         // 当前位置创建一个图标
         this.addBlock(tableBlock)
     }
+
 }

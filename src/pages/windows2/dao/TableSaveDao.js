@@ -77,6 +77,7 @@ export default class TableSaveDao{
      * @param tableData
      */
     static async serviceSaveInstance(username, password, tableSaveData /**@type TableSaveData*/){
+        console.log(tableSaveData)
         if(tableSaveData.type == NowTable.type_defaule){
             let winDataStr = JSON.stringify(tableSaveData.allBlock);
             let res = await Api.post("saveWinData", {username, password, winDataStr})
@@ -84,7 +85,8 @@ export default class TableSaveDao{
                 throw "api未知异常"
             }
             return;
-        }else if(tableSaveData.type == TableBlock.type_children){
+        }else if(tableSaveData.type == NowTable.type_children){
+
             let tableDataStr = JSON.stringify(tableSaveData);
             let res = await Api.post("saveWinDataChildren",
                 {username, password, key: tableSaveData.key, tableDataStr})

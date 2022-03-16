@@ -32,7 +32,7 @@ export default class TableBlock extends Block{
     /** @abstract 图标双击事件*/
     getMouseDoubleupFunc(){
         return async()=>{
-            await this.openTableKey(this.key)
+            await this.vm.openTableKey(this.key)
         }
     }
 
@@ -48,7 +48,7 @@ export default class TableBlock extends Block{
                 let top = this.getTop();
                 let left = this.getLeft();
                 this.vm.tableService.removeBlock(this)
-                let newTableBlock = await TableBlock.newInstance(this.vm, newname);
+                let newTableBlock = await TableBlock.newInstance(this.vm, newname, this.key);
                 newTableBlock.setLeft(left)
                 newTableBlock.setTop(top)
                 this.vm.tableService.addBlock(newTableBlock)
@@ -68,14 +68,15 @@ export default class TableBlock extends Block{
         return list;
     }
 
-    static async newInstance(vm, name){
+    static async newInstance(vm, name, key){
         let block = new this(vm);
         block.name = name;
+        block.key = key
         await block.init();
         return block;
     }
 
     static async newInstanceJson(vm, json){
-        return await TableBlock.newInstance(vm, json["name"]);
+        return await TableBlock.newInstance(vm, json["name"], json["key"]);
     }
 }

@@ -16,6 +16,8 @@ export default class TableBackBlock extends Block{
         return async ()=>{
             if(this.vm.tableService.nowTable && this.vm.tableService.nowTable.parentsKey){
                 await this.vm.openTableKey(this.vm.tableService.nowTable.parentsKey)
+            }else{
+                await this.vm.openTableKey(null)
             }
         }
     }

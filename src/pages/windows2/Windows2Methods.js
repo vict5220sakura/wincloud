@@ -9,7 +9,6 @@ import Windows2MethonsRules from './Windows2MethonsRules.js'
 import RightInit from './RightInit.js'
 import LeftInit from './LeftInit.js'
 import { login_mode, doubleClickTimeMillsseconds, createOrUpdate } from '../../common/M.js'
-import BlockTable from './BlockTable.js'
 import LinkBlock from "./bean/block/LinkBlock";
 import CoordinateService from "./service/CoordinateService.js"
 import NodepadBlock from "./bean/block/NodepadBlock.js";
@@ -23,7 +22,6 @@ export default {
         ...LeftInit, // 左键初始化
         ...RightInit, // 右键初始化
         ...Windows2MethonsRules,
-        ...BlockTable,
         /** 自动保存提示 */
         autoSaveNotify(){
             this.notify("自动保存成功", "success")
@@ -84,200 +82,24 @@ export default {
             }
         },
         menuClearMouseDown(opts){
-            console.log('清空 点击 opts=', opts);
-
-
-            this.$prompt('此操作将清空桌面数据, 输入"清空"继续', '清空', {
+            this.$confirm('此操作将清空桌面数据, 输入"清空"继续', '清空', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
-            }).then((input) => {
-                if('清空' == input.value){
-                    this.removeAllBlock()
-                    this.$message({
-                        type: 'success',
-                        message: '清空桌面数据成功!'
-                    });
-                }
+            }).then(() => {
+                this.tableService.removeAllBlock()
+                this.$message({
+                    type: 'success',
+                    message: '清空桌面数据成功!'
+                });
             }).catch((e) => {console.log(e)});
         },
-        // async menuAutopailieMouseDown(opts){
-        //     this.blockAutoArrange();
-        //     await this.save();
-        //     this.autoSaveNotify();
-        // },
 
-        /** 添加一个链接图标 */
-        async addLinkBlock(linkBlock) {
-            // 先添加一个默认背景的图标
-            let urlBlockText = new fabric.Textbox(linkBlock.name, {
-                fontFamily: "Inconsolata",
-                width: 60,
-                top: 70 + 10,
-                left: 5,
-                fontSize: 15,
-                lineHeight: 1,
-                textAlign: "center", // 文字对齐
-                lockRotation: true, // 禁止旋转
-                lockScalingY: true, // 禁止Y轴伸缩
-                lockScalingFlip: true, // 禁止负值反转
-                splitByGrapheme: true, // 拆分中文，可以实现自动换行
-                objectCaching: false,
-            });
-    
-            // 设置背景图片
-            let urlBlockbackground = new fabric.Rect({
-                width: 70,
-                height: 70,
-                fill: '#eeeeee'
-            });
-            await new Promise((r)=>{
-                fabric.Image.fromURL('/img/chrome.png', (oImg) => {
-                    urlBlockbackground = oImg
-                    r()
-                })
-            })
-            
-    
-            urlBlockbackground.set("scaleX", 70 / urlBlockbackground.width)
-            urlBlockbackground.set("scaleY", 70 / urlBlockbackground.height)
-    
-    
-            urlBlockbackground.hasControls = false;
-            urlBlockbackground.hasBorders = false;
-    
-            let urlBlock = new fabric.Group([urlBlockbackground, urlBlockText])
-            urlBlock.addWithUpdate()
-            
-            urlBlock.hasControls = false;
-            urlBlock.hasBorders = false;
-    
-            urlBlock.set("left", linkBlock.left || 0)
-            urlBlock.set("top", linkBlock.top || 0)
-            urlBlock.set("block", linkBlock)
-            
-            await this.allBlock.push(urlBlock);
-            await this.canvas.add(urlBlock);
-
-            this.canvas.renderAll();
-
-            // 添加点击跳转事件
-            urlBlock.on("mouseup", async (opts) => {
-                console.log("连接点击", urlBlock)
-                let now = new Date().getTime();
-                let oldTime = opts.target.time;
-                opts.target.time = now;
-    
-                if (oldTime) {
-                    if (now - oldTime < doubleClickTimeMillsseconds) {
-                        // 双击
-                        let url = opts.target.block.url
-                        if (new RegExp("http.*").test(url)) {
-                            window.open(url)
-                        } else {
-                            window.open("http://" + url)
-                        }
-                    } else {
-                        // 单击
-                        this.blockAutoArrange();
-                        // await this.save();
-                        // this.autoSaveNotify();
-                    }
-                } else {
-                    // 单击
-                    this.blockAutoArrange();
-                    // await this.save();
-                    // this.autoSaveNotify();
-                }
-            })
-            // 懒加载图标
-            fabric.Image.fromURL(UrlUtil.getLogoUrl(linkBlock.url), (oImgNew) => {
-                if (oImgNew.width == 0) {
-                    
-                } else {
-                    let urlBlockbackgroundNew = oImgNew
-                    urlBlockbackgroundNew.set("scaleX", 70 / urlBlockbackgroundNew.width)
-                    urlBlockbackgroundNew.set("scaleY", 70 / urlBlockbackgroundNew.height)
-                    urlBlockbackgroundNew.hasControls = false;
-                    urlBlockbackgroundNew.hasBorders = false;
-                    
-                    let urlBlockTextNew = new fabric.Textbox(linkBlock.name, {
-                        fontFamily: "Inconsolata",
-                        width: 60,
-                        top: 70 + 10,
-                        left: 5,
-                        fontSize: 15,
-                        lineHeight: 1,
-                        textAlign: "center", // 文字对齐
-                        lockRotation: true, // 禁止旋转
-                        lockScalingY: true, // 禁止Y轴伸缩
-                        lockScalingFlip: true, // 禁止负值反转
-                        splitByGrapheme: true, // 拆分中文，可以实现自动换行
-                        objectCaching: false,
-                    });
-                    
-                    let top = urlBlock.top
-                    let left = urlBlock.left
-                    urlBlock.remove(urlBlockText)
-                    urlBlock.remove(urlBlockbackground)
-
-                    urlBlock.addWithUpdate(urlBlockbackgroundNew)
-                    urlBlock.addWithUpdate(urlBlockTextNew)
-                    urlBlock.set("left", left || 0)
-                    urlBlock.set("top", top || 0)
-                    urlBlock.set("block", linkBlock)
-                    urlBlock.addWithUpdate()
-                    urlBlock.set("block", linkBlock)
-
-                    this.canvas.renderAll();
-                }
-            });
-        },
         /** 保存 */
         async save() {
             await TableSaveDao.saveInstance(this.tableService.nowTable, this.loginMode, this.username, this.password)
         },
 
-        /** 选取多个对象
-         * @return canvasObj
-         */
-        fabricChooseObjs(x, y) {
-            let objs = []
-    
-            for (let obj of this.canvas.getObjects()) {
-                if (XYUtil.checkPointIn(x, y, obj.left, obj.top, obj.width, obj.height)) {
-                    objs.push(obj)
-                }
-            }
-            return objs;
-        },
-        
-        /** 视图展示菜单 */
-        fabricShowBlockMenu(chooseObj, x, y) {
-            let block = chooseObj.block
-            if(block){ // 存在实体
-                if (block.blockType == BlockType.type_link) {
-                    this.linkBlockShowMenu(chooseObj, block, x, y)
-                }else if(block.blockType == BlockType.type_nodepad){
-                    this.nodepadBlockShowMenu(chooseObj, block, x, y)
-                }else if(block.blockType == BlockType.type_tableBlock){
-                    this.tableBlockShowMenu(chooseObj, block, x, y);
-                }
-            }
-        },
-
-        /** 移除一个图标 */
-        removOneBlock(canvasObj) {
-            this.canvas.remove(canvasObj)
-            for (let i = 0; i < this.allBlock.length; i++) {
-                console.log("删除log", this.allBlock[i].block, canvasObj.block)
-                if (this.allBlock[i].block == canvasObj.block) {
-                    this.allBlock.splice(i, 1)
-                    break;
-                }
-            }
-        },
-        
         /**
          * 注册登录按钮点击
          */
@@ -295,12 +117,12 @@ export default {
                     message: (res.data.registLoginMode == "regist" ? "注册" : "登录") + '成功!'
                 });
                 // this.winDataStr = res.data.winData
-                let tableData = new TableData();
-                tableData.allBlock = (res.data.winData && JSON.parse(res.data.winData)) || []
+                let nowTable = new NowTable();
+                nowTable.allBlock = (res.data.winData && JSON.parse(res.data.winData)) || []
 
                 this.loginMode = login_mode.login_mode_serve
                 this.loginDialogFlag = false;
-                this.tableService.load(tableData);
+                this.tableService.load(nowTable);
             }else{
                 this.$message({
                     type: 'error',
@@ -316,17 +138,12 @@ export default {
             this.loginDialogFlag = false;
             let nowTable/**@type NowTable*/ = await TableSaveDao.loadInstance(this, null, this.loginMode)
             await this.tableService.load(nowTable);
-
         },
+
         async openTableKey(key/**@type String*/){
             let nowTable /**@type NowTable*/ = await TableSaveDao.loadInstance(this, key, this.loginMode, this.username, this.password)
-            await this.openTableData(tableData);
-            this.nowTable = tableData
-        },
-        /** 打开新窗口*/
-        async openTableData(tableData /**@type TableData*/){
             this.tableService.removeAllBlock();
-            await this.tableService.load(tableData);
+            await this.tableService.load(nowTable);
         }
     }
 
