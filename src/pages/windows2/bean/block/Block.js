@@ -29,9 +29,15 @@ export default class Block{
     getMouseupFunc(){
         return undefined
     }
+    defaultMouseup(){
+        this.vm.coordinateService.reset()
+    }
     /** @abstract 图标双击事件*/
     getMouseDoubleupFunc(){
         return undefined
+    }
+    defaultMouseDoubleup(){
+
     }
     /** @abstract 默认图标地址 */
     getDefaultBackgroundImg(){
@@ -101,17 +107,20 @@ export default class Block{
             opts.target.time = now;
             if (oldTime) {
                 if (now - oldTime < doubleClickTimeMillsseconds) {
+                    this.defaultMouseDoubleup();
                     // 双击
                     if(this.getMouseDoubleupFunc()){
                         this.getMouseDoubleupFunc()()
                     }
                 } else {
+                    this.defaultMouseup()
                     // 单击
                     if(this.getMouseupFunc()){
                         this.getMouseupFunc()()
                     }
                 }
             } else {
+                this.defaultMouseup()
                 // 单击
                 if(this.getMouseupFunc()){
                     this.getMouseupFunc()()
