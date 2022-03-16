@@ -31,11 +31,17 @@ export default class NodepadBlock extends Block{
                 // await this.save();
                 // this.autoSaveNotify();
             }).catch((e) => {
-                console.log(e)
+                throw e;
             });
         }))
         return list;
     }
+    getMouseDoubleupFunc(){
+        return ()=>{
+            this.vm.nodepadService.showNodepad(this)
+        }
+    }
+
 
     static async newInstance(vm, title, body){
         let block = new this(vm);

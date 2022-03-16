@@ -5,6 +5,7 @@ import idUtil from "../../../util/IdUtil.js"
 import BlockType from "../bean/block/BlockType.js";
 import CoordinateService from "./CoordinateService.js";
 import NowTable from '../bean/NowTable.js'
+import TableSaveDao from "../dao/TableSaveDao";
 
 /**
  * 桌面图标服务类
@@ -83,7 +84,7 @@ export default class TableService{
         let tableBackBlock = await TableBackBlock.newInstance(this.vm);
         nowTableNew.allBlock.push(tableBackBlock)
 
-        await NowTable.saveInstance(nowTableNew, this.vm.loginMode, this.vm.username, this.vm.password)
+        await TableSaveDao.saveInstance(nowTableNew, this.vm.loginMode, this.vm.username, this.vm.password)
     }
 
     async createTableBlock(name){

@@ -141,7 +141,7 @@ export default class CoordinateService{
         this.addBlockMain(block, nearBlockpoint)
     }
     removeBlock(block){
-        let index = this.activeallBlockPoint.indexOf(block);
+        let index = this.activeallBlockPoint.indexOf(block.blockPoint);
         if(index > -1){
             this.activeallBlockPoint.splice(index, 1)
             let blockPoint = block.blockPoint;

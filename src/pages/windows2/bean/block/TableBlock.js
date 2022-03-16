@@ -35,11 +35,7 @@ export default class TableBlock extends Block{
             await this.openTableKey(this.key)
         }
     }
-    setName(name){
-        this.name = name
-        this.textFabricObj.text = name
-        console.log("this.textFabricObj", this.textFabricObj)
-    }
+
     getRightMenuItemList(){
         let list = []
         list.push(RightMenuItem.newInstance(this.vm, "修改", (opts)=>{
@@ -49,7 +45,13 @@ export default class TableBlock extends Block{
                 inputValue: this.name
             }).then(async(input) => {
                 let newname = input.value;
-                this.setName(newname);
+                let top = this.getTop();
+                let left = this.getLeft();
+                this.vm.tableService.removeBlock(this)
+                let newTableBlock = await TableBlock.newInstance(this.vm, newname);
+                newTableBlock.setLeft(left)
+                newTableBlock.setTop(top)
+                this.vm.tableService.addBlock(newTableBlock)
             })
         }))
         list.push(RightMenuItem.newInstance(this.vm, "删除", (opts)=>{
