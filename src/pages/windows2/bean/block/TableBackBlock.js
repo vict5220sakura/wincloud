@@ -1,5 +1,6 @@
 import BlockType from "./BlockType";
 import Block from "./Block.js"
+import RightMenuItem from "../RightMenu/RightMenuItem";
 
 /**桌面返回blcok*/
 export default class TableBackBlock extends Block{
@@ -24,6 +25,17 @@ export default class TableBackBlock extends Block{
     /** @abstract 默认图标地址 */
     getDefaultBackgroundImg(){
         return "/img/back1.png";
+    }
+    getRightMenuItemList() {
+        let list = []
+        list.push(RightMenuItem.newInstance(this.vm, "返回", async (opts) => {
+            if(this.vm.tableService.nowTable && this.vm.tableService.nowTable.parentsKey){
+                await this.vm.openTableKey(this.vm.tableService.nowTable.parentsKey)
+            }else{
+                await this.vm.openTableKey(null)
+            }
+        }))
+        return list
     }
 
     static async newInstance(vm){

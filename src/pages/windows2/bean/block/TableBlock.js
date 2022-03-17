@@ -38,6 +38,9 @@ export default class TableBlock extends Block{
 
     getRightMenuItemList(){
         let list = []
+        list.push(RightMenuItem.newInstance(this.vm, "进入", async (opts)=>{
+            await this.vm.openTableKey(this.key)
+        }))
         list.push(RightMenuItem.newInstance(this.vm, "修改", (opts)=>{
             this.vm.$prompt('请输入桌面名称', '提示', {
                 confirmButtonText: '确定',

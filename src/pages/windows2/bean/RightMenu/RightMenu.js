@@ -89,6 +89,7 @@ export default class RightMenu{
             menuItem.addWithUpdate()
             topIndex++;
         }
+        this.vm.myCanvasService.renderAll()
     }
     /** 关闭菜单 */
     close() {

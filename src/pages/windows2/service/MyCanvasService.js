@@ -17,7 +17,10 @@ export default class MyCanvasService{
         this.canvas.hoverCursor = 'default' // 鼠标样式
         this.canvas.moveCursor = 'default' // 鼠标样式
 
-        // 设置背景图片
+        this.initBackground();
+    }
+    // 设置背景图片
+    initBackground(){
         fabric.Image.fromURL('/img/img0_3840x2160.jpg', (oImg)=>{
             oImg.set({
                 scaleX: this.vm.windowWidth / oImg.width,
@@ -63,5 +66,8 @@ export default class MyCanvasService{
     /** 取消选择所有对象 */
     discardActiveObject(){
         this.canvas.discardActiveObject();
+    }
+    clearCanvas(){
+        this.canvas.clear();
     }
 }

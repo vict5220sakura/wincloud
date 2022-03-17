@@ -33,25 +33,36 @@ export default class TableService{
             this.nowTable.allBlock.splice(index, 1)
         }
 
+        this.vm.myCanvasService.removeFabricObj(block.textFabricObj)
+        this.vm.myCanvasService.removeFabricObj(block.backgroundFabricObj)
         this.vm.myCanvasService.removeFabricObj(block.fabricObj);
+
         this.vm.coordinateService.removeBlock(block);
         this.vm.myCanvasService.renderAll();
     }
 
     removeAllBlock(isDelBackBlock){
         let arr = []
+        // let leave = []
         for(let block of this.nowTable.allBlock){
             arr.push(block);
         }
         for(let block of arr){
             if(!isDelBackBlock){
                 if(block.blockType == BlockType.type_tableBlock_back){
+                    // leave.push(block)
                     continue
                 }
             }
-
             this.removeBlock(block)
         }
+        // this.vm.myCanvasService.discardActiveObject();
+        // this.vm.myCanvasService.clearCanvas();
+        // this.vm.myCanvasService.initBackground();
+        // for(let block of leave){
+        //     this.addBlock(block)
+        // }
+        // this.vm.myCanvasService.renderAll()
     }
 
     /** 加载 */

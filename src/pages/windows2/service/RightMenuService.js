@@ -19,6 +19,12 @@ export default class RightMenuService{
     /**@type RightMenu*/
     remove(rightMenu){
         let index = this.list.indexOf(rightMenu)
+        this.vm.myCanvasService.removeFabricObj(rightMenu.fabricObj)
+        for(let item of rightMenu.itemList){
+            this.vm.myCanvasService.removeFabricObj(item.fabricObj)
+            this.vm.myCanvasService.removeFabricObj(item.textFabric)
+            this.vm.myCanvasService.removeFabricObj(item.backgroundFabric)
+        }
         if(index > -1){
             this.list.splice(index, 1);
         }
