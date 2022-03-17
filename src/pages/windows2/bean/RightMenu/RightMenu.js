@@ -77,7 +77,6 @@ export default class RightMenu{
         this.setLeft(x)
         this.setTop(y)
         this.setHeight(this.itemList.length * 25)
-        // this.closeAllBlockMenu();
 
         this.vm.myCanvasService.addFabricObj(this.fabricObj);
         this.addWithUpdate()

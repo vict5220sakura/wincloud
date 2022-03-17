@@ -11,6 +11,8 @@ export default {
             tableService: null,
             /**@type CoordinateService*/
             coordinateService: null,
+            /**@type TimeFrame*/
+            timeFrame: null,
 
             windowWidth: 1024, // 窗口宽
             windowHeight: 768, // 窗口高

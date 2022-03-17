@@ -13,6 +13,7 @@ import RightMenu from "./bean/RightMenu/RightMenu.js";
 import NodepadService from "./service/NodepadService.js";
 import TableService from "./service/TableService.js";
 import CoordinateService from "./service/CoordinateService.js";
+import TimeFrame from "./frame/TimeFrame";
 
 
 export default {
@@ -28,6 +29,7 @@ export default {
         this.nodepadService = new NodepadService(this);
         this.tableService = new TableService(this);
         this.coordinateService = new CoordinateService(this);
+        this.timeFrame = new TimeFrame(this);
 
         this.tableRightMenu = new RightMenu(this);
         this.tableRightMenu.addRightMenuItem("新建连接", (opts)=>{

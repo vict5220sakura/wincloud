@@ -5,12 +5,11 @@ export default class TimeFrame{
         this.init();
     }
     init(){
-        // setInterval(()=>{
-        //     if(this.isRenderAll){
-        //         console.log("this.canvas.renderAll()")
-        //         this.isRenderAll = false
-        //         this.vm.myCanvasService.renderAllMain();
-        //     }
-        // }, 17)
+        setInterval(()=>{
+            if(this.vm.myCanvasService.isRenderAll){
+                this.vm.myCanvasService.isRenderAll = false
+                this.vm.myCanvasService.renderAllMain();
+            }
+        }, 17)
     }
 }
