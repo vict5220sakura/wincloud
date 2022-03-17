@@ -18,6 +18,9 @@ export default class NodepadBlock extends Block{
     }
     getRightMenuItemList(){
         let list = []
+        list.push(RightMenuItem.newInstance(this.vm, "打开", (opts)=>{
+            this.vm.nodepadService.showNodepad(this)
+        }))
         list.push(RightMenuItem.newInstance(this.vm, "修改", (opts)=>{
             this.vm.nodepadService.showNodepad(this)
         }))

@@ -21,6 +21,14 @@ export default class LinkBlock extends Block{
     }
     getRightMenuItemList(){
         let list = []
+        list.push(RightMenuItem.newInstance(this.vm, "打开", (opts)=>{
+            let url = this.url
+            if (new RegExp("http.*").test(url)) {
+                window.open(url)
+            } else {
+                window.open("http://" + url)
+            }
+        }))
         list.push(RightMenuItem.newInstance(this.vm, "修改", (opts)=>{
             this.vm.$prompt('请输入连接地址', '提示', {
                 confirmButtonText: '确定',

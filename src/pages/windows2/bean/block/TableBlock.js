@@ -38,7 +38,7 @@ export default class TableBlock extends Block{
 
     getRightMenuItemList(){
         let list = []
-        list.push(RightMenuItem.newInstance(this.vm, "进入", async (opts)=>{
+        list.push(RightMenuItem.newInstance(this.vm, "打开", async (opts)=>{
             await this.vm.openTableKey(this.key)
         }))
         list.push(RightMenuItem.newInstance(this.vm, "修改", (opts)=>{
