@@ -39,7 +39,7 @@ export default class MyCanvasService{
             if (XYUtil.checkPointIn(x, y, fabricObj.left, fabricObj.top, fabricObj.width, fabricObj.height)) {
                 if(fabricObj.block){
                     block = fabricObj.block
-                    block.fabricObj = fabricObj;
+                    // block.fabricObj = fabricObj;
                     break;
                 }
             }

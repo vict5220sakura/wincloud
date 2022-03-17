@@ -39,6 +39,12 @@ export default class TableService{
 
         this.vm.coordinateService.removeBlock(block);
         this.vm.myCanvasService.renderAll();
+
+        delete block.vm
+        delete block.blockPoint;
+        delete block.fabricObj; // fabric原生obj
+        delete block.textFabricObj; // fabric原生obj
+        delete block.backgroundFabricObj; // fabric原生obj
     }
 
     removeAllBlock(isDelBackBlock){

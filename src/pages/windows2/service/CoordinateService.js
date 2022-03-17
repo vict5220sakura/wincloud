@@ -145,8 +145,8 @@ export default class CoordinateService{
         if(index > -1){
             this.activeallBlockPoint.splice(index, 1)
             let blockPoint = block.blockPoint;
-            block.blockPoint = null;
-            blockPoint.block = null;
+            delete block.blockPoint
+            delete blockPoint.block
         }
     }
 

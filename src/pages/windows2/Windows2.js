@@ -20,6 +20,7 @@ export default {
     created(){
         this.windowWidth = window.innerWidth;
         this.windowHeight = window.innerHeight;
+        // fabric.Object.prototype.objectCaching = false;
     },
     async mounted(){
         this.myCanvasService = new MyCanvasService(this);
