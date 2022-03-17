@@ -322,7 +322,7 @@ export default {
         async btnLocalLogin() {
             this.loginMode = login_mode.login_mode_local
             this.loginDialogFlag = false;
-            let tableData/**@type TableData*/ = TableData.loadInstance(null, this.loginMode)
+            let tableData/**@type TableData*/ = await TableData.loadInstance(null, this.loginMode)
             await this.load(tableData);
 
         },
@@ -337,6 +337,7 @@ export default {
                 table.addBlock(block)
             }
             // 全部图标批量对齐
+
             table.activeBlock();
             this.canvas.renderAll();
             // this.canvas.discardActiveObject(); // 取消所有对象选中状态
