@@ -8,7 +8,7 @@ import Block from "../bean/block/Block.js"
 export default class MyCanvasService{
     vm;
     canvas;
-
+    isRenderLock = false;
     constructor(vm) {
         this.vm = vm
         // 创建画布
@@ -61,6 +61,33 @@ export default class MyCanvasService{
     }
     /** 刷新全部对象*/
     renderAll(){
+        // this.isRenderAll = true
+
+        if(!this.isRenderLock){
+            this.isRenderLock = true
+            console.log("this.canvas.renderAll()1")
+            this.canvas.renderAll();
+            setTimeout(()=>{
+                this.canvas.renderAll();
+                console.log("this.canvas.renderAll()2")
+                this.isRenderLock = false
+            },17)
+        }
+
+        // if(isRealTime){
+        //     this.canvas.renderAll();
+        // }else{
+        //     setTimeout(()=>{
+        //         let time = new Date().getTime();
+        //
+        //         console.log("this.canvas.renderAll()" + time)
+        //         let a = this.canvas.renderAll();
+        //         console.log("this.canvas.renderAll()" + time, a)
+        //     }, 17)
+        // }
+
+    }
+    renderAllMain(){
         this.canvas.renderAll();
     }
     /** 取消选择所有对象 */

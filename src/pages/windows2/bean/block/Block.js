@@ -22,6 +22,7 @@ export default class Block{
     rightMenu;
 
     constructor(vm) {
+        console.log("创建对象")
         this.vm = vm
     }
 
