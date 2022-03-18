@@ -2,6 +2,8 @@ import Block from "./Block.js"
 import BlockType from "./BlockType.js"
 import RightMenuItem from "../RightMenu/RightMenuItem.js";
 import CoordinateService from "../../service/CoordinateService.js";
+import SecondMenu from "../RightMenu/SecondMenu";
+import SendOtherTableMenu from "../RightMenu/SendOtherTableMenu";
 
 export default class NodepadBlock extends Block{
     title;
@@ -18,6 +20,7 @@ export default class NodepadBlock extends Block{
     }
     getRightMenuItemList(){
         let list = []
+
         list.push(RightMenuItem.newInstance(this.vm, "打开", (opts)=>{
             this.vm.nodepadService.showNodepad(this)
         }))
@@ -37,6 +40,10 @@ export default class NodepadBlock extends Block{
                 throw e;
             });
         }))
+
+        list.push(RightMenuItem.newSendOtherTableMenuItem(this.vm));
+        list.push(RightMenuItem.newSendOtherTableMenuItem(this.vm));
+
         return list;
     }
     getMouseDoubleupFunc(){

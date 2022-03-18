@@ -10,6 +10,7 @@ export default class MyCanvasService{
     canvas;
     isRenderLock = false;
     isRenderAll = false;
+
     constructor(vm) {
         this.vm = vm
         // 创建画布
@@ -58,14 +59,23 @@ export default class MyCanvasService{
      * 移除一个对象
      */
     removeFabricObj(fabric){
-        this.canvas.remove(fabric);
+        if(fabric){
+            this.canvas.remove(fabric);
+            this.canvas.remove(fabric);
+            this.canvas.remove(fabric);
+        }
     }
     /** 刷新全部对象*/
     renderAll(){
         this.isRenderAll = true
     }
     renderAllMain(){
-        this.canvas.renderAll();
+        if(this.vm.myCanvasService.isRenderAll){
+            this.vm.myCanvasService.isRenderAll = false
+            this.canvas.renderAll();
+            this.canvas.requestRenderAll();
+
+        }
     }
     /** 取消选择所有对象 */
     discardActiveObject(){

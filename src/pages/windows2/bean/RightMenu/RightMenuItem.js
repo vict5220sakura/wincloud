@@ -1,5 +1,6 @@
 import {fabric} from "fabric";
 import BlockType from "../block/BlockType";
+import SendOtherTableMenu from "./SendOtherTableMenu";
 
 /** 右键菜单项 */
 export default class RightMenuItem{
@@ -7,13 +8,21 @@ export default class RightMenuItem{
     top;
     vm;
     height=25;
-    fabricObj;
     text="-";
+
+    fabricObj;
     textFabric;
     backgroundFabric;
+
     mouseoverFunc; // 鼠标移动方法
     mouseoutFunc; // 鼠标移出方法
     mousedownFunc; // 鼠标点击方法
+
+    /**@type Menu*/
+    fatherMenu;
+
+    /**@type SecondMenu*/
+    secondMenu;
 
     constructor(vm) {
         this.vm = vm
@@ -45,14 +54,34 @@ export default class RightMenuItem{
         this.fabricObj.on('mousedown', (opts) => {
             this.mousedown(opts);
         });
+
         return this;
+
     }
 
-    static newInstance(vm, text, mousedownFunc){
+    static newInstance(vm, text, mousedownFunc, secondMenu /**@type SecondMenu*/){
         let rightMenuItem = new this(vm);
         rightMenuItem.text = text
         rightMenuItem.mousedownFunc = mousedownFunc
+        if(secondMenu){
+            rightMenuItem.secondMenu = secondMenu
+            secondMenu.fatherRightMenuItem = rightMenuItem
+        }
+
         rightMenuItem.init();
+
+        return rightMenuItem;
+    }
+
+    /**
+     * 发送到其他桌面菜单
+     * @param vm
+     * @returns {RightMenuItem}
+     */
+    static newSendOtherTableMenuItem(vm){
+        let rightMenuItem = RightMenuItem.newInstance(vm, "发送到", ()=>{
+            vm.rightMenuService.closeAll()
+        }, new SendOtherTableMenu(vm));
         return rightMenuItem;
     }
 
@@ -65,6 +94,15 @@ export default class RightMenuItem{
         this.left = left
         this.fabricObj.set("left", left || 0)
     }
+    getTop(){
+        return this.fabricObj.top
+    }
+    getLeft(){
+        return this.fabricObj.left
+    }
+    getWidth(){
+        return this.fabricObj.width
+    }
 
     addWithUpdate(){
         try{
@@ -76,21 +114,52 @@ export default class RightMenuItem{
         if(this.mouseoverFunc){
             this.mouseoverFunc(opts);
         }else{
-            this.backgroundFabric.set("fill", '#ffffff')
-            this.vm.myCanvasService.renderAll();
+            this.mouseoverDefault()
         }
+    }
+    mouseoverDefault(){
+        // 关闭其他
+        for(let menuItem /**@type RightMenuItem*/of this.fatherMenu.itemList){
+            if(menuItem.secondMenu && menuItem.secondMenu.isOpen() && menuItem.secondMenu != this.secondMenu){
+                menuItem.secondMenu.close();
+
+            }
+        }
+
+        if(this.secondMenu){
+            this.secondMenu.show()
+        }
+        this.backgroundFabric.set("fill", '#ffffff')
+        this.vm.myCanvasService.renderAll();
     }
     mouseout(opts){
         if(this.mouseoutFunc){
             this.mouseoutFunc(opts);
         }else{
-            this.backgroundFabric.set("fill", '#eeeeee')
-            this.vm.myCanvasService.renderAll();
+            this.mouseoutDefault()
         }
+    }
+    mouseoutDefault(){
+        if(this.secondMenu){
+            if(this.secondMenu.isOpen()){
+
+            }else{
+                this.secondMenu.close()
+            }
+        }
+        this.backgroundFabric.set("fill", '#eeeeee')
+        this.vm.myCanvasService.renderAll();
     }
     mousedown(opts){
         if(this.mousedownFunc){
             this.mousedownFunc(opts)
         }
+    }
+    close(){
+        if(this.secondMenu){
+            this.secondMenu.close()
+        }
+        this.backgroundFabric.set("fill", '#eeeeee')
+        this.vm.myCanvasService.renderAll();
     }
 }

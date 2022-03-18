@@ -4,23 +4,23 @@
 export default class RightMenuService{
     vm;
 
-    /**@type RightMenu[]*/
+    /**@type Menu[]*/
     list = []
 
     constructor(vm) {
         this.vm = vm
     }
 
-    /**@type RightMenu*/
-    add(rightMenu){
-        this.list.push(rightMenu);
+    /**@type Menu*/
+    add(menu){
+        this.list.push(menu);
     }
     /**移除*/
-    /**@type RightMenu*/
-    remove(rightMenu){
-        let index = this.list.indexOf(rightMenu)
-        this.vm.myCanvasService.removeFabricObj(rightMenu.fabricObj)
-        for(let item of rightMenu.itemList){
+    /**@type Menu*/
+    remove(menu){
+        let index = this.list.indexOf(menu)
+        this.vm.myCanvasService.removeFabricObj(menu.fabricObj)
+        for(let item of menu.itemList){
             this.vm.myCanvasService.removeFabricObj(item.fabricObj)
             this.vm.myCanvasService.removeFabricObj(item.textFabric)
             this.vm.myCanvasService.removeFabricObj(item.backgroundFabric)
@@ -33,8 +33,8 @@ export default class RightMenuService{
      * 关闭所有
      */
     closeAll(){
-        for(let rightMenuItem of this.list){
-            rightMenuItem.close();
+        for(let menuItem of this.list){
+            menuItem.close();
         }
     }
 }

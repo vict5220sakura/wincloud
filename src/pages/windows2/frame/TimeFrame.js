@@ -6,10 +6,7 @@ export default class TimeFrame{
     }
     init(){
         setInterval(()=>{
-            if(this.vm.myCanvasService.isRenderAll){
-                this.vm.myCanvasService.isRenderAll = false
-                this.vm.myCanvasService.renderAllMain();
-            }
+            this.vm.myCanvasService.renderAllMain();
         }, 17)
     }
 }
