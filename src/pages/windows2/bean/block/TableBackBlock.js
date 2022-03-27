@@ -5,8 +5,8 @@ import RightMenuItem from "../RightMenu/RightMenuItem";
 /**桌面返回blcok*/
 export default class TableBackBlock extends Block{
     name = "返回"
-    constructor(vm){
-        super(vm);
+    constructor(vm, blockKey){
+        super(vm, blockKey);
         this.blockType = BlockType.type_tableBlock_back;
     }
     getText(){
@@ -38,14 +38,14 @@ export default class TableBackBlock extends Block{
         return list
     }
 
-    static async newInstance(vm){
-        let block = new this(vm);
+    static async newInstance(vm, blockKey){
+        let block = new this(vm, blockKey);
         await block.init();
         return block;
     }
 
     static async newInstanceJson(vm, json){
-        return await TableBackBlock.newInstance(vm);
+        return await TableBackBlock.newInstance(vm, json["blockKey"]);
     }
 
 }

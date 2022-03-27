@@ -50,7 +50,7 @@ export default class NodepadService{
             top = this.vm.rightMouseYTemp - (CoordinateService.blockHeight / 2 + CoordinateService.marginTop)
             left = this.vm.rightMouseXTemp - (CoordinateService.blockWidth / 2 + CoordinateService.marginLeft)
         }
-        this.nodepadBlock = await NodepadBlock.newInstance(this.vm, title, body);
+        this.nodepadBlock = await NodepadBlock.newInstance(this.vm, title, body, this.nodepadBlock && this.nodepadBlock.blockKey);
         this.nodepadBlock.setTop(top)
         this.nodepadBlock.setLeft(left)
         this.vm.tableService.addBlock(this.nodepadBlock)

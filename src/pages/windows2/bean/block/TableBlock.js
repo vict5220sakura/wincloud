@@ -2,7 +2,6 @@ import BlockType from "./BlockType";
 import Block from "./Block.js"
 import {saveKey, login_mode} from '../../../../common/M.js'
 import Api from "../../../../util/Api";
-import LoginService from "../../../../service/LoginService";
 import RightMenuItem from "../RightMenu/RightMenuItem";
 
 
@@ -11,8 +10,8 @@ export default class TableBlock extends Block{
     name = null; // 桌面名称
     key = null; // 存储key
 
-    constructor(vm){
-        super(vm);
+    constructor(vm, blockKey){
+        super(vm, blockKey);
         this.blockType = BlockType.type_tableBlock;
     }
     /** @abstract 文本*/
@@ -51,7 +50,7 @@ export default class TableBlock extends Block{
                 let top = this.getTop();
                 let left = this.getLeft();
                 this.vm.tableService.removeBlock(this)
-                let newTableBlock = await TableBlock.newInstance(this.vm, newname, this.key);
+                let newTableBlock = await TableBlock.newInstance(this.vm, newname, this.key, this.blockKey);
                 newTableBlock.setLeft(left)
                 newTableBlock.setTop(top)
                 this.vm.tableService.addBlock(newTableBlock)
@@ -73,8 +72,8 @@ export default class TableBlock extends Block{
         return list;
     }
 
-    static async newInstance(vm, name, key){
-        let block = new this(vm);
+    static async newInstance(vm, name, key, blockKey){
+        let block = new this(vm, blockKey);
         block.name = name;
         block.key = key
         await block.init();
@@ -82,6 +81,6 @@ export default class TableBlock extends Block{
     }
 
     static async newInstanceJson(vm, json){
-        return await TableBlock.newInstance(vm, json["name"], json["key"]);
+        return await TableBlock.newInstance(vm, json["name"], json["key"], json["blockKey"]);
     }
 }

@@ -6,6 +6,7 @@ import BlockType from "../bean/block/BlockType.js";
 import CoordinateService from "./CoordinateService.js";
 import NowTable from '../bean/NowTable.js'
 import TableSaveDao from "../dao/TableSaveDao";
+import ServeApi from "../serveApi/ServerApi.js"
 
 /**
  * 桌面图标服务类
@@ -15,8 +16,36 @@ export default class TableService{
     constructor(vm) {
         this.vm = vm
     }
+    /**@type NowTable[] 全部桌面*/
+    tableList = [];
+
+    /**@type NowTable 默认桌面*/
+    defaultTable;
+
     /**@type NowTable*/
     nowTable; // 当前窗口
+
+    /**
+     * 初始化
+     */
+    async init(username, password){
+        // 获取全部桌面列表
+        let {b, msg, list} = await ServeApi.getTableList(username, password)
+        for(let item of list){
+            let obj = new NowTable();
+            obj.key = item.key
+            obj.name = item.name
+            obj.parentsKey = item.parentsKey
+            obj.type = item.type
+            this.tableList.push(obj)
+
+            if(item.type == NowTable.type_defaule){
+                this.defaultTable = obj
+            }
+        }
+
+        this.vm.openTableKey(this.defaultTable.key)
+    }
 
     /** 添加一个图标 */
     addBlock(block /**@type Block*/){
@@ -48,6 +77,9 @@ export default class TableService{
     }
 
     removeAllBlock(isDelBackBlock){
+        if(!this.nowTable){
+            return
+        }
         let arr = []
         // let leave = []
         for(let block of this.nowTable.allBlock){
@@ -93,7 +125,7 @@ export default class TableService{
             if(!name || name.trim() == ''){
                 name = "桌面"
             }
-            // 创建错面数据并保存
+            // 创建桌面数据并保存
             let nowTableNew = await this.createNowTable(this.nowTable, name);
 
             // 创建桌面图标并保存
@@ -125,7 +157,7 @@ export default class TableService{
         return nowTableNew;
     }
 
-    async createTableBlock(nowTableNew){
+    async createTableBlock(nowTableNew /**@type NowTable*/){
         let tableBlock = await TableBlock.newInstance(this.vm, nowTableNew.name, nowTableNew.key);
         tableBlock.setLeft(this.vm.rightMouseXTemp - (CoordinateService.blockWidth / 2 + CoordinateService.marginLeft))
         tableBlock.setTop(this.vm.rightMouseYTemp - (CoordinateService.blockHeight / 2 + CoordinateService.marginTop))

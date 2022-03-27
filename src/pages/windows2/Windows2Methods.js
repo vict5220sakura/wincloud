@@ -4,7 +4,6 @@ import BlockType from './bean/block/BlockType.js'
 import XYUtil from '../../util/XYUtil.js'
 import UrlUtil from "../../util/UrlUtil.js"
 import { saveKey } from '../../common/M.js'
-import LoginService from '../../service/LoginService.js'
 import Windows2MethonsRules from './Windows2MethonsRules.js'
 import RightInit from './RightInit.js'
 import LeftInit from './LeftInit.js'
@@ -16,6 +15,7 @@ import TableBlock from "./bean/block/TableBlock.js"
 import NowTable from "./bean/NowTable.js"
 import TableSaveDao from "./dao/TableSaveDao.js"
 import TableSaveData from "./entity/TableSaveData";
+import ServerApi from "./serveApi/ServerApi.js"
 
 
 export default {
@@ -110,20 +110,22 @@ export default {
             if(!this.checkUsername().b || !this.checkPassword().b){
                 return false;
             }
-
-            let res = await LoginService.registLogin(this.username, this.password);
-            if(res.code == '00000'){
+            // 注册登录
+            let {b, msg, registLoginMode} = await ServerApi.registLogin(this.username, this.password)
+            if(b){
                 this.$message({
                     type: 'success',
-                    message: (res.data.registLoginMode == "regist" ? "注册" : "登录") + '成功!'
+                    message: (registLoginMode == "regist" ? "注册" : "登录") + '成功!'
                 })
-                let tableSaveData = new TableSaveData();
-                tableSaveData.allBlock = (res.data.winData && JSON.parse(res.data.winData)) || []
+                // 登录成功
+                // 桌面初始化 获取全部桌面菜单
+                setTimeout(async ()=>{
+                    await this.tableService.init(this.username, this.password)
+                }, 0)
 
-                let nowTable = await tableSaveData.toNowTable(this);
+
 
                 this.loginDialogFlag = false;
-                await this.tableService.load(nowTable);
             }else{
                 this.$message({
                     type: 'error',
@@ -141,6 +143,11 @@ export default {
             await this.tableService.load(nowTable);
         },
 
+        /**
+         * 打开当前窗口
+         * @param key
+         * @returns {Promise<void>}
+         */
         async openTableKey(key/**@type String*/){
             let nowTable /**@type NowTable*/ = await TableSaveDao.loadInstance(this, key, this.loginMode, this.username, this.password)
             this.tableService.removeAllBlock(true);

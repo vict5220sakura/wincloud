@@ -3,11 +3,12 @@ import BlockType from "./BlockType.js"
 import RightMenuItem from "../RightMenu/RightMenuItem";
 import CoordinateService from "../../service/CoordinateService.js";
 
+
 export default class LinkBlock extends Block{
     url;
     name;
-    constructor(vm){
-        super(vm);
+    constructor(vm, blockKey){
+        super(vm, blockKey);
         this.blockType = BlockType.type_link;
     }
     getText(){
@@ -45,7 +46,7 @@ export default class LinkBlock extends Block{
 
                     // 先删除 在新建
                     this.vm.tableService.removeBlock(this)
-                    let linkBlock = await LinkBlock.newInstance(this.vm, nameInput, urlInput)
+                    let linkBlock = await LinkBlock.newInstance(this.vm, nameInput, urlInput, this.blockKey)
                     linkBlock.setLeft(this.getLeft())
                     linkBlock.setTop(this.getTop())
                     this.vm.tableService.addBlock(linkBlock)
@@ -82,8 +83,8 @@ export default class LinkBlock extends Block{
         };
     }
 
-    static async newInstance(vm, name, url){
-        let block = new this(vm);
+    static async newInstance(vm, name, url, blockKey){
+        let block = new this(vm, blockKey);
         block.name = name;
         block.url = url;
         await block.init();
@@ -91,6 +92,6 @@ export default class LinkBlock extends Block{
     }
 
     static async newInstanceJson(vm, json){
-        return await LinkBlock.newInstance(vm, json["name"], json["url"])
+        return await LinkBlock.newInstance(vm, json["name"], json["url"], json["blockKey"])
     }
 }

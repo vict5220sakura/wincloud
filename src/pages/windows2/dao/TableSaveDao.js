@@ -2,8 +2,8 @@ import {login_mode, saveKey} from "../../../common/M.js";
 import TableSaveData from "../entity/TableSaveData.js";
 import Api from "../../../util/Api.js";
 import TableBlock from "../bean/block/TableBlock.js";
-import LoginService from "../../../service/LoginService.js";
 import NowTable from "../bean/NowTable.js";
+import ServeApi from "../serveApi/ServerApi"
 
 export default class TableSaveDao{
     /**
@@ -77,24 +77,27 @@ export default class TableSaveDao{
      * @param tableData
      */
     static async serviceSaveInstance(username, password, tableSaveData /**@type TableSaveData*/){
-        if(tableSaveData.type == NowTable.type_defaule){
-            let winDataStr = JSON.stringify(tableSaveData.allBlock);
-            let res = await Api.post("saveWinData", {username, password, winDataStr})
-            if(!res || res.code != "00000"){
-                throw "api未知异常"
-            }
-            return;
-        }else if(tableSaveData.type == NowTable.type_children){
+        await ServeApi.saveTableData(username, password, tableSaveData.key, tableSaveData.type,
+            tableSaveData.allBlock, tableSaveData.name, tableSaveData.parentsKey)
+        return;
 
-            let tableDataStr = JSON.stringify(tableSaveData);
-            let res = await Api.post("saveWinDataChildren",
-                {username, password, key: tableSaveData.key, tableDataStr})
-            if(!res || res.code != "00000"){
-                throw "api未知异常"
-            }
-            return;
-        }
-
+        // if(tableSaveData.type == NowTable.type_defaule){
+        //     let winDataStr = JSON.stringify(tableSaveData.allBlock);
+        //     let res = await Api.post("saveWinData", {username, password, winDataStr})
+        //     if(!res || res.code != "00000"){
+        //         throw "api未知异常"
+        //     }
+        //     return;
+        // }else if(tableSaveData.type == NowTable.type_children){
+        //
+        //     let tableDataStr = JSON.stringify(tableSaveData);
+        //     let res = await Api.post("saveWinDataChildren",
+        //         {username, password, key: tableSaveData.key, tableDataStr})
+        //     if(!res || res.code != "00000"){
+        //         throw "api未知异常"
+        //     }
+        //     return;
+        // }
     }
 
     /**
@@ -102,21 +105,7 @@ export default class TableSaveDao{
      * @returns {TableSaveData}
      */
     static async serviceLoadInstance(username, password, key){
-        let tableSaveData; /**@type TableSaveData*/
-        if(key){
-            let res = await Api.post("getWinDataChildren", {username, password, key})
-            if(!res || res.code != "00000"){
-                throw "api未知异常"
-            }
-            tableSaveData = JSON.parse(res.data.tableDataStr);
-        }else{
-            let res = await LoginService.registLogin(username, password);
-            if(res.code == '00000'){
-                tableSaveData = new TableSaveData();
-                tableSaveData.allBlock = (res.data.winData && JSON.parse(res.data.winData)) || []
-            }
-        }
-
-        return tableSaveData;
+        let {b, msg, data} = await ServeApi.getTableData(username, password, key)
+        return data; // {name, key, type, allBlock}
     }
 }

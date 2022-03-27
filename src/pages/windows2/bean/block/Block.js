@@ -3,10 +3,12 @@ import {doubleClickTimeMillsseconds} from "../../../../common/M.js"
 import RightMenu from "../RightMenu/RightMenu.js";
 import RightMenuItem from "../RightMenu/RightMenuItem";
 import UrlUtil from '../../../../util/UrlUtil.js'
+import IdUtil from "../../../../util/IdUtil";
 
 export default class Block{
     vm;
 
+    blockKey;
     top;
     left;
     blockType; // 图标类型
@@ -21,9 +23,14 @@ export default class Block{
     /**@type RightMenu*/
     rightMenu;
 
-    constructor(vm) {
-        console.log("创建对象")
+    constructor(vm, blockKey) {
+        console.log("创建对象", blockKey)
         this.vm = vm
+        if(blockKey){
+            this.blockKey = blockKey
+        }else{
+            this.blockKey = IdUtil()
+        }
     }
 
     /**

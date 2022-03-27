@@ -8,8 +8,8 @@ import SendOtherTableMenu from "../RightMenu/SendOtherTableMenu";
 export default class NodepadBlock extends Block{
     title;
     body;
-    constructor(vm){
-        super(vm);
+    constructor(vm, blockKey){
+        super(vm, blockKey);
         this.blockType = BlockType.type_nodepad;
     }
     getText(){
@@ -52,14 +52,14 @@ export default class NodepadBlock extends Block{
         }
     }
 
-    static async newInstance(vm, title, body){
-        let block = new this(vm);
+    static async newInstance(vm, title, body, blockKey){
+        let block = new this(vm, blockKey);
         block.title = title
         block.body = body
         await block.init();
         return block;
     }
     static async newInstanceJson(vm, json){
-        return await NodepadBlock.newInstance(vm, json["title"], json["body"])
+        return await NodepadBlock.newInstance(vm, json["title"], json["body"], json["blockKey"])
     }
 }
