@@ -42,7 +42,6 @@ export default class NodepadBlock extends Block{
         }))
 
         list.push(RightMenuItem.newSendOtherTableMenuItem(this.vm));
-        list.push(RightMenuItem.newSendOtherTableMenuItem(this.vm));
 
         return list;
     }

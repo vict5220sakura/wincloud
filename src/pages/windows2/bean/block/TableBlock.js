@@ -3,6 +3,7 @@ import Block from "./Block.js"
 import {saveKey, login_mode} from '../../../../common/M.js'
 import Api from "../../../../util/Api";
 import RightMenuItem from "../RightMenu/RightMenuItem";
+import ServerApi from "../../serveApi/ServerApi";
 
 
 /**桌面blcok*/
@@ -65,10 +66,20 @@ export default class TableBlock extends Block{
                 type: 'warning'
             }).then(async () => {
                 this.vm.tableService.removeBlock(this)
+
+                // 刷新当前桌面列表
+                setTimeout(async ()=>{
+                    // 删除当前桌面
+                    await ServerApi.removeTable(this.vm.username, this.vm.password, this.key)
+                    this.vm.save()
+                    this.vm.autoSaveNotify();
+                    await this.vm.tableService.initTableList(this.vm.username, this.vm.password)
+                },0)
             }).catch((e) => {
                 throw e;
             });
         }))
+        list.push(RightMenuItem.newSendOtherTableMenuItem(this.vm));
         return list;
     }
 

@@ -69,6 +69,7 @@ export default class LinkBlock extends Block{
                 console.log(e)
             });
         }))
+        list.push(RightMenuItem.newSendOtherTableMenuItem(this.vm));
         return list;
     }
 

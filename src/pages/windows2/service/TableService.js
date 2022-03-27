@@ -30,6 +30,13 @@ export default class TableService{
      */
     async init(username, password){
         // 获取全部桌面列表
+        await this.initTableList(username, password)
+
+        this.vm.openTableKey(this.defaultTable.key)
+    }
+
+    async initTableList(username, password){
+        this.tableList = [];
         let {b, msg, list} = await ServeApi.getTableList(username, password)
         for(let item of list){
             let obj = new NowTable();
@@ -43,8 +50,6 @@ export default class TableService{
                 this.defaultTable = obj
             }
         }
-
-        this.vm.openTableKey(this.defaultTable.key)
     }
 
     /** 添加一个图标 */
@@ -69,11 +74,11 @@ export default class TableService{
         this.vm.coordinateService.removeBlock(block);
         this.vm.myCanvasService.renderAll();
 
-        delete block.vm
-        delete block.blockPoint;
-        delete block.fabricObj; // fabric原生obj
-        delete block.textFabricObj; // fabric原生obj
-        delete block.backgroundFabricObj; // fabric原生obj
+        // delete block.vm
+        // delete block.blockPoint;
+        // delete block.fabricObj; // fabric原生obj
+        // delete block.textFabricObj; // fabric原生obj
+        // delete block.backgroundFabricObj; // fabric原生obj
     }
 
     removeAllBlock(isDelBackBlock){
@@ -131,6 +136,11 @@ export default class TableService{
             // 创建桌面图标并保存
             await this.createTableBlock(nowTableNew);
 
+            // 刷新当前桌面列表
+            setTimeout(async ()=>{
+                await this.initTableList(this.vm.username, this.vm.password)
+            },0)
+
             // 保存
             await this.vm.save();
             this.vm.autoSaveNotify();
@@ -165,4 +175,9 @@ export default class TableService{
         this.addBlock(tableBlock)
     }
 
+    async moveBlock(block /**@type Block*/, tableKey){
+        this.removeBlock(block) // 当前桌面移除图标
+        // 移动图标到目标桌面
+        await ServeApi.moveBlock(this.vm.username, this.vm.password, this.nowTable.key, block.blockKey, tableKey)
+    }
 }

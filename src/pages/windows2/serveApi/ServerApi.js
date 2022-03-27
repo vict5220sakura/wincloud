@@ -52,4 +52,28 @@ export default class ServerApi{
             return {b: false, msg:""}
         }
     }
+    /**
+     * 移动图标
+     * @return {b: true, msg:""}
+     */
+    static async moveBlock(username, password, fromTableKey, blockKey, toTableKey){
+        let res =  await Api.post("moveBlock", {username, password, fromTableKey, blockKey, toTableKey})
+        if(res.code == '00000'){
+            return {b: true, msg:""}
+        }else{
+            return {b: false, msg:""}
+        }
+    }
+    /**
+     * 删除桌面
+     * @return {b: true, msg:""}
+     */
+    static async removeTable(username, password, tableKey){
+        let res =  await Api.post("removeTable", {username, password, tableKey})
+        if(res.code == '00000'){
+            return {b: true, msg:""}
+        }else{
+            return {b: false, msg:""}
+        }
+    }
 }

@@ -10,8 +10,8 @@ export default {
 
             this.rightMenuService.closeAll();
 
-            let block = this.myCanvasService.chooseOneBlock(this.rightMouseXTemp, this.rightMouseYTemp)
-
+            let block /**@type Block*/ = this.myCanvasService.chooseOneBlock(this.rightMouseXTemp, this.rightMouseYTemp)
+            this.rightCheckBlock = block
             if(block && block.rightMenu){
                 // 展示对象菜单
                 block.rightMenu.show()

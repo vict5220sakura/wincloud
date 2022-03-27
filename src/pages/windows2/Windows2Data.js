@@ -20,17 +20,10 @@ export default {
             rightMouseXTemp: null, // 鼠标右键点击位置
             rightMouseYTemp: null, // 鼠标右键点击位置
 
+            rightCheckBlock: null, /**@type Block*/ // 右键选择block
+
             /**@type RightMenu*/
             tableRightMenu: null,
-
-            // menuList: [], // 菜单列表
-            // tablemenuItemBackgroundList: [], // 菜单项背景列表
-
-            // allBlock: [], // 图标列表
-
-            // linkBlockMenuBackground: null, // 链接菜单右键
-            // linkBlockMenuList: [], // 链接菜单
-            // linkBlockMenuItembackgroundList: [], // 链接菜单项背景列表
 
             loginDialogFlag: false, // 注册登录弹框
             username: null, // 用户名
@@ -41,22 +34,7 @@ export default {
             nodepadTitle: null,
             nodepadBody: null,
 
-            // nodepadLeft: null,
-            // nodepadTop: null,
-            // nodepadCreateOrUpdate: null, // 记事本弹窗更新或创建
-            // nodepadUpdateObj: null, // 记事本更新对象
-            // nodepadBlockMenuBackground: null,
-            // nodepadBlockMenuList: [], // 记事本菜单
-            // nodepadBlockMenuItembackgroundList: [], // 记事本菜单项背景列表
-
             tableBlockEditFlag: false, // 桌面编辑弹窗
-            // tableBlockMenuLeft: null,
-            // tableBlockMenuRight: null,
-            // tableBlockMenuName: null,
-            // tableBlockMenuBackground: null,
-            // tableBlockMenuList: [], // 桌面图标菜单
-            // tableBlockMenuItembackgroundList: [], // 桌面图标菜单项背景列表
-
 
             rules: {
                 "username": [
