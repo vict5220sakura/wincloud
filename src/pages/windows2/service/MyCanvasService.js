@@ -15,9 +15,9 @@ export default class MyCanvasService{
         this.vm = vm
         // 创建画布
         this.canvas = new fabric.Canvas("myCanvas")
-        this.canvas.selection = false; // 禁止画布滑动选中
+        this.canvas.selection = false; // 是否允许画布滑动选中
         this.canvas.preserveObjectStacking = true; // 是否禁止选中对象到顶层
-
+        this.canvas.selectionKey = ["ctrlKey", "shiftKey"]
         this.canvas.hoverCursor = 'default' // 鼠标样式
         this.canvas.moveCursor = 'default' // 鼠标样式
 
@@ -86,6 +86,10 @@ export default class MyCanvasService{
     /** 主动选择对象 */
     activeObject(block /**@type Block*/){
         this.canvas.setActiveObject(block.fabricObj);
+    }
+
+    getActiveObjects(){
+        return this.canvas.getActiveObjects();
     }
 
     clearCanvas(){
