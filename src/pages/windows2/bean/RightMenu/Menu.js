@@ -101,7 +101,6 @@ export default class Menu{
         let x = this.getShowX();
         let y = this.getShowY();
 
-        this.vm.myCanvasService.discardActiveObject(); // 取消所有对象选中状态
         this.setLeft(x)
         this.setTop(y)
         this.setHeight(this.itemList.length * 25)

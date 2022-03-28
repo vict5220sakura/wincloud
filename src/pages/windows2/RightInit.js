@@ -14,6 +14,9 @@ export default {
             this.rightCheckBlock = block
             if(block && block.rightMenu){
                 // 展示对象菜单
+                this.myCanvasService.discardActiveObject(); // 取消所有对象选中状态
+                // this.myCanvasService.activeObject(block)
+                this.myCanvasService.renderAll()
                 block.rightMenu.show()
             }else{
                 // 展示桌面右键菜单

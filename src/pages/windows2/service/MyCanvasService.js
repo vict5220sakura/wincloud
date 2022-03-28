@@ -16,6 +16,8 @@ export default class MyCanvasService{
         // 创建画布
         this.canvas = new fabric.Canvas("myCanvas")
         this.canvas.selection = false; // 禁止画布滑动选中
+        this.canvas.preserveObjectStacking = true; // 是否禁止选中对象到顶层
+
         this.canvas.hoverCursor = 'default' // 鼠标样式
         this.canvas.moveCursor = 'default' // 鼠标样式
 
@@ -33,7 +35,7 @@ export default class MyCanvasService{
         });
     }
 
-    /** 选取一个对象 */
+    /** 探测一个对象 */
     /**@type Block*/
     chooseOneBlock(x, y) {
         let block;
@@ -81,6 +83,11 @@ export default class MyCanvasService{
     discardActiveObject(){
         this.canvas.discardActiveObject();
     }
+    /** 主动选择对象 */
+    activeObject(block /**@type Block*/){
+        this.canvas.setActiveObject(block.fabricObj);
+    }
+
     clearCanvas(){
         this.canvas.clear();
     }

@@ -92,7 +92,7 @@ export default class Block{
 
         this.fabricObj = new fabric.Group([this.backgroundFabricObj, this.textFabricObj])
         this.fabricObj.hasControls = false;
-        this.fabricObj.hasBorders = false;
+        this.fabricObj.hasBorders = true; // 选中边框
 
         this.fabricObj.set("left", this.left || 0)
         this.fabricObj.set("top", this.top || 0)
@@ -163,6 +163,7 @@ export default class Block{
                     this.fabricObj.addWithUpdate(this.textFabricObj)
                     this.fabricObj.set("left", this.left || 0)
                     this.fabricObj.set("top", this.top || 0)
+
                     this.addWithUpdate()
                     this.fabricObj.set("block", this)
 
