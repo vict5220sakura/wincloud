@@ -10,7 +10,7 @@ export default{
                 console.log("长按")
                 this.actionEvent(x, y)
             }
-        }, 1000)
+        }, 500)
     },
     /** 左键事件注册 */
     async leftClickRegist(){
