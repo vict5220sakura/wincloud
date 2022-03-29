@@ -153,6 +153,10 @@ export default class Block{
                     this.top = this.fabricObj.top
                     this.left = this.fabricObj.left
 
+                    this.fabricObj.remove(this.textFabricObj)
+                    this.fabricObj.remove(this.backgroundFabricObj)
+                    this.fabricObj.remove(this.borderFabricObj)
+
                     this.backgroundFabricObj = oImgNew
                     this.backgroundFabricObj.set("scaleX", 70 / this.backgroundFabricObj.width)
                     this.backgroundFabricObj.set("scaleY", 70 / this.backgroundFabricObj.height)
@@ -160,9 +164,6 @@ export default class Block{
                     this.backgroundFabricObj.hasBorders = false;
 
 
-                    this.fabricObj.remove(this.textFabricObj)
-                    this.fabricObj.remove(this.backgroundFabricObj)
-                    this.fabricObj.remove(this.borderFabricObj)
                     this.fabricObj.addWithUpdate(this.borderFabricObj)
                     this.fabricObj.addWithUpdate(this.backgroundFabricObj)
                     this.fabricObj.addWithUpdate(this.textFabricObj)
