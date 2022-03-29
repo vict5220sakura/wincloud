@@ -19,6 +19,7 @@ export default class Block{
     fabricObj; // fabric原生obj
     textFabricObj; // fabric原生obj
     backgroundFabricObj; // fabric原生obj
+    borderFabricObj; // fabric原生obj
 
     /**@type RightMenu*/
     rightMenu;
@@ -54,7 +55,12 @@ export default class Block{
         return json;
     }
 
-
+    showBackground(){
+        this.borderFabricObj.set("fill", "rgba(1,1,1,0.1)")
+    }
+    closeBackground(){
+        this.borderFabricObj.set("fill", "rgba(0,0)")
+    }
 
     async init(){
         this.textFabricObj = new fabric.Textbox(this.getText(), {
@@ -62,7 +68,7 @@ export default class Block{
             width: 60,
             top: 70 + 10,
             left: 5,
-            fontSize: 15,
+            fontSize: 12,
             lineHeight: 1,
             textAlign: "center", // 文字对齐
             lockRotation: true, // 禁止旋转
@@ -84,15 +90,26 @@ export default class Block{
                 })
             })
         }
-
         this.backgroundFabricObj.set("scaleX", 70 / this.backgroundFabricObj.width)
         this.backgroundFabricObj.set("scaleY", 70 / this.backgroundFabricObj.height)
         this.backgroundFabricObj.hasControls = false;
         this.backgroundFabricObj.hasBorders = false;
 
-        this.fabricObj = new fabric.Group([this.backgroundFabricObj, this.textFabricObj])
+        this.borderFabricObj = new fabric.Rect({
+            width: 70,
+            height: 100,
+            // fill: 'rgba(1,1,1,0.1)',
+            fill: 'rgba(0,0)',
+            backgroundColor: 'transparent'
+        })
+        this.borderFabricObj.set("scaleX", 70 / this.borderFabricObj.width)
+        this.borderFabricObj.set("scaleY", 100 / this.borderFabricObj.height)
+        this.borderFabricObj.hasControls = false;
+        this.borderFabricObj.hasBorders = false;
+
+        this.fabricObj = new fabric.Group([this.borderFabricObj, this.backgroundFabricObj, this.textFabricObj])
         this.fabricObj.hasControls = false;
-        this.fabricObj.hasBorders = true; // 选中边框
+        this.fabricObj.hasBorders = false; // 选中边框
 
         this.fabricObj.set("left", this.left || 0)
         this.fabricObj.set("top", this.top || 0)
@@ -135,8 +152,6 @@ export default class Block{
                 } else {
                     this.top = this.fabricObj.top
                     this.left = this.fabricObj.left
-                    this.fabricObj.remove(this.textFabricObj)
-                    this.fabricObj.remove(this.backgroundFabricObj)
 
                     this.backgroundFabricObj = oImgNew
                     this.backgroundFabricObj.set("scaleX", 70 / this.backgroundFabricObj.width)
@@ -144,21 +159,11 @@ export default class Block{
                     this.backgroundFabricObj.hasControls = false;
                     this.backgroundFabricObj.hasBorders = false;
 
-                    this.textFabricObj = new fabric.Textbox(this.getText(), {
-                        fontFamily: "Inconsolata",
-                        width: 60,
-                        top: 70 + 10,
-                        left: 5,
-                        fontSize: 15,
-                        lineHeight: 1,
-                        textAlign: "center", // 文字对齐
-                        lockRotation: true, // 禁止旋转
-                        lockScalingY: true, // 禁止Y轴伸缩
-                        lockScalingFlip: true, // 禁止负值反转
-                        splitByGrapheme: true, // 拆分中文，可以实现自动换行
-                        objectCaching: false,
-                    });
 
+                    this.fabricObj.remove(this.textFabricObj)
+                    this.fabricObj.remove(this.backgroundFabricObj)
+                    this.fabricObj.remove(this.borderFabricObj)
+                    this.fabricObj.addWithUpdate(this.borderFabricObj)
                     this.fabricObj.addWithUpdate(this.backgroundFabricObj)
                     this.fabricObj.addWithUpdate(this.textFabricObj)
                     this.fabricObj.set("left", this.left || 0)
