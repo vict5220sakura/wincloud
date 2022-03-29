@@ -10,11 +10,15 @@ export default{
             let x = options.pointer.x
             let y = options.pointer.y
             this.rightMenuService.closeAll()
-
+            this.mousedown = true;
             // let block = this.myCanvasService.chooseOneBlock(x, y)
             // if(block){
             //     block.borderFabricObj.set("fill", "rgba(1,1,1,0.1)")
             // }
+        });
+
+        this.myCanvasService.canvas.on('mouse:up', async (options)=> {
+            this.mousedown = false;
         });
 
         // this.myCanvasService.canvas.on('object:moving', async (options)=> {

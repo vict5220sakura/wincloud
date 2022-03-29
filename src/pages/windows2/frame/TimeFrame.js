@@ -7,6 +7,16 @@ export default class TimeFrame{
     init(){
         setInterval(()=>{
             this.vm.myCanvasService.renderAllMain();
+
+            this.longTouchCheck()
         }, 17)
+    }
+    startTime;
+    longTouchCheck(){
+        if(this.vm.mousedown == true){
+            this.startTime = new Date().getTime();
+        }else{
+
+        }
     }
 }
