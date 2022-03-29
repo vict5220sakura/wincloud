@@ -123,7 +123,10 @@ export default {
                     await this.tableService.init(this.username, this.password)
                 }, 0)
 
-
+                this.$message({
+                    type: 'success',
+                    message: "使用鼠标右键或长按屏幕呼出菜单"
+                });
 
                 this.loginDialogFlag = false;
             }else{
