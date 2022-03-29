@@ -17,7 +17,8 @@ export default {
             windowWidth: 1024, // 窗口宽
             windowHeight: 768, // 窗口高
 
-            mousedown: false,
+            // mousedown: false,
+            mousedownNum: 0,
 
             rightMouseXTemp: null, // 鼠标右键点击位置
             rightMouseYTemp: null, // 鼠标右键点击位置

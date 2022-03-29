@@ -4,21 +4,32 @@ import RightMenuItem from "./bean/RightMenu/RightMenuItem";
 import TableBackBlock from "./bean/block/TableBackBlock";
 import {fabric} from "fabric";
 export default{
+    checkLongPress(num, x, y){
+        setTimeout(()=>{
+            if(this.mousedownNum == num){
+                console.log("长按")
+                this.actionEvent(x, y)
+            }
+        }, 1000)
+    },
     /** 左键事件注册 */
     async leftClickRegist(){
         this.myCanvasService.canvas.on('mouse:down', async (options)=> {
             let x = options.pointer.x
             let y = options.pointer.y
             this.rightMenuService.closeAll()
-            this.mousedown = true;
+            // this.mousedown = true;
             // let block = this.myCanvasService.chooseOneBlock(x, y)
             // if(block){
             //     block.borderFabricObj.set("fill", "rgba(1,1,1,0.1)")
             // }
+            this.checkLongPress(this.mousedownNum, x, y)
         });
 
         this.myCanvasService.canvas.on('mouse:up', async (options)=> {
-            this.mousedown = false;
+            // this.mousedown = false;
+            // this.timeFrame.longPressAction = false
+            this.mousedownNum++;
         });
 
         // this.myCanvasService.canvas.on('object:moving', async (options)=> {
