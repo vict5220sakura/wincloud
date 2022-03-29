@@ -90,8 +90,10 @@ export default class Block{
                 })
             })
         }
-        this.backgroundFabricObj.set("scaleX", 70 / this.backgroundFabricObj.width)
-        this.backgroundFabricObj.set("scaleY", 70 / this.backgroundFabricObj.height)
+        this.backgroundFabricObj.set("scaleX", 60 / this.backgroundFabricObj.width)
+        this.backgroundFabricObj.set("scaleY", 60 / this.backgroundFabricObj.height)
+        this.backgroundFabricObj.set("left", 5)
+        this.backgroundFabricObj.set("top", 5)
         this.backgroundFabricObj.hasControls = false;
         this.backgroundFabricObj.hasBorders = false;
 
@@ -158,10 +160,39 @@ export default class Block{
                     this.fabricObj.remove(this.borderFabricObj)
 
                     this.backgroundFabricObj = oImgNew
-                    this.backgroundFabricObj.set("scaleX", 70 / this.backgroundFabricObj.width)
-                    this.backgroundFabricObj.set("scaleY", 70 / this.backgroundFabricObj.height)
+                    this.backgroundFabricObj.set("scaleX", 60 / this.backgroundFabricObj.width)
+                    this.backgroundFabricObj.set("scaleY", 60 / this.backgroundFabricObj.height)
+                    this.backgroundFabricObj.set("left", 5)
+                    this.backgroundFabricObj.set("top", 5)
                     this.backgroundFabricObj.hasControls = false;
                     this.backgroundFabricObj.hasBorders = false;
+
+                    this.textFabricObj = new fabric.Textbox(this.getText(), {
+                        fontFamily: "Inconsolata",
+                        width: 60,
+                        top: 70 + 10,
+                        left: 5,
+                        fontSize: 12,
+                        lineHeight: 1,
+                        textAlign: "center", // 文字对齐
+                        lockRotation: true, // 禁止旋转
+                        lockScalingY: true, // 禁止Y轴伸缩
+                        lockScalingFlip: true, // 禁止负值反转
+                        splitByGrapheme: true, // 拆分中文，可以实现自动换行
+                        objectCaching: false,
+                    });
+
+                    this.borderFabricObj = new fabric.Rect({
+                        width: 70,
+                        height: 100,
+                        // fill: 'rgba(1,1,1,0.1)',
+                        fill: 'rgba(0,0)',
+                        backgroundColor: 'transparent'
+                    })
+                    this.borderFabricObj.set("scaleX", 70 / this.borderFabricObj.width)
+                    this.borderFabricObj.set("scaleY", 100 / this.borderFabricObj.height)
+                    this.borderFabricObj.hasControls = false;
+                    this.borderFabricObj.hasBorders = false;
 
 
                     this.fabricObj.addWithUpdate(this.borderFabricObj)
