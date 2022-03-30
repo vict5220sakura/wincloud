@@ -17,13 +17,18 @@ export default{
         this.myCanvasService.canvas.on('mouse:down', async (options)=> {
             let x = options.pointer.x
             let y = options.pointer.y
-            this.rightMenuService.closeAll()
-            // this.mousedown = true;
-            // let block = this.myCanvasService.chooseOneBlock(x, y)
-            // if(block){
-            //     block.borderFabricObj.set("fill", "rgba(1,1,1,0.1)")
-            // }
-            this.checkLongPress(this.mousedownNum, x, y)
+            let rightMenuItem = this.myCanvasService.chooseOneRightMenuItem(x, y);
+            if(rightMenuItem && rightMenuItem.text == "发送到"){
+
+            }else{
+                this.rightMenuService.closeAll()
+                // this.mousedown = true;
+                // let block = this.myCanvasService.chooseOneBlock(x, y)
+                // if(block){
+                //     block.borderFabricObj.set("fill", "rgba(1,1,1,0.1)")
+                // }
+                this.checkLongPress(this.mousedownNum, x, y)
+            }
         });
 
         this.myCanvasService.canvas.on('mouse:up', async (options)=> {

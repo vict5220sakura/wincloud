@@ -45,6 +45,7 @@ export default class RightMenuItem{
         this.fabricObj.hasControls = false;
         this.fabricObj.hasBorders = false;
         this.fabricObj.selectable = false;
+        this.fabricObj.set("rightMenuItem", this)
         this.fabricObj.on('mouseover', (opts) => {
             this.mouseover(opts);
         });
@@ -80,7 +81,9 @@ export default class RightMenuItem{
      */
     static newSendOtherTableMenuItem(vm){
         let rightMenuItem = RightMenuItem.newInstance(vm, "发送到", ()=>{
-            vm.rightMenuService.closeAll()
+            // vm.rightMenuService.closeAll()
+
+            vm.myCanvasService.activeObject(vm.rightCheckBlock)
         }, new SendOtherTableMenu(vm));
         return rightMenuItem;
     }
