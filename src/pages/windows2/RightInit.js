@@ -9,7 +9,7 @@ export default {
         };
     },
 
-    actionEvent(x, y){
+    actionEvent(x, y, isLongPress){
         // 记录右键临时位置
         this.rightMouseXTemp = x;
         this.rightMouseYTemp = y;
@@ -23,10 +23,10 @@ export default {
             this.myCanvasService.discardActiveObject(); // 取消所有对象选中状态
             this.myCanvasService.activeObject(block)
             this.myCanvasService.renderAll()
-            block.rightMenu.show()
+            block.rightMenu.show(isLongPress)
         }else{
             // 展示桌面右键菜单
-            this.tableRightMenu.show();
+            this.tableRightMenu.show(isLongPress);
         }
     }
 

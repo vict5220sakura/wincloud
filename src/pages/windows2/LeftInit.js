@@ -8,7 +8,7 @@ export default{
         setTimeout(()=>{
             if(this.mousedownNum == num){
                 console.log("长按")
-                this.actionEvent(x, y)
+                this.actionEvent(x, y, true)
             }
         }, 500)
     },
