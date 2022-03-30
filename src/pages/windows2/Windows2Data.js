@@ -20,6 +20,9 @@ export default {
             // mousedown: false,
             mousedownNum: 0,
 
+            mouseX: null,
+            mouseY: null,
+
             rightMouseXTemp: null, // 鼠标右键点击位置
             rightMouseYTemp: null, // 鼠标右键点击位置
 

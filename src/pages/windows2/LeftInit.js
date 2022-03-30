@@ -3,17 +3,22 @@ import RightMenu from "./bean/RightMenu/RightMenu";
 import RightMenuItem from "./bean/RightMenu/RightMenuItem";
 import TableBackBlock from "./bean/block/TableBackBlock";
 import {fabric} from "fabric";
+import XYUtil from "../../util/XYUtil.js"
 export default{
     checkLongPress(num, x, y){
         setTimeout(()=>{
-            if(this.mousedownNum == num){
-                console.log("长按")
+            let length = XYUtil.computeLength(x, y, this.mouseX, this.mouseY);
+            if(length < 50 && this.mousedownNum == num){
                 this.actionEvent(x, y, true)
             }
         }, 500)
     },
     /** 左键事件注册 */
     async leftClickRegist(){
+        this.myCanvasService.canvas.on('mouse:move', async (options)=> {
+            this.mouseX = options.pointer.x;
+            this.mouseY = options.pointer.y;
+        })
         this.myCanvasService.canvas.on('mouse:down', async (options)=> {
             let x = options.pointer.x
             let y = options.pointer.y
