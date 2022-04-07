@@ -39,6 +39,9 @@ export default {
 
             tableBlockEditFlag: false, // 桌面编辑弹窗
 
+            wsChatDialogFlag: false, // 聊天弹窗
+            wsChatCode: "001",
+
             rules: {
                 "username": [
                   {validator: (rule, value, callback) => {

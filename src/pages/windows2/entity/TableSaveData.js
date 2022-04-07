@@ -5,6 +5,7 @@ import LinkBlock from "../bean/block/LinkBlock";
 import NodepadBlock from "../bean/block/NodepadBlock";
 import TableBlock from "../bean/block/TableBlock";
 import TableBackBlock from "../bean/block/TableBackBlock";
+import WsChatBlock from "../bean/block/WsChatBlock";
 
 export default class TableSaveData{
     name;
@@ -54,6 +55,8 @@ export default class TableSaveData{
             return await TableBlock.newInstanceJson(vm, json)
         }else if(json.blockType == BlockType.type_tableBlock_back){
             return await TableBackBlock.newInstanceJson(vm, json)
+        }else if(json.blockType == BlockType.type_wsChat){
+            return await WsChatBlock.newInstanceJson(vm, json)
         }
     }
 }

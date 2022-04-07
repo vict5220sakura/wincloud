@@ -47,6 +47,23 @@
 <!--      </div>-->
     </el-dialog>
 
+    <el-dialog width="80%" height="80%" v-model="wsChatDialogFlag" :close-on-click-modal="false" :show-close="true">
+      <template #title>
+        <div style="margin: 20px 20px 0px 20px">
+          <span>{{wsChatCode}}</span>
+        </div>
+      </template>
+      <div style="margin: 0px 20px 0px 20px" class="row main-center">
+        <ws-chat v-if="wsChatDialogFlag" :wsChatCode="wsChatCode"></ws-chat>
+      </div>
+<!--      <template #footer>-->
+<!--        <div style="margin: 0px 20px 0px 20px" class="row main-start">-->
+<!--          <el-button @click="()=>{nodepadService.nodepadCancelClick()}">取消</el-button>-->
+<!--          <el-button type="primary" @click="()=>{nodepadService.nodepadSaveClick()}">保存</el-button>-->
+<!--        </div>-->
+<!--      </template>-->
+    </el-dialog>
+
   </div>
 </template>
 

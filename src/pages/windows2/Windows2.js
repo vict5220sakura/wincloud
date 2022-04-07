@@ -14,10 +14,12 @@ import NodepadService from "./service/NodepadService.js";
 import TableService from "./service/TableService.js";
 import CoordinateService from "./service/CoordinateService.js";
 import TimeFrame from "./frame/TimeFrame";
+import WsChat from "./WsChat";
 
 
 export default {
     mixins: [WindowsData, Windows2Methods],
+    components:{WsChat},
     created(){
         this.windowWidth = window.innerWidth;
         this.windowHeight = window.innerHeight;
@@ -49,6 +51,9 @@ export default {
         })
         this.tableRightMenu.addRightMenuItem("新建桌面", (opts)=>{
             this.tableService.menuAddTableMouseDown();
+        })
+        this.tableRightMenu.addRightMenuItem("新建聊天室", (opts)=>{
+            this.tableService.menuAddWsChatMouseDown();
         })
 
         // 右键事件注册

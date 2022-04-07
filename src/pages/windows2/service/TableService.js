@@ -7,6 +7,7 @@ import CoordinateService from "./CoordinateService.js";
 import NowTable from '../bean/NowTable.js'
 import TableSaveDao from "../dao/TableSaveDao";
 import ServeApi from "../serveApi/ServerApi.js"
+import WsChatBlock from "../bean/block/WsChatBlock";
 
 /**
  * 桌面图标服务类
@@ -140,6 +141,32 @@ export default class TableService{
             setTimeout(async ()=>{
                 await this.initTableList(this.vm.username, this.vm.password)
             },0)
+
+            // 保存
+            await this.vm.save();
+            this.vm.autoSaveNotify();
+
+        }).catch((e) => {throw e});
+    }
+    menuAddWsChatMouseDown(){
+        this.vm.$prompt('请输入聊天室代码', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消'
+        }).then(async (data) => {
+            let code = data.value;
+            if(!code || code.trim() == ''){
+                code = "001"
+            }
+
+            let wsChatBlock = await WsChatBlock.newInstance(this.vm, code)
+            let top = this.vm.rightMouseYTemp - (CoordinateService.blockHeight / 2 + CoordinateService.marginTop)
+            let left = this.vm.rightMouseXTemp - (CoordinateService.blockWidth / 2 + CoordinateService.marginLeft)
+            wsChatBlock.setLeft(left)
+            wsChatBlock.setTop(top)
+            this.vm.tableService.addBlock(wsChatBlock)
+
+            await this.vm.save();
+            this.vm.autoSaveNotify();
 
             // 保存
             await this.vm.save();

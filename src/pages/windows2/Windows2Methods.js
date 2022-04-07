@@ -16,6 +16,7 @@ import NowTable from "./bean/NowTable.js"
 import TableSaveDao from "./dao/TableSaveDao.js"
 import TableSaveData from "./entity/TableSaveData";
 import ServerApi from "./serveApi/ServerApi.js"
+import WsChat from "./WsChat";
 
 
 export default {
