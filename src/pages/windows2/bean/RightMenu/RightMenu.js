@@ -7,4 +7,7 @@ export default class RightMenu extends Menu{
     constructor(vm) {
         super(vm)
     }
+    heightFill(){
+        return -this.getHeight()
+    }
 }

@@ -51,6 +51,22 @@ export default class MyCanvasService{
         return block;
     }
 
+    /** 探测一个菜单 */
+    /**@type RightMenuItem*/
+    chooseOneRightMenuItem(x, y) {
+        let rightMenuItem;
+        for (let fabricObj of this.canvas.getObjects()) {
+            if (XYUtil.checkPointIn(x, y, fabricObj.left, fabricObj.top, fabricObj.width, fabricObj.height)) {
+                if(fabricObj.rightMenuItem){
+                    rightMenuItem = fabricObj.rightMenuItem
+                    // block.fabricObj = fabricObj;
+                    break;
+                }
+            }
+        }
+        return rightMenuItem;
+    }
+
     /**
      * 添加一个对象
      */

@@ -37,6 +37,9 @@ export default class Menu{
         this.fabricObj.set("height", height)
         this.fabricObj.addWithUpdate()
     }
+    getHeight(){
+        return this.fabricObj.height
+    }
     addRightMenuItem(text, mousedownFunc){
         let rightMenuItem = new RightMenuItem(this.vm);
         rightMenuItem.text = text
@@ -92,18 +95,29 @@ export default class Menu{
     }
 
     /**
+     * 高度补偿
+     */
+    heightFill(){
+        return 0;
+    }
+    /**
      * 显示菜单
      * @param x 坐标
      * @param y 坐标
      */
-    show() {
+    show(isLongPress) {
+        this.setHeight(this.itemList.length * 25)
         this.status = Menu.status_open
         let x = this.getShowX();
-        let y = this.getShowY();
+        let y;
+        if(isLongPress){
+            y = this.getShowY() + this.heightFill();
+        }else{
+            y = this.getShowY();
+        }
 
         this.setLeft(x)
         this.setTop(y)
-        this.setHeight(this.itemList.length * 25)
 
         this.vm.myCanvasService.addFabricObj(this.fabricObj);
         this.addWithUpdate()
