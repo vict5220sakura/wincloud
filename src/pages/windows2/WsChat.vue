@@ -28,7 +28,7 @@
         },
         created() {
             console.log("创建连接")
-            this.socket = new WebSocket("ws://localhost:8080/wschat?wsChatCode=" + this.wsChatCode);
+            this.socket = new WebSocket("wss://49.232.199.90/wschat?wsChatCode=" + this.wsChatCode);
             this.socket.onerror = err => {
                 console.log(err);
             };

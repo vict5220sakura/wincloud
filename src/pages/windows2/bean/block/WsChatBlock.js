@@ -61,24 +61,14 @@ export default class TableBlock extends Block{
         //     })
         // }))
         list.push(RightMenuItem.newInstance(this.vm, "删除", (opts)=>{
-
-            this.vm.$confirm('此操作将删除桌面('+this.name+')全部数据', '删除桌面('+this.name+')', {
+            this.vm.$confirm('是否删除?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(async () => {
                 this.vm.tableService.removeBlock(this)
-
-                // 刷新当前桌面列表
-                setTimeout(async ()=>{
-                    // 删除当前桌面
-                    await ServerApi.removeTable(this.vm.username, this.vm.password, this.key)
-                    this.vm.save()
-                    this.vm.autoSaveNotify();
-                    await this.vm.tableService.initTableList(this.vm.username, this.vm.password)
-                },0)
             }).catch((e) => {
-                throw e;
+                console.log(e)
             });
         }))
         list.push(RightMenuItem.newSendOtherTableMenuItem(this.vm));
