@@ -25,9 +25,9 @@ export default class LinkBlock extends Block{
         list.push(RightMenuItem.newInstance(this.vm, "打开", (opts)=>{
             let url = this.url
             if (new RegExp("http.*").test(url)) {
-                window.open(url)
+                this.vm.openNewUrl(url)
             } else {
-                window.open("http://" + url)
+                this.vm.openNewUrl("http://" + url)
             }
         }))
         list.push(RightMenuItem.newInstance(this.vm, "修改", (opts)=>{
@@ -77,9 +77,9 @@ export default class LinkBlock extends Block{
         return ()=>{
             let url = this.url
             if (new RegExp("http.*").test(url)) {
-                window.open(url)
+                this.vm.openNewUrl(url)
             } else {
-                window.open("http://" + url)
+                this.vm.openNewUrl("http://" + url)
             }
         };
     }

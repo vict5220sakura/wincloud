@@ -157,6 +157,11 @@ export default {
             let nowTable /**@type NowTable*/ = await TableSaveDao.loadInstance(this, key, this.loginMode, this.username, this.password)
             this.tableService.removeAllBlock(true);
             await this.tableService.load(nowTable);
+        },
+        openNewUrl(url){
+            let newWin = window.open();
+            newWin.location.href = url
+            window.open(url)
         }
     }
 
