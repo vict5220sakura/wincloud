@@ -13,6 +13,7 @@
     "element-plus": "^1.0.2-beta.28",
     "fabric": "^4.6.0",
     "jquery": "^3.6.0",
+    "lokijs": "^1.5.12",
     "vue": "^3.2.29",
     "vue-router": "^4.0.12"
   },

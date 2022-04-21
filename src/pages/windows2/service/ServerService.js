@@ -1,14 +1,14 @@
+import { get } from 'lodash'
 import Api from "../../../util/Api";
-
 /**
- * 服务类
+ * 远程服务
  */
-export default class ServerApi{
+export default class ServerService{
     /**
      * 登录注册
      * @return {b: true, msg:"", registLoginMode: "regist"|"login"}
      */
-    static async registLogin(username, password){
+    async registLogin(username, password){
         let res =  await Api.post("registLogin", {username, password})
         if(res.code == '00000'){
             return {b: true, msg:"", registLoginMode: res.registLoginMode}
@@ -18,12 +18,12 @@ export default class ServerApi{
     }
     /**
      * 获取桌面列表
-     * @return {b: true, msg:"", list:[{key, type, parentsKey}]}
+     * @return {b: true, msg:"", list:[{key, type, parentsKey, name}]}
      */
-    static async getTableList(username, password){
+    async getTableList(username, password){
         let res =  await Api.post("getTableList", {username, password})
         if(res.code == '00000'){
-            return {b: true, msg:"", list: res.data.list}
+            return {b: true, msg:"", list: get(res, 'data.list', null)}
         }else{
             return {b: false, msg:""}
         }
@@ -32,7 +32,7 @@ export default class ServerApi{
      * 获取桌面数据
      * @return {b: true, msg:"", data:{name, key, type, allBlock}}]}
      */
-    static async getTableData(username, password, key){
+    async getTableData(username, password, key){
         let res =  await Api.post("getTableData", {username, password, key})
         if(res.code == '00000'){
             return {b: true, msg:"", data: res.data}
@@ -44,7 +44,7 @@ export default class ServerApi{
      * 保存桌面数据
      * @return {b: true, msg:"", list:[{key, type, parentsKey}]}
      */
-    static async saveTableData(username, password, key, type, allBlock, name, parentsKey){
+    async saveTableData(username, password, key, type, allBlock, name, parentsKey){
         let res =  await Api.post("saveTableData", {username, password, key, type, allBlock, name, parentsKey})
         if(res.code == '00000'){
             return {b: true, msg:""}
@@ -56,7 +56,7 @@ export default class ServerApi{
      * 移动图标
      * @return {b: true, msg:""}
      */
-    static async moveBlock(username, password, fromTableKey, blockKey, toTableKey){
+    async moveBlock(username, password, fromTableKey, blockKey, toTableKey){
         let res =  await Api.post("moveBlock", {username, password, fromTableKey, blockKey, toTableKey})
         if(res.code == '00000'){
             return {b: true, msg:""}
@@ -64,11 +64,12 @@ export default class ServerApi{
             return {b: false, msg:""}
         }
     }
+
     /**
      * 删除桌面
      * @return {b: true, msg:""}
      */
-    static async removeTable(username, password, tableKey){
+    async removeTable(username, password, tableKey){
         let res =  await Api.post("removeTable", {username, password, tableKey})
         if(res.code == '00000'){
             return {b: true, msg:""}

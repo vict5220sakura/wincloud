@@ -1,3 +1,5 @@
+import DataService from "./service/DataService";
+
 export default {
     data(){
         return {
@@ -13,6 +15,12 @@ export default {
             coordinateService: null,
             /**@type TimeFrame*/
             timeFrame: null,
+            /**@type DataService*/
+            dataService: null,
+            /**@type LocalDbService*/
+            localDbService: null,
+            /**@type ServerService*/
+            serverService: null,
 
             windowWidth: 1024, // 窗口宽
             windowHeight: 768, // 窗口高

@@ -3,7 +3,6 @@ import Block from "./Block.js"
 import {saveKey, login_mode} from '../../../../common/M.js'
 import Api from "../../../../util/Api";
 import RightMenuItem from "../RightMenu/RightMenuItem";
-import ServerApi from "../../serveApi/ServerApi";
 
 
 /**桌面blcok*/

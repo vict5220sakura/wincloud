@@ -6,7 +6,7 @@ import BlockType from "../bean/block/BlockType.js";
 import CoordinateService from "./CoordinateService.js";
 import NowTable from '../bean/NowTable.js'
 import TableSaveDao from "../dao/TableSaveDao";
-import ServeApi from "../serveApi/ServerApi.js"
+import DataService from "../service/DataService.js"
 import WsChatBlock from "../bean/block/WsChatBlock";
 
 /**
@@ -26,19 +26,10 @@ export default class TableService{
     /**@type NowTable*/
     nowTable; // 当前窗口
 
-    /**
-     * 初始化
-     */
-    async init(username, password){
-        // 获取全部桌面列表
-        await this.initTableList(username, password)
-
-        this.vm.openTableKey(this.defaultTable.key)
-    }
-
+    /** 获取全部桌面列表 */
     async initTableList(username, password){
         this.tableList = [];
-        let {b, msg, list} = await ServeApi.getTableList(username, password)
+        let {b, msg, list} = await this.vm.dataService.getTableList(username, password)
         for(let item of list){
             let obj = new NowTable();
             obj.key = item.key
@@ -190,7 +181,7 @@ export default class TableService{
         let tableBackBlock = await TableBackBlock.newInstance(this.vm);
         nowTableNew.allBlock.push(tableBackBlock)
 
-        await TableSaveDao.saveInstance(nowTableNew, this.vm.loginMode, this.vm.username, this.vm.password)
+        await TableSaveDao.saveInstance(this, nowTableNew, this.vm.loginMode, this.vm.username, this.vm.password)
         return nowTableNew;
     }
 
@@ -205,6 +196,6 @@ export default class TableService{
     async moveBlock(block /**@type Block*/, tableKey){
         this.removeBlock(block) // 当前桌面移除图标
         // 移动图标到目标桌面
-        await ServeApi.moveBlock(this.vm.username, this.vm.password, this.nowTable.key, block.blockKey, tableKey)
+        await this.vm.dataService.moveBlock(this.vm.username, this.vm.password, this.nowTable.key, block.blockKey, tableKey)
     }
 }

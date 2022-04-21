@@ -15,7 +15,6 @@ import TableBlock from "./bean/block/TableBlock.js"
 import NowTable from "./bean/NowTable.js"
 import TableSaveDao from "./dao/TableSaveDao.js"
 import TableSaveData from "./entity/TableSaveData";
-import ServerApi from "./serveApi/ServerApi.js"
 import WsChat from "./WsChat";
 
 
@@ -98,7 +97,7 @@ export default {
 
         /** 保存 */
         async save() {
-            await TableSaveDao.saveInstance(this.tableService.nowTable, this.loginMode, this.username, this.password)
+            await TableSaveDao.saveInstance(this, this.tableService.nowTable, this.loginMode, this.username, this.password)
         },
 
         /**
@@ -112,17 +111,21 @@ export default {
                 return false;
             }
             // 注册登录
-            let {b, msg, registLoginMode} = await ServerApi.registLogin(this.username, this.password)
+            let {b, msg, registLoginMode} = await this.dataService.registLogin(this.username, this.password)
             if(b){
                 this.$message({
                     type: 'success',
                     message: (registLoginMode == "regist" ? "注册" : "登录") + '成功!'
                 })
                 // 登录成功
-                // 桌面初始化 获取全部桌面菜单
-                setTimeout(async ()=>{
-                    await this.tableService.init(this.username, this.password)
-                }, 0)
+
+                // 初始化全部数据
+                this.dataService.loadAllLoaclData(this.username, this.password)
+
+                // 初始化全部桌面列表
+                await this.tableService.initTableList(this.username, this.password)
+                // 打开默认主页
+                await this.openTableKey(this.tableService.defaultTable.key)
 
                 this.$notify({
                     title: '提示',

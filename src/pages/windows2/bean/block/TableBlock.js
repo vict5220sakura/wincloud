@@ -3,7 +3,7 @@ import Block from "./Block.js"
 import {saveKey, login_mode} from '../../../../common/M.js'
 import Api from "../../../../util/Api";
 import RightMenuItem from "../RightMenu/RightMenuItem";
-import ServerApi from "../../serveApi/ServerApi";
+import DataService from "../../service/DataService";
 
 
 /**桌面blcok*/
@@ -70,7 +70,7 @@ export default class TableBlock extends Block{
                 // 刷新当前桌面列表
                 setTimeout(async ()=>{
                     // 删除当前桌面
-                    await ServerApi.removeTable(this.vm.username, this.vm.password, this.key)
+                    await this.dataService.removeTable(this.vm.username, this.vm.password, this.key)
                     this.vm.save()
                     this.vm.autoSaveNotify();
                     await this.vm.tableService.initTableList(this.vm.username, this.vm.password)

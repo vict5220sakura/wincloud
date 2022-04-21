@@ -15,7 +15,9 @@ import TableService from "./service/TableService.js";
 import CoordinateService from "./service/CoordinateService.js";
 import TimeFrame from "./frame/TimeFrame";
 import WsChat from "./WsChat";
-
+import DataService from "./service/DataService.js"
+import LocalDbService from "./service/LocalDbService"
+import ServerService from "./service/ServerService"
 
 export default {
     mixins: [WindowsData, Windows2Methods],
@@ -23,15 +25,24 @@ export default {
     created(){
         this.windowWidth = window.innerWidth;
         this.windowHeight = window.innerHeight;
-        // fabric.Object.prototype.objectCaching = false;
+        // let testTable = this.$db.addCollection("test");
+        // testTable.insert({a: "111"});
+        // let one = testTable.findOne({a: "111"})
+        // one.a = "bbb"
+        // testTable.update(one)
+        // testTable.remove(a.$loki)
+        // console.log("testTable.find()", testTable.find())
     },
     async mounted(){
+        this.dataService = new DataService(this);
         this.myCanvasService = new MyCanvasService(this);
         this.rightMenuService = new RightMenuService(this);
         this.nodepadService = new NodepadService(this);
         this.tableService = new TableService(this);
         this.coordinateService = new CoordinateService(this);
         this.timeFrame = new TimeFrame(this);
+        this.localDbService = new LocalDbService(this);
+        this.serverService = new ServerService();
 
         this.tableRightMenu = new RightMenu(this);
         this.tableRightMenu.addRightMenuItem("新建连接", (opts)=>{

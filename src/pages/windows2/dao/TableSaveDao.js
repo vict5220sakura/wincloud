@@ -3,7 +3,7 @@ import TableSaveData from "../entity/TableSaveData.js";
 import Api from "../../../util/Api.js";
 import TableBlock from "../bean/block/TableBlock.js";
 import NowTable from "../bean/NowTable.js";
-import ServeApi from "../serveApi/ServerApi"
+import DataService from "../service/DataService"
 
 export default class TableSaveDao{
     /**
@@ -19,7 +19,7 @@ export default class TableSaveDao{
         if(loginMode == login_mode.login_mode_local){
             json = TableSaveDao.localStorageLoadInstance(key);
         }else if(loginMode == login_mode.login_mode_serve){
-            json = await TableSaveDao.serviceLoadInstance(username, password, key);
+            json = await TableSaveDao.serviceLoadInstance(vm, username, password, key);
         }
 
         let tableSaveData = new TableSaveData(json);
@@ -35,12 +35,12 @@ export default class TableSaveDao{
      * @param password
      * @returns {Promise<void>}
      */
-    static async saveInstance(nowTable/**@type NowTable*/, loginMode, username, password){
+    static async saveInstance(vm, nowTable/**@type NowTable*/, loginMode, username, password){
         let tableSaveData = nowTable.toTableSaveData();
         if(loginMode == login_mode.login_mode_local){
             TableSaveDao.localStorageSaveInstance(tableSaveData)
         }else if(loginMode == login_mode.login_mode_serve){
-            await TableSaveDao.serviceSaveInstance(username, password, tableSaveData)
+            await TableSaveDao.serviceSaveInstance(vm, username, password, tableSaveData)
         }
     }
 
@@ -76,36 +76,19 @@ export default class TableSaveDao{
      * @param password 密码
      * @param tableData
      */
-    static async serviceSaveInstance(username, password, tableSaveData /**@type TableSaveData*/){
-        await ServeApi.saveTableData(username, password, tableSaveData.key, tableSaveData.type,
+    static async serviceSaveInstance(vm, username, password, tableSaveData /**@type TableSaveData*/){
+        await vm.serveApi.saveTableData(username, password, tableSaveData.key, tableSaveData.type,
             tableSaveData.allBlock, tableSaveData.name, tableSaveData.parentsKey)
         return;
 
-        // if(tableSaveData.type == NowTable.type_defaule){
-        //     let winDataStr = JSON.stringify(tableSaveData.allBlock);
-        //     let res = await Api.post("saveWinData", {username, password, winDataStr})
-        //     if(!res || res.code != "00000"){
-        //         throw "api未知异常"
-        //     }
-        //     return;
-        // }else if(tableSaveData.type == NowTable.type_children){
-        //
-        //     let tableDataStr = JSON.stringify(tableSaveData);
-        //     let res = await Api.post("saveWinDataChildren",
-        //         {username, password, key: tableSaveData.key, tableDataStr})
-        //     if(!res || res.code != "00000"){
-        //         throw "api未知异常"
-        //     }
-        //     return;
-        // }
     }
 
     /**
      * @param key
      * @returns {TableSaveData}
      */
-    static async serviceLoadInstance(username, password, key){
-        let {b, msg, data} = await ServeApi.getTableData(username, password, key)
+    static async serviceLoadInstance(vm, username, password, key){
+        let {b, msg, data} = await vm.dataService.getTableData(username, password, key)
         return data; // {name, key, type, allBlock}
     }
 }
