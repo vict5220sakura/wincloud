@@ -26,12 +26,8 @@ export default class LocalDbService{
     /** 本地获取一个table */
     getTableDb(key){
         let table = this.db.addCollection(LocalDbService.table_table);
-        let list = table.find({key: key});
-        if(list != null && list != undefined && list.length > 0){
-            return list[0]
-        }else{
-            return null;
-        }
+        let one = table.findOne({key: key});
+        return one;
     }
     /** 删除桌面 */
     deleteTableByKeyDb(key){
@@ -45,12 +41,17 @@ export default class LocalDbService{
         table.insert({key, parentsKey, type, name})
     }
 
+    /** 获取blocklist */
+    getBlockListDb(tableKey){
+        let blockTable = this.db.addCollection(LocalDbService.table_block);
+        return blockTable.find({tableKey: tableKey})
+    }
     /** 插入一个block数据 */
     insertBlockDb(tableKey, item){
         let blockTable = this.db.addCollection(LocalDbService.table_block);
         blockTable.insert({
+            ...item,
             tableKey,
-            data: item,
             blockType: item.blockType,
             blockKey: item.blockKey
         });
@@ -89,6 +90,9 @@ export default class LocalDbService{
      */
     getTableData(key){
         let tableDb = this.getTableDb(key);
+        let list = this.getBlockListDb(tableDb.key);
+        tableDb.allBlock = list
+
         return {b: true, msg:"", data: tableDb}
     }
     /**

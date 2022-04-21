@@ -120,10 +120,11 @@ export default {
                 // 登录成功
 
                 // 初始化全部数据
-                this.dataService.loadAllLoaclData(this.username, this.password)
+                await this.dataService.loadAllLoaclData(this.username, this.password)
 
                 // 初始化全部桌面列表
                 await this.tableService.initTableList(this.username, this.password)
+
                 // 打开默认主页
                 await this.openTableKey(this.tableService.defaultTable.key)
 

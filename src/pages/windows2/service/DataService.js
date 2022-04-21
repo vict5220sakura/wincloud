@@ -42,11 +42,13 @@ export default class DataService{
 
         let allPromise = [];
         for(let nowTable of list){
-            this.localDbService.insertTable(nowTable.key, nowTable.parentsKey, nowTable.type, nowTable.name)
+            this.localDbService.insertTableDb(nowTable.key, nowTable.parentsKey, nowTable.type, nowTable.name)
             let promiseItem = new Promise(async(r)=>{
                 /** {b: true, msg:"", data:{name, key, type, allBlock}}]} */
                 let {b, msg, data} = await this.serverService.getTableData(username,password,nowTable.key);
-                this.localDbService.insertBlock(nowTable.key, data)
+                for(let blockItem of data.allBlock){
+                    this.localDbService.insertBlockDb(nowTable.key, blockItem)
+                }
                 r();
             })
             allPromise.push(promiseItem)
@@ -56,7 +58,6 @@ export default class DataService{
                 r()
             })
         })
-        console.log("加载完全部数据")
     }
 
     /**
@@ -72,7 +73,8 @@ export default class DataService{
      * @return {b: true, msg:"", list:[{key, type, parentsKey, name}]}
      */
     async getTableList(username, password){
-        return await this.serverService.getTableList(username, password)
+        return this.localDbService.getTableList()
+        // return await this.serverService.getTableList(username, password)
     }
 
     /**
@@ -80,7 +82,8 @@ export default class DataService{
      * @return {b: true, msg:"", data:{name, key, type, allBlock}}]}
      */
     async getTableData(username, password, key){
-        return await this.serverService.getTableData(username, password, key)
+        return this.localDbService.getTableData(key)
+        // return await this.serverService.getTableData(username, password, key)
     }
 
     /**
@@ -88,7 +91,8 @@ export default class DataService{
      * @return {b: true, msg:"", list:[{key, type, parentsKey}]}
      */
     async saveTableData(username, password, key, type, allBlock, name, parentsKey){
-        return await this.serverService.saveTableData(username, password, key, type, allBlock, name, parentsKey)
+        return this.localDbService.saveTableData(key, type, allBlock, name, parentsKey)
+        // return await this.serverService.saveTableData(username, password, key, type, allBlock, name, parentsKey)
     }
 
     /**
@@ -96,7 +100,8 @@ export default class DataService{
      * @return {b: true, msg:""}
      */
     async moveBlock(username, password, fromTableKey, blockKey, toTableKey){
-        return await this.serverService.moveBlock(username, password, fromTableKey, blockKey, toTableKey)
+        return this.localDbService.moveBlock(fromTableKey, blockKey, toTableKey)
+        // return await this.serverService.moveBlock(username, password, fromTableKey, blockKey, toTableKey)
     }
 
     /**
@@ -104,6 +109,7 @@ export default class DataService{
      * @return {b: true, msg:""}
      */
     async removeTable(username, password, tableKey){
-        return await this.serverService.removeTable(username, password, tableKey)
+        return this.localDbService.removeTable(tableKey)
+        // return await this.serverService.removeTable(username, password, tableKey)
     }
 }
