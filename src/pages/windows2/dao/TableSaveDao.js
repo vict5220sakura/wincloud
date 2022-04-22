@@ -77,7 +77,7 @@ export default class TableSaveDao{
      * @param tableData
      */
     static async serviceSaveInstance(vm, username, password, tableSaveData /**@type TableSaveData*/){
-        await vm.serveApi.saveTableData(username, password, tableSaveData.key, tableSaveData.type,
+        await vm.dataService.saveTableData(username, password, tableSaveData.key, tableSaveData.type,
             tableSaveData.allBlock, tableSaveData.name, tableSaveData.parentsKey)
         return;
 

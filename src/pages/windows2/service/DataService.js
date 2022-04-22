@@ -91,8 +91,11 @@ export default class DataService{
      * @return {b: true, msg:"", list:[{key, type, parentsKey}]}
      */
     async saveTableData(username, password, key, type, allBlock, name, parentsKey){
-        return this.localDbService.saveTableData(key, type, allBlock, name, parentsKey)
-        // return await this.serverService.saveTableData(username, password, key, type, allBlock, name, parentsKey)
+        let data = this.localDbService.saveTableData(key, type, allBlock, name, parentsKey)
+        setTimeout(async()=>{
+            await this.serverService.saveTableData(username, password, key, type, allBlock, name, parentsKey)
+        },0)
+        return data;
     }
 
     /**
@@ -100,8 +103,11 @@ export default class DataService{
      * @return {b: true, msg:""}
      */
     async moveBlock(username, password, fromTableKey, blockKey, toTableKey){
-        return this.localDbService.moveBlock(fromTableKey, blockKey, toTableKey)
-        // return await this.serverService.moveBlock(username, password, fromTableKey, blockKey, toTableKey)
+        let data =  this.localDbService.moveBlock(fromTableKey, blockKey, toTableKey)
+        setTimeout(async()=>{
+            await this.serverService.moveBlock(username, password, fromTableKey, blockKey, toTableKey)
+        },0)
+        return data;
     }
 
     /**
@@ -109,7 +115,10 @@ export default class DataService{
      * @return {b: true, msg:""}
      */
     async removeTable(username, password, tableKey){
-        return this.localDbService.removeTable(tableKey)
-        // return await this.serverService.removeTable(username, password, tableKey)
+        let data = this.localDbService.removeTable(tableKey)
+        setTimeout(async()=>{
+            await this.serverService.removeTable(username, password, tableKey)
+        },0)
+        return data;
     }
 }

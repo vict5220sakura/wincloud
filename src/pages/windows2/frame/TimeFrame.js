@@ -8,6 +8,7 @@ export default class TimeFrame{
         setInterval(()=>{
             this.vm.myCanvasService.renderAllMain();
         }, 17)
+
         // setInterval(()=>{
         //     this.longTouchCheck()
         // }, 100)

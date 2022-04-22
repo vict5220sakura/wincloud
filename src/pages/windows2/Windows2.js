@@ -63,9 +63,9 @@ export default {
         this.tableRightMenu.addRightMenuItem("新建桌面", (opts)=>{
             this.tableService.menuAddTableMouseDown();
         })
-        this.tableRightMenu.addRightMenuItem("新建聊天室", (opts)=>{
-            this.tableService.menuAddWsChatMouseDown();
-        })
+        // this.tableRightMenu.addRightMenuItem("新建聊天室", (opts)=>{
+        //     this.tableService.menuAddWsChatMouseDown();
+        // })
 
         // 右键事件注册
         this.rightClickRegist();
