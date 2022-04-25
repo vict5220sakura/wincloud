@@ -28,8 +28,11 @@ export default{
             this.mouseY = options.pointer.y;
         })
         this.myCanvasService.canvas.on('mouse:down', async (options)=> {
+            console.log("mouse:down")
             let x = options.pointer.x
             let y = options.pointer.y
+            this.mouseX = options.pointer.x;
+            this.mouseY = options.pointer.y;
             let rightMenuItem = this.myCanvasService.chooseOneRightMenuItem(x, y);
             if(rightMenuItem && rightMenuItem.text == "发送到"){
 
