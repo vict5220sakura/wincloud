@@ -113,30 +113,7 @@ export default {
             // 注册登录
             let {b, msg, registLoginMode} = await this.dataService.registLogin(this.username, this.password)
             if(b){
-                this.$message({
-                    type: 'success',
-                    message: (registLoginMode == "regist" ? "注册" : "登录") + '成功!'
-                })
-                // 登录成功
-
-                // 初始化全部数据
-                await this.dataService.loadAllLoaclData(this.username, this.password)
-
-                // 初始化全部桌面列表
-                await this.tableService.initTableList(this.username, this.password)
-
-                // 打开默认主页
-                await this.openTableKey(this.tableService.defaultTable.key)
-
-                this.$notify({
-                    title: '提示',
-                    message: "使用鼠标右键或长按屏幕呼出菜单",
-                    duration: 0
-                });
-
-                // 保存用户名密码到本地
-                this.dataService.localStoreSaveUserLogin(this.username, this.password)
-
+                await this.loginSuccess(registLoginMode);
                 this.loginDialogFlag = false;
             }else{
                 this.$message({
@@ -145,6 +122,41 @@ export default {
                 });
             }
         },
+
+        /** 登录成功 */
+        async loginSuccess(registLoginMode){
+            this.$message({
+                type: 'success',
+                message: (registLoginMode == "regist" ? "注册" : "登录") + '成功!'
+            })
+            // 登录成功
+
+            // 删除全部本地数据
+            this.dataService.clearLocalDB();
+
+            // 初始化全部数据
+            await this.dataService.loadAllLoaclData(this.username, this.password)
+
+            // 初始化全部桌面列表
+            await this.tableService.initTableList(this.username, this.password)
+
+            // 打开默认主页
+            await this.openTableKey(this.tableService.defaultTable.key)
+
+            this.$notify({
+                title: '提示',
+                message: "使用鼠标右键或长按屏幕呼出菜单",
+                duration: 0
+            });
+
+            // 保存用户名密码到本地
+            this.dataService.localStoreSaveUserLogin(this.username, this.password)
+        },
+
+        loginOut(){
+            this.loginDialogFlag = true;
+        },
+
         /**
          * 本地登录按钮点击
          */

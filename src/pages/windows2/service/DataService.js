@@ -20,21 +20,11 @@ export default class DataService{
     constructor(vm) {
         this.vm = vm;
         this.db = this.vm.$db;
+    }
 
-        let time1 = setInterval(()=>{
-            if(this.vm.localDbService != null && this.vm.localDbService != undefined){
-                clearInterval(time1);
-                this.localDbService = this.vm.localDbService;
-                console.log("this.vm.localDbService", this.vm.localDbService)
-            }
-        }, 200);
-        let time2 = setInterval(()=>{
-            if(this.vm.serverService != null && this.vm.serverService != undefined){
-                clearInterval(time2);
-                this.serverService = this.vm.serverService;
-                console.log("this.vm.serverService", this.vm.serverService)
-            }
-        }, 200);
+    init(){
+        this.localDbService = this.vm.localDbService;
+        this.serverService = this.vm.serverService;
     }
 
     /** 保存用户名密码到local */
@@ -53,6 +43,7 @@ export default class DataService{
 
     /** 初始化全部本地db数据 */
     async loadAllLoaclData(username, password){
+
         // 获取全部桌面数据
         let {b, msg, list /** @type NowTable[] */} = await this.serverService.getTableList(username, password);
 
@@ -136,5 +127,10 @@ export default class DataService{
             await this.serverService.removeTable(username, password, tableKey)
         },0)
         return data;
+    }
+
+    /** 删除全部数据 */
+    clearLocalDB(){
+        this.localDbService.clearLocalDB();
     }
 }

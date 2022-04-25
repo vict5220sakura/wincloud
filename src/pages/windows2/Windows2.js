@@ -19,6 +19,7 @@ import DataService from "./service/DataService.js"
 import LocalDbService from "./service/LocalDbService"
 import ServerService from "./service/ServerService"
 import {get} from "lodash"
+import {login_mode} from "../../common/M";
 
 export default {
     mixins: [WindowsData, Windows2Methods],
@@ -35,6 +36,7 @@ export default {
         // console.log("testTable.find()", testTable.find())
     },
     async mounted(){
+        // 创建服务
         this.dataService = new DataService(this);
         this.myCanvasService = new MyCanvasService(this);
         this.rightMenuService = new RightMenuService(this);
@@ -44,6 +46,9 @@ export default {
         this.timeFrame = new TimeFrame(this);
         this.localDbService = new LocalDbService(this);
         this.serverService = new ServerService();
+
+        // 初始化服务
+        this.dataService.init();
 
         let userData = this.dataService.localStoreLoadUserLogin()
         this.username = get(userData, "username", null);
@@ -68,6 +73,9 @@ export default {
         this.tableRightMenu.addRightMenuItem("新建桌面", (opts)=>{
             this.tableService.menuAddTableMouseDown();
         })
+        this.tableRightMenu.addRightMenuItem("退出登录", (opts)=>{
+            this.loginOut();
+        })
         // this.tableRightMenu.addRightMenuItem("新建聊天室", (opts)=>{
         //     this.tableService.menuAddWsChatMouseDown();
         // })
@@ -77,7 +85,16 @@ export default {
         // 左键事件注册
         this.leftClickRegist();
 
+
         // 登录弹窗默认显示
-        this.loginDialogFlag = true;
+        if(this.username != null && this.username != undefined && this.password != null && this.password != undefined){
+            setTimeout(async ()=>{
+                this.loginMode = login_mode.login_mode_serve
+                // 自动登录
+                await this.loginSuccess("login");
+            }, 0)
+        }else{
+            this.loginDialogFlag = true;
+        }
     }
 }

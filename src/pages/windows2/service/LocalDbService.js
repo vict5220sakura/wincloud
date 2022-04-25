@@ -14,6 +14,12 @@ export default class LocalDbService{
         this.db = this.vm.$db;
     }
 
+    /** 清空数据库数据 */
+    clearLocalDB(){
+        this.db.removeCollection(LocalDbService.table_table);
+        this.db.removeCollection(LocalDbService.table_block);
+    }
+
     /** 获取桌面列表
      * @return list
      */
