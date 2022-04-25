@@ -31,7 +31,7 @@ export default class MyCanvasService{
                 scaleY: this.vm.windowHeight / oImg.height
             })
             this.canvas.setBackgroundImage(oImg);
-            this.canvas.renderAll();
+            this.vm.renderAll()
         });
     }
 
@@ -89,8 +89,9 @@ export default class MyCanvasService{
     }
     renderAllMain(){
         if(this.vm.myCanvasService.isRenderAll){
+            console.log("刷新全部")
             this.vm.myCanvasService.isRenderAll = false
-            this.canvas.renderAll();
+            // this.canvas.renderAll();
             this.canvas.requestRenderAll();
 
         }
