@@ -35,7 +35,9 @@ export default{
             this.mouseY = options.pointer.y;
             let rightMenuItem = this.myCanvasService.chooseOneRightMenuItem(x, y);
             if(rightMenuItem && rightMenuItem.text == "发送到"){
-
+                if(rightMenuItem.secondMenu){
+                    rightMenuItem.secondMenu.show()
+                }
             }else{
                 this.rightMenuService.closeAll()
                 // this.mousedown = true;

@@ -182,7 +182,12 @@ export default {
 
         loginOut(){
             this.loginDialogFlag = true;
-            this.dataService.localStoreClearUserLogin()
+            this.dataService.localStoreClearUserLogin();
+            if(this.loginMode == login_mode.login_mode_local){
+                // 本地登录清空用户名 密码
+                this.username = null
+                this.password = null
+            }
         },
 
         /**
