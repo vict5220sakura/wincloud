@@ -120,16 +120,19 @@ export default class CoordinateService{
         return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
     }
 
-    /** 下一个point */
-    nextTablePoint(thisBlockPoint){
+    /** 下一个point
+     * @return BlockPoint
+     * */
+    nextTablePoint(thisBlockPoint /** @type BlockPoint*/){
         return this.allBlockPoint[this.allBlockPoint.indexOf(thisBlockPoint) + 1]
     }
-    addBlockMain(block, blockpoint){
+    /** @return BlockPoint */
+    addBlockMain(block, blockpoint /**@type BlockPoint*/){
         if(!blockpoint.block){
             blockpoint.block = block
             block.blockPoint = blockpoint
             this.activeallBlockPoint.push(blockpoint)
-            return true;
+            return blockpoint;
         }else{
             return this.addBlockMain(block, this.nextTablePoint(blockpoint))
         }
@@ -137,8 +140,9 @@ export default class CoordinateService{
     addBlock(block){
         let y = block.getTop() || 0
         let x = block.getLeft() || 0
-        let nearBlockpoint = this.getNearTablepoint(x, y);
-        this.addBlockMain(block, nearBlockpoint)
+        let nearBlockpoint /**@type BlockPoint*/ = this.getNearTablepoint(x, y);
+        let addBlockPoint /**@type BlockPoint */ = this.addBlockMain(block, nearBlockpoint);
+        return addBlockPoint;
     }
     removeBlock(block){
         let index = this.activeallBlockPoint.indexOf(block.blockPoint);
@@ -150,11 +154,41 @@ export default class CoordinateService{
         }
     }
 
+    /** 重置一个图标 */
+    resetOne(block /** @type Block*/){
+        console.log("now block", block)
+        this.removeBlock(block)
+
+        // /** @type BlockPoint */
+        // let nearNullBlockPoint;
+        // /** @type BlockPoint */
+        // let nearTablepoint = this.getNearTablepoint(block.top, block.left);
+        // if(nearTablepoint.block == undefined || nearTablepoint.block == null){
+        //     nearNullBlockPoint = nearTablepoint;
+        // }else{
+        //     while(true){
+        //         nearTablepoint = this.nextTablePoint(nearTablepoint)
+        //         if(nearTablepoint.block == undefined || nearTablepoint.block == null){
+        //             nearNullBlockPoint = nearTablepoint;
+        //             break;
+        //         }
+        //     }
+        // }
+        //
+        // block.setTop(nearNullBlockPoint.point.y)
+        // block.setLeft(nearNullBlockPoint.point.x)
+        let blockPoint = this.addBlock(block);
+        block.setTop(blockPoint.point.y)
+        block.setLeft(blockPoint.point.x)
+
+        // console.log("activeallBlockPoint.index", index)
+    }
+
     /**
      * 图标重排
      */
     reset(){
-        let allBlock /**@type Block*/ = []
+        let allBlock /**@type Block[]*/ = []
 
         for(let blockPoint of this.activeallBlockPoint){
             let block = blockPoint.block;

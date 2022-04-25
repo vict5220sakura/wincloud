@@ -233,6 +233,7 @@ export default class Block{
         return undefined
     }
     defaultMouseup(){
+        this.vm.coordinateService.resetOne(this);
         // this.vm.coordinateService.reset()
     }
     /** @abstract 图标双击事件*/

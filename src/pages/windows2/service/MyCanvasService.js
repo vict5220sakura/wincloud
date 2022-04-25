@@ -31,7 +31,7 @@ export default class MyCanvasService{
                 scaleY: this.vm.windowHeight / oImg.height
             })
             this.canvas.setBackgroundImage(oImg);
-            this.vm.renderAll()
+            this.renderAll()
         });
     }
 
