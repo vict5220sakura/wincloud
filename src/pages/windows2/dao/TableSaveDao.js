@@ -15,13 +15,8 @@ export default class TableSaveDao{
      * @returns {NowTable}
      */
     static async loadInstance(vm, key, loginMode, username, password){
-        let json;
-        if(loginMode == login_mode.login_mode_local){
-            json = TableSaveDao.localStorageLoadInstance(key);
-        }else if(loginMode == login_mode.login_mode_serve){
-            json = await TableSaveDao.serviceLoadInstance(vm, username, password, key);
-        }
-        // console.log("json", json)
+        let json = await TableSaveDao.serviceLoadInstance(vm, username, password, key);
+
         let tableSaveData = new TableSaveData(json);
         let nowTable = await tableSaveData.toNowTable(vm);
         return nowTable;
@@ -37,11 +32,7 @@ export default class TableSaveDao{
      */
     static async saveInstance(vm, nowTable/**@type NowTable*/, loginMode, username, password){
         let tableSaveData = nowTable.toTableSaveData();
-        if(loginMode == login_mode.login_mode_local){
-            TableSaveDao.localStorageSaveInstance(tableSaveData)
-        }else if(loginMode == login_mode.login_mode_serve){
-            await TableSaveDao.serviceSaveInstance(vm, username, password, tableSaveData)
-        }
+        await TableSaveDao.serviceSaveInstance(vm, username, password, tableSaveData)
     }
 
     /**

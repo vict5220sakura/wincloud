@@ -16,6 +16,7 @@ import NowTable from "./bean/NowTable.js"
 import TableSaveDao from "./dao/TableSaveDao.js"
 import TableSaveData from "./entity/TableSaveData";
 import WsChat from "./WsChat";
+import idUtil from "../../util/IdUtil.js"
 
 
 export default {
@@ -99,7 +100,29 @@ export default {
         async save() {
             await TableSaveDao.saveInstance(this, this.tableService.nowTable, this.loginMode, this.username, this.password)
         },
+        /** 本地测试使用 */
+        async btnLoginTest(){
+            this.loginDialogFlag = false;
+            let username = idUtil()
+            let password = idUtil()
 
+            // 注册登录
+            let {b, msg, registLoginMode} = await this.dataService.registLogin(username, password)
+
+            this.loginMode = login_mode.login_mode_local
+
+            this.username = username
+            this.password = password
+
+            if(b){
+                await this.loginSuccess();
+            }else{
+                this.$message({
+                    type: 'error',
+                    message: "未知异常"
+                });
+            }
+        },
         /**
          * 注册登录按钮点击
          */
@@ -113,7 +136,13 @@ export default {
             // 注册登录
             let {b, msg, registLoginMode} = await this.dataService.registLogin(this.username, this.password)
             if(b){
-                await this.loginSuccess(registLoginMode);
+                this.$message({
+                    type: 'success',
+                    message: (registLoginMode == "regist" ? "注册" : "登录") + '成功!'
+                })
+                await this.loginSuccess();
+                // 保存用户名密码到本地
+                this.dataService.localStoreSaveUserLogin(this.username, this.password)
                 this.loginDialogFlag = false;
             }else{
                 this.$message({
@@ -124,11 +153,7 @@ export default {
         },
 
         /** 登录成功 */
-        async loginSuccess(registLoginMode){
-            this.$message({
-                type: 'success',
-                message: (registLoginMode == "regist" ? "注册" : "登录") + '成功!'
-            })
+        async loginSuccess(){
             // 登录成功
 
             // 删除全部本地数据
@@ -143,18 +168,21 @@ export default {
             // 打开默认主页
             await this.openTableKey(this.tableService.defaultTable.key)
 
-            this.$notify({
+            let notify = this.$notify({
                 title: '提示',
                 message: "使用鼠标右键或长按屏幕呼出菜单",
-                duration: 0
+                duration: 0,
+                onClick:()=>{
+                    notify.close()
+                }
             });
 
-            // 保存用户名密码到本地
-            this.dataService.localStoreSaveUserLogin(this.username, this.password)
+
         },
 
         loginOut(){
             this.loginDialogFlag = true;
+            this.dataService.localStoreClearUserLogin()
         },
 
         /**

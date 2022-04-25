@@ -40,6 +40,11 @@ export default class DataService{
         password = Jiami2.jiemi(password);
         return {username, password}
     }
+    /** 从本地清除用户名密码 */
+    localStoreClearUserLogin(){
+        sessionStorage.removeItem(localStoreSaveUserLoginKey.username)
+        sessionStorage.removeItem(localStoreSaveUserLoginKey.password)
+    }
 
     /** 初始化全部本地db数据 */
     async loadAllLoaclData(username, password){

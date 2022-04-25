@@ -89,9 +89,14 @@ export default {
         // 登录弹窗默认显示
         if(this.username != null && this.username != undefined && this.password != null && this.password != undefined){
             setTimeout(async ()=>{
-                this.loginMode = login_mode.login_mode_serve
+
                 // 自动登录
-                await this.loginSuccess("login");
+                this.$message({
+                    type: 'success',
+                    message: '登录成功!'
+                })
+                this.loginMode = login_mode.login_mode_serve
+                await this.loginSuccess();
             }, 0)
         }else{
             this.loginDialogFlag = true;

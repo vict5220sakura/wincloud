@@ -13,7 +13,7 @@
         </el-form-item>
       </el-form>
       <div class="row main-center">
-<!--        <div style="margin-right: 50px"><el-button style="width:117px" @click="btnLocalLogin">本地使用</el-button></div>-->
+        <div style="margin-right: 50px"><el-button style="width:117px" @click="btnLoginTest">本地试用</el-button></div>
         <div><el-button type="primary" style="width:117px" @click="btnLogin">注 册 / 登 录</el-button></div>
       </div>
     </el-dialog>

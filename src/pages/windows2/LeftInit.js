@@ -11,7 +11,7 @@ export default{
             if(length < 50 && this.mousedownNum == num){
                 this.actionEvent(x, y, true)
             }
-        }, 500)
+        }, 400)
         // for(let i = 0 ; i < 5 ; i++){
         //     setTimeout(()=>{
         //         let length = XYUtil.computeLength(x, y, this.mouseX, this.mouseY);
