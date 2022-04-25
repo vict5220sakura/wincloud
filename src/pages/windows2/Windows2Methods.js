@@ -152,6 +152,29 @@ export default {
             }
         },
 
+        async autoLogin(){
+            this.loginMode = login_mode.login_mode_serve
+
+            // 注册登录
+            let {b, msg, registLoginMode} = await this.dataService.registLogin(this.username, this.password)
+            if(b){
+                this.$message({
+                    type: 'success',
+                    message: '登录成功!'
+                })
+                await this.loginSuccess();
+                // 保存用户名密码到本地
+                this.dataService.localStoreSaveUserLogin(this.username, this.password)
+            }else{
+                this.$message({
+                    type: 'error',
+                    message: "用户名或密码错误"
+                });
+                this.dataService.localStoreClearUserLogin()
+                this.loginDialogFlag = true;
+            }
+        },
+
         /** 登录成功 */
         async loginSuccess(){
             // 登录成功

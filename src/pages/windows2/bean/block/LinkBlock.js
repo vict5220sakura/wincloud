@@ -2,7 +2,6 @@ import Block from "./Block.js"
 import BlockType from "./BlockType.js"
 import RightMenuItem from "../RightMenu/RightMenuItem";
 import CoordinateService from "../../service/CoordinateService.js";
-import Clipboard from 'clipboard';
 
 
 

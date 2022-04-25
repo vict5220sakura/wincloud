@@ -29,21 +29,21 @@ export default class DataService{
 
     /** 保存用户名密码到local */
     localStoreSaveUserLogin(username, password){
-        sessionStorage.setItem(localStoreSaveUserLoginKey.username, Jiami2.jiami(username))
-        sessionStorage.setItem(localStoreSaveUserLoginKey.password, Jiami2.jiami(password))
+        localStorage.setItem(localStoreSaveUserLoginKey.username, Jiami2.jiami(username))
+        localStorage.setItem(localStoreSaveUserLoginKey.password, Jiami2.jiami(password))
     }
     /** 从本地读取用户名密码 */
     localStoreLoadUserLogin(){
-        let username = sessionStorage.getItem(localStoreSaveUserLoginKey.username)
-        let password = sessionStorage.getItem(localStoreSaveUserLoginKey.password)
+        let username = localStorage.getItem(localStoreSaveUserLoginKey.username)
+        let password = localStorage.getItem(localStoreSaveUserLoginKey.password)
         username = Jiami2.jiemi(username);
         password = Jiami2.jiemi(password);
         return {username, password}
     }
     /** 从本地清除用户名密码 */
     localStoreClearUserLogin(){
-        sessionStorage.removeItem(localStoreSaveUserLoginKey.username)
-        sessionStorage.removeItem(localStoreSaveUserLoginKey.password)
+        localStorage.removeItem(localStoreSaveUserLoginKey.username)
+        localStorage.removeItem(localStoreSaveUserLoginKey.password)
     }
 
     /** 初始化全部本地db数据 */
