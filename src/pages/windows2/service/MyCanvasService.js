@@ -89,7 +89,7 @@ export default class MyCanvasService{
     }
     renderAllMain(){
         if(this.vm.myCanvasService.isRenderAll){
-            console.log("刷新全部")
+            // console.log("刷新全部")
             this.vm.myCanvasService.isRenderAll = false
             // this.canvas.renderAll();
             this.canvas.requestRenderAll();
