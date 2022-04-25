@@ -18,6 +18,7 @@ import WsChat from "./WsChat";
 import DataService from "./service/DataService.js"
 import LocalDbService from "./service/LocalDbService"
 import ServerService from "./service/ServerService"
+import {get} from "lodash"
 
 export default {
     mixins: [WindowsData, Windows2Methods],
@@ -43,6 +44,10 @@ export default {
         this.timeFrame = new TimeFrame(this);
         this.localDbService = new LocalDbService(this);
         this.serverService = new ServerService();
+
+        let userData = this.dataService.localStoreLoadUserLogin()
+        this.username = get(userData, "username", null);
+        this.password = get(userData, "password", null);
 
         this.tableRightMenu = new RightMenu(this);
         this.tableRightMenu.addRightMenuItem("新建连接", (opts)=>{

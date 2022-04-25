@@ -13,3 +13,7 @@ export const createOrUpdate = {
     create: 1,  // 创建
     update: 2   // 更新
 }
+export const localStoreSaveUserLoginKey = {
+    username: "wincloudUsernamejjkklll178717_a",
+    password: "wincloudUsernamejjkklll178717_b"
+}

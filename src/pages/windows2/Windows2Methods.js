@@ -134,6 +134,9 @@ export default {
                     duration: 0
                 });
 
+                // 保存用户名密码到本地
+                this.dataService.localStoreSaveUserLogin(this.username, this.password)
+
                 this.loginDialogFlag = false;
             }else{
                 this.$message({
