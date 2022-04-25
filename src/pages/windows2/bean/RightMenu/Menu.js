@@ -40,6 +40,9 @@ export default class Menu{
     getHeight(){
         return this.fabricObj.height
     }
+    getWidth(){
+        return this.fabricObj.width
+    }
     addRightMenuItem(text, mousedownFunc){
         let rightMenuItem = new RightMenuItem(this.vm);
         rightMenuItem.text = text
@@ -114,6 +117,15 @@ export default class Menu{
             y = this.getShowY() + this.heightFill();
         }else{
             y = this.getShowY();
+        }
+        if(y < 0){
+            y = 0
+        }
+        if(y + this.getHeight() > this.vm.windowHeight){
+            y = (this.vm.windowHeight - this.getHeight())
+        }
+        if(x + this.getWidth() > this.vm.windowWidth){
+            x = (this.vm.windowWidth - this.getWidth())
         }
 
         this.setLeft(x)
