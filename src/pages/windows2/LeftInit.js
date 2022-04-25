@@ -12,14 +12,14 @@ export default{
                 this.actionEvent(x, y, true)
             }
         }, 500)
-        for(let i = 0 ; i < 5 ; i++){
-            setTimeout(()=>{
-                let length = XYUtil.computeLength(x, y, this.mouseX, this.mouseY);
-                if(length > 50){
-                    this.mousedownNum++;
-                }
-            }, 50 + (i * 100))
-        }
+        // for(let i = 0 ; i < 5 ; i++){
+        //     setTimeout(()=>{
+        //         let length = XYUtil.computeLength(x, y, this.mouseX, this.mouseY);
+        //         if(length > 50){
+        //             this.mousedownNum++;
+        //         }
+        //     }, 50 + (i * 100))
+        // }
     },
     /** 左键事件注册 */
     async leftClickRegist(){
