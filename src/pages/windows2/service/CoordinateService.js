@@ -156,7 +156,7 @@ export default class CoordinateService{
 
     /** 重置一个图标 */
     resetOne(block /** @type Block*/){
-        console.log("now block", block)
+        // console.log("now block", block)
         this.removeBlock(block)
 
         // /** @type BlockPoint */

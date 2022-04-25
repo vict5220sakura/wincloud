@@ -27,7 +27,7 @@
             }
         },
         created() {
-            console.log("创建连接")
+            // console.log("创建连接")
             this.socket = new WebSocket("wss://api.vict5220.top/wschat?wsChatCode=" + this.wsChatCode);
             // this.socket = new WebSocket("ws://127.0.0.1:8334/wschat?wsChatCode=" + this.wsChatCode);
             this.socket.onerror = err => {

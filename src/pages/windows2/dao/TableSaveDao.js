@@ -21,7 +21,7 @@ export default class TableSaveDao{
         }else if(loginMode == login_mode.login_mode_serve){
             json = await TableSaveDao.serviceLoadInstance(vm, username, password, key);
         }
-        console.log("json", json)
+        // console.log("json", json)
         let tableSaveData = new TableSaveData(json);
         let nowTable = await tableSaveData.toNowTable(vm);
         return nowTable;

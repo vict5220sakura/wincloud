@@ -25,7 +25,7 @@ export default class Block{
     rightMenu;
 
     constructor(vm, blockKey) {
-        console.log("创建对象", blockKey)
+        // console.log("创建对象", blockKey)
         this.vm = vm
         if(blockKey){
             this.blockKey = blockKey

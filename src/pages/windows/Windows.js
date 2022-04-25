@@ -13,12 +13,12 @@ export default {
     },
     async mounted(){
 
-        console.log(document.getElementById("myCanvas"))
+        // console.log(document.getElementById("myCanvas"))
 
         this.windowWidth = window.innerWidth;
         this.windowHeight = window.innerHeight;
 
-        console.log(this.windowWidth, this.windowHeight)
+        // console.log(this.windowWidth, this.windowHeight)
 
         let img = new Img("/img/green5050.png");
         await img.setSize(50, 50);

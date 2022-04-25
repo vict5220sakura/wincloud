@@ -82,7 +82,7 @@ export default{
 
         })
         this.myCanvasService.canvas.on('selection:cleared', async (options)=> {
-            console.log("selection:cleared", options)
+            // console.log("selection:cleared", options)
             if(options.deselected && options.deselected.length > 0){
                 for(let itemObj of options.deselected){
                     if(itemObj && itemObj.block){
