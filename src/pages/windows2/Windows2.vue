@@ -63,8 +63,10 @@
 <!--        </div>-->
 <!--      </template>-->
     </el-dialog>
-    <el-button ref="actionUrlRef" @click="actionUrlClick">1</el-button>
-    <input id="copyId"/>
+<!--    <el-button ref="actionUrlRef" @click="actionUrlClick">1</el-button>-->
+    <div style="position: absolute; top: 0; left: 0; z-index: 0">
+      <input id="copyId" style="width: 1px; height: 1px"/>
+    </div>
   </div>
 </template>
 
