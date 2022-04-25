@@ -50,7 +50,7 @@ export default class TableService{
 
         this.vm.myCanvasService.addFabricObj(block.fabricObj);
         this.vm.coordinateService.addBlock(block);
-        this.vm.coordinateService.reset();
+        // this.vm.coordinateService.reset(); // 优化速度
         this.vm.myCanvasService.renderAll();
     }
     removeBlock(block /**@type Block*/){
