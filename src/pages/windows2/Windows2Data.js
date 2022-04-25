@@ -53,8 +53,6 @@ export default {
             wsChatDialogFlag: false, // 聊天弹窗
             wsChatCode: "001",
 
-            actionUrl: null,
-
             rules: {
                 "username": [
                   {validator: (rule, value, callback) => {
@@ -73,6 +71,6 @@ export default {
                     }, trigger: 'change'}
                   ]
             }
-        } 
+        }
     }
 }

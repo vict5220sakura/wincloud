@@ -178,16 +178,9 @@ export default {
             await this.tableService.load(nowTable);
         },
         openNewUrl(url){
-            this.actionUrl = url
-            // console.log("this.$refs.actionUrlRef", this.$refs.actionUrlRef)
-            this.$refs.actionUrlRef.$el.click()
-            // let newWin = window.open();
-            // newWin.location.href = url
-            // window.open(url)
+            window.open(url)
         },
-        actionUrlClick(){
-            window.open(this.actionUrl);
-        }
+
     }
 
     
