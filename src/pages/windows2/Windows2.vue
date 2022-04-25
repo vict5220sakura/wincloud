@@ -64,6 +64,7 @@
 <!--      </template>-->
     </el-dialog>
     <el-button ref="actionUrlRef" @click="actionUrlClick">1</el-button>
+    <input id="copyId"/>
   </div>
 </template>
 

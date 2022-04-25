@@ -2,6 +2,8 @@ import Block from "./Block.js"
 import BlockType from "./BlockType.js"
 import RightMenuItem from "../RightMenu/RightMenuItem";
 import CoordinateService from "../../service/CoordinateService.js";
+import Clipboard from 'clipboard';
+
 
 
 export default class LinkBlock extends Block{
@@ -70,6 +72,18 @@ export default class LinkBlock extends Block{
             });
         }))
         list.push(RightMenuItem.newSendOtherTableMenuItem(this.vm));
+        list.push(RightMenuItem.newInstance(this.vm, "复制链接", (opts)=>{
+            let url = this.url
+            if (new RegExp("http.*").test(url)) {
+                // this.vm.openNewUrl(url)
+            } else {
+                url = "http://" + url
+            }
+            let Url2 = document.getElementById("copyId");
+            Url2.value = url
+            Url2.select(); // 选择对象
+            document.execCommand("Copy"); // 执行浏览器复制命令
+        }))
         return list;
     }
 
