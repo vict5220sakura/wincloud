@@ -181,7 +181,7 @@ export default class TableService{
         let tableBackBlock = await TableBackBlock.newInstance(this.vm);
         nowTableNew.allBlock.push(tableBackBlock)
 
-        await TableSaveDao.saveInstance(this, nowTableNew, this.vm.loginMode, this.vm.username, this.vm.password)
+        await TableSaveDao.saveInstance(this.vm, nowTableNew, this.vm.loginMode, this.vm.username, this.vm.password)
         return nowTableNew;
     }
 
