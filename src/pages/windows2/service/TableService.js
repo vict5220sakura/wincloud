@@ -49,7 +49,12 @@ export default class TableService{
         this.nowTable.allBlock.push(block)
 
         this.vm.myCanvasService.addFabricObj(block.fabricObj);
-        this.vm.coordinateService.addBlock(block);
+        try{
+            this.vm.coordinateService.addBlock(block);
+        }catch(err){
+            console.log("桌面大小不够了", err)
+        }
+
         // this.vm.coordinateService.reset(); // 优化速度
         this.vm.myCanvasService.renderAll();
     }

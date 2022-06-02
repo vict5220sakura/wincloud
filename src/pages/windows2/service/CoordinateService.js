@@ -128,6 +128,9 @@ export default class CoordinateService{
     }
     /** @return BlockPoint */
     addBlockMain(block, blockpoint /**@type BlockPoint*/){
+        if(blockpoint == null || blockpoint == undefined){
+            return;
+        }
         if(!blockpoint.block){
             blockpoint.block = block
             block.blockPoint = blockpoint
@@ -177,9 +180,14 @@ export default class CoordinateService{
         //
         // block.setTop(nearNullBlockPoint.point.y)
         // block.setLeft(nearNullBlockPoint.point.x)
-        let blockPoint = this.addBlock(block);
-        block.setTop(blockPoint.point.y)
-        block.setLeft(blockPoint.point.x)
+        try{
+            let blockPoint = this.addBlock(block);
+            block.setTop(blockPoint.point.y)
+            block.setLeft(blockPoint.point.x)
+        }catch(err){
+            console.log("桌面大小不够了", err)
+        }
+
 
         // console.log("activeallBlockPoint.index", index)
     }
@@ -198,7 +206,11 @@ export default class CoordinateService{
         }
         this.activeallBlockPoint = [];
         for(let block of allBlock){
-            this.addBlock(block)
+            try{
+                this.addBlock(block)
+            }catch(err){
+                console.log("桌面大小不够了", err)
+            }
         }
 
         for(let blockPoint of this.activeallBlockPoint){
