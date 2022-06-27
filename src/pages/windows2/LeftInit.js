@@ -19,7 +19,7 @@ export default{
         //             this.mousedownNum++;
         //         }
         //     }, 50 + (i * 100))
-        // }
+        // }d
     },
     /** 左键事件注册 */
     async leftClickRegist(){

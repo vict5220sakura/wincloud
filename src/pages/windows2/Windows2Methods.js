@@ -136,19 +136,21 @@ export default {
             // 注册登录
             let {b, msg, registLoginMode} = await this.dataService.registLogin(this.username, this.password)
             if(b){
-                this.$message({
-                    type: 'success',
-                    message: (registLoginMode == "regist" ? "注册" : "登录") + '成功!'
-                })
+                this.notify((registLoginMode == "regist" ? "注册" : "登录") + '成功!', "success")
+                // this.$message({
+                //     type: 'success',
+                //     message: (registLoginMode == "regist" ? "注册" : "登录") + '成功!'
+                // })
                 await this.loginSuccess();
                 // 保存用户名密码到本地
                 this.dataService.localStoreSaveUserLogin(this.username, this.password)
                 this.loginDialogFlag = false;
             }else{
-                this.$message({
-                    type: 'error',
-                    message: "用户名或密码错误"
-                });
+                this.notify("用户名或密码错误", "error")
+                // this.$message({
+                //     type: 'error',
+                //     message: "用户名或密码错误"
+                // });
             }
         },
 
